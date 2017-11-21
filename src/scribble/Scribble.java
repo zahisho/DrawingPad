@@ -1,212 +1,146 @@
+package scribble;
 
-package scribble; 
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import javax.swing.*; 
+import java.awt.BorderLayout;
+import javax.swing.Box;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 public class Scribble extends JFrame {
 
+  protected ScribbleCanvas canvas;
+  protected JMenuBar menuBar;
+
+  protected String currentFilename;
+  protected JFileChooser chooser;
+
+  protected static int WIDTH = 600;
+  protected static int HEIGHT = 400;
+
+  private ExitListener exitListener;
+  private SaveListener saveListener;
+  private NewFileListener newFileListener;
+  private OpenFileListener openFileListener;
+  private SaveFileAsListener saveFileAsListener;
+  private ColorListener colorListener;
+  private AboutListener aboutListener;
+  private final ScribbleWindowAdapter windowAdapter;
+
   public Scribble(String title) {
     super(title);
-    // calling factory method 
-    canvas = makeCanvas(); 
-    getContentPane().setLayout(new BorderLayout()); 
-    menuBar = createMenuBar(); 
-    getContentPane().add(menuBar, BorderLayout.NORTH); 
+    // calling factory method
+    chooser = new JFileChooser(".");
+    currentFilename = null;
+    canvas = makeCanvas();
+    getContentPane().setLayout(new BorderLayout());
+    createMenuBar();
+    getContentPane().add(menuBar, BorderLayout.NORTH);
     getContentPane().add(canvas, BorderLayout.CENTER);
-    addWindowListener(new WindowAdapter() {
-	public void windowClosing(WindowEvent e) {
-	  if (exitAction != null) { 
-	    exitAction.actionPerformed(new ActionEvent(Scribble.this, 0, null)); 
-	  }
-	}
-      }); 
+    windowAdapter = new ScribbleWindowAdapter(this);
+    addWindowListener(windowAdapter);
   }
 
-  protected JMenuBar createMenuBar() {
-    JMenuBar menuBar = new JMenuBar();
-    JMenu menu; 
+  public final JFileChooser getChooser() {
+    return chooser;
+  }
+
+  public final ScribbleCanvas getCanvas() {
+    return canvas;
+  }
+
+  public final ExitListener getExitListener() {
+    return exitListener;
+  }
+
+  private void createMenuBar() {
+    menuBar = new JMenuBar();
+    JMenu menu;
     JMenuItem mi;
 
-    // File menu 
-    menu = new JMenu("File"); 
-    menuBar.add(menu); 
+    // File menu
+    menu = new JMenu("File");
+    menuBar.add(menu);
 
+    newFileListener = new NewFileListener(this);
     mi = new JMenuItem("New");
     menu.add(mi);
-    mi.addActionListener(new NewFileListener()); 
+    mi.addActionListener(newFileListener);
 
+    openFileListener = new OpenFileListener(this);
     mi = new JMenuItem("Open");
     menu.add(mi);
-    mi.addActionListener(new OpenFileListener()); 
+    mi.addActionListener(openFileListener);
 
+    saveListener = new SaveListener(this);
     mi = new JMenuItem("Save");
     menu.add(mi);
-    mi.addActionListener(new SaveFileListener()); 
+    mi.addActionListener(saveListener);
 
+    saveFileAsListener = new SaveFileAsListener(this);
     mi = new JMenuItem("Save As");
     menu.add(mi);
-    mi.addActionListener(new SaveAsFileListener()); 
+    mi.addActionListener(saveFileAsListener);
 
-    menu.add(new JSeparator()); 
+    menu.add(new JSeparator());
 
-    exitAction = new ExitListener(); 
+    exitListener = new ExitListener(this);
     mi = new JMenuItem("Exit");
     menu.add(mi);
-    mi.addActionListener(exitAction); 
+    mi.addActionListener(exitListener);
 
     // option menu
-    menu = new JMenu("Option"); 
-    menuBar.add(menu); 
+    menu = new JMenu("Option");
+    menuBar.add(menu);
 
+    colorListener = new ColorListener(this);
     mi = new JMenuItem("Color");
     menu.add(mi);
-    mi.addActionListener(new ColorListener()); 
+    mi.addActionListener(colorListener);
 
-    // horizontal space 
+    // horizontal space
     menuBar.add(Box.createHorizontalGlue());
 
-    // Help menu 
-    menu = new JMenu("Help"); 
-    menuBar.add(menu); 
+    // Help menu
+    menu = new JMenu("Help");
+    menuBar.add(menu);
 
+    aboutListener = new AboutListener(this);
     mi = new JMenuItem("About");
     menu.add(mi);
-    mi.addActionListener(new AboutListener()); 
-
-    return menuBar; 
+    mi.addActionListener(aboutListener);
   }
 
-  // factory method 
+  // factory method
   protected ScribbleCanvas makeCanvas() {
-    return new ScribbleCanvas(); 
+    return new ScribbleCanvas();
   }
 
-  protected void newFile() { 
-    currentFilename = null; 
-    canvas.newFile(); 
+  public final void newFile() {
+    currentFilename = null;
+    canvas.newFile();
     setTitle("Scribble Pad");
   }
 
-  protected void openFile(String filename) { 
-    currentFilename = filename; 
+  public final void openFile(String filename) {
+    currentFilename = filename;
     canvas.openFile(filename);
-    setTitle("Scribble Pad [" + currentFilename + "]"); 
+    setTitle("Scribble Pad [" + currentFilename + "]");
   }
 
-  protected void saveFile() { 
+  public final void saveFile() {
     if (currentFilename == null) {
-      currentFilename = "Untitled"; 
+      currentFilename = "Untitled";
     }
-    canvas.saveFile(currentFilename); 
+    canvas.saveFile(currentFilename);
     setTitle("Scribble Pad [" + currentFilename + "]");
   }
 
-  protected void saveFileAs(String filename) { 
-    currentFilename = filename; 
-    canvas.saveFile(filename); 
+  public final void saveFileAs(String filename) {
+    currentFilename = filename;
+    canvas.saveFile(filename);
     setTitle("Scribble Pad [" + currentFilename + "]");
   }
-
-  class NewFileListener implements ActionListener { 
-    
-    public void actionPerformed(ActionEvent e) {
-      newFile(); 
-    }
-
-  }
-
-  class OpenFileListener implements ActionListener { 
-
-    public void actionPerformed(ActionEvent e) {
-      int retval = chooser.showDialog(null, "Open");
-      if (retval == JFileChooser.APPROVE_OPTION) {
-	File theFile = chooser.getSelectedFile();
-	if (theFile != null) {
-	  if (theFile.isFile()) {
-	    String filename = chooser.getSelectedFile().getAbsolutePath();
-	    openFile(filename); 
-	  }
-	}
-      }
-    }
-
-  }
-
-  class SaveFileListener implements ActionListener { 
-    
-    public void actionPerformed(ActionEvent e) {
-      saveFile(); 
-    }
-
-  }
-
-  class SaveAsFileListener implements ActionListener { 
-
-    public void actionPerformed(ActionEvent e) {
-      int retval = chooser.showDialog(null, "Save As");
-      if (retval == JFileChooser.APPROVE_OPTION) {
-	File theFile = chooser.getSelectedFile();
-	if (theFile != null) {
-	  if (!theFile.isDirectory()) {
-	    String filename = chooser.getSelectedFile().getAbsolutePath();
-	    saveFileAs(filename); 
-	  }
-	}
-      }
-    }
-
-  }
-
-  class ExitListener implements ActionListener { 
-    
-    public void actionPerformed(ActionEvent e) {
-      int result = JOptionPane.showConfirmDialog(null,
-						 "Do you want to exit Scribble Pad?", 
-						 "Exit Scribble Pad?",
-						 JOptionPane.YES_NO_OPTION);
-      if (result == JOptionPane.YES_OPTION) {
-	saveFile(); 
-	System.exit(0); 
-      }
-    }
-
-  }
-
-  class ColorListener implements ActionListener { 
-    
-    public void actionPerformed(ActionEvent e) {
-      Color result = dialog.showDialog();
-      if (result != null) { 
-	canvas.setCurColor(result);
-      }
-    }
-
-    protected ColorDialog dialog = 
-      new ColorDialog(Scribble.this, "Choose color", canvas.getCurColor());
-
-  }
-
-  class AboutListener implements ActionListener { 
-    
-    public void actionPerformed(ActionEvent e) {
-      JOptionPane.showMessageDialog(null, 
-				    "DrawingPad version 1.0\nCopyright (c) Xiaoping Jia 2002", "About", 
-				    JOptionPane.INFORMATION_MESSAGE); 
-    }
-
-  }
-
-  protected ScribbleCanvas canvas; 
-  protected JMenuBar menuBar; 
-
-  protected String currentFilename = null; 
-  protected ActionListener exitAction; 
-  protected JFileChooser chooser = new JFileChooser(".");
-
-  protected static int width = 600; 
-  protected static int height = 400; 
-
 }

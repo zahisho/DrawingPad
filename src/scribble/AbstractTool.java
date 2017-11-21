@@ -1,4 +1,3 @@
-
 package scribble;
 
 public abstract class AbstractTool implements Tool {
@@ -7,7 +6,7 @@ public abstract class AbstractTool implements Tool {
   protected String name;
 
   @Override
-  public String getName() {
+  public final String getName() {
     return name;
   }
 
@@ -15,5 +14,4 @@ public abstract class AbstractTool implements Tool {
     this.canvas = canvas;
     this.name = name;
   }
-  
 }
