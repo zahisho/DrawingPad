@@ -1,17 +1,24 @@
 
+import java.awt.Color;
 import java.awt.Graphics;
+import scribble.Shape;
 
-public class LineShape extends TwoEndsShape {
+/**
+ *
+ * @author M16U3L
+ */
+public class LineShape extends Shape {
 
+  public LineShape(Color color) {
+    super(color);
+  }
+
+  @Override
   public void draw(Graphics g) {
     if (color != null) {
       g.setColor(color);
     }
-    g.drawLine(x1, y1, x2, y2); 
-  }
-
-  public void drawOutline(Graphics g, int x1, int y1, int x2, int y2) {
-    g.drawLine(x1, y1, x2, y2); 
+    g.drawLine(x1, y1, x2, y2);
   }
 
 }
