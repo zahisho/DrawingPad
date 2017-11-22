@@ -15,7 +15,6 @@ import scribble.ScribbleCanvas;
 import scribble.Tool;
 import scribble.Scribble;
 import scribble.ScribbleTool;
-import scribble.SelectorTool;
 
 public class DrawingPad extends Scribble {
 
@@ -55,7 +54,7 @@ public class DrawingPad extends Scribble {
     return toolkit.getSelectedTool();
   }
 
-  protected void initTools() {
+  private void initTools() {
     toolkit = new ToolKit();
     toolkit.addTool(new ScribbleTool(canvas, "Scribble"));
     toolkit.addTool(new TwoEndsTool(canvas, "Line", TwoEndsTool.LINE));
@@ -70,7 +69,7 @@ public class DrawingPad extends Scribble {
     return drawingCanvas;
   }
 
-  protected JComponent createToolBar(ActionListener toolListener) {
+  private JComponent createToolBar(ActionListener toolListener) {
     JPanel toolbar = new JPanel(new GridLayout(0, 1));
     int n = toolkit.getToolCount();
     for (int i = 0; i < n; i++) {
@@ -88,7 +87,7 @@ public class DrawingPad extends Scribble {
     return toolbar;
   }
 
-  protected JMenu createToolMenu(ActionListener toolListener) {
+  private JMenu createToolMenu(ActionListener toolListener) {
     JMenu menu = new JMenu("Tools");
     int n = toolkit.getToolCount();
     for (int i = 0; i < n; i++) {
