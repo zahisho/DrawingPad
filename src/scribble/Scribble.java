@@ -18,12 +18,12 @@ import javax.swing.JSeparator;
 
 public class Scribble extends JFrame {
 
-  protected ScribbleCanvas canvas;
   protected JMenuBar menuBar;
-
-  protected String currentFilename = null;
+  protected ScribbleCanvas canvas;
+  
+  protected JFileChooser chooser;
+  protected String currentFilename;
   protected ActionListener exitAction;
-  protected JFileChooser chooser = new JFileChooser(".");
 
   protected static int width = 600;
   protected static int height = 400;
@@ -33,7 +33,10 @@ public class Scribble extends JFrame {
   public Scribble(String title) {
     super(title);
     // calling factory method 
-    canvas = makeCanvas();
+    currentFilename = null;
+    chooser = new JFileChooser(".");
+    
+    canvas = makeCanvas();    
     getContentPane().setLayout(new BorderLayout());
     menuBar = createMenuBar();
     getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -45,67 +48,72 @@ public class Scribble extends JFrame {
       }
     });
   }
-
-  protected JMenuBar createMenuBar() {
-    JMenuBar menuBar = new JMenuBar();
-    JMenu menu;
-    JMenuItem mi;
-
-    // File menu 
-    menu = new JMenu("File");
-    menuBar.add(menu);
-
-    mi = new JMenuItem("New");
-    menu.add(mi);
-    mi.addActionListener(event -> newFile());
-
-    mi = new JMenuItem("Open");
-    menu.add(mi);
-    mi.addActionListener(event -> openFileListener());
-
-    mi = new JMenuItem("Save");
-    menu.add(mi);
-    mi.addActionListener(event -> saveFile());
-
-    mi = new JMenuItem("Save As");
-    menu.add(mi);
-    mi.addActionListener(event -> saveAsFileListener());
-
-    menu.add(new JSeparator());
-
-    mi = new JMenuItem("Exit");
-    menu.add(mi);
-    mi.addActionListener(event -> exitListener());
-
-    // option menu
-    menu = new JMenu("Option");
-    menuBar.add(menu);
-
-    mi = new JMenuItem("Color");
-    menu.add(mi);
-    mi.addActionListener(event -> colorListener());
-    
-    mi = new JMenuItem("Undo");
-    menu.add(mi);
-    mi.addActionListener(event -> undoListener());
-
-    // horizontal space 
-    menuBar.add(Box.createHorizontalGlue());
-
-    // Help menu 
-    menu = new JMenu("Help");
-    menuBar.add(menu);
-
-    mi = new JMenuItem("About");
-    menu.add(mi);
-    mi.addActionListener(event -> aboutListener());
-
-    return menuBar;
-  }
-
+  
   // factory method 
   protected ScribbleCanvas makeCanvas() {
     return new ScribbleCanvas();
+  }
+  
+  protected JMenuBar createMenuBar() {
+    JMenuBar menuBar = new JMenuBar();
+    addFileMenu(menuBar);
+    addOptionMenu(menuBar);
+    menuBar.add(Box.createHorizontalGlue());
+    addHelpMenu(menuBar);
+    return menuBar;
+  }
+  
+  private void addFileMenu(JMenuBar menuBar){
+    JMenu menu = new JMenu("File");
+    JMenuItem menuFileItem;
+    menuBar.add(menu);
+    
+    menuFileItem = new JMenuItem("New");
+    menu.add(menuFileItem);
+    menuFileItem.addActionListener(event -> newFile());
+
+    menuFileItem = new JMenuItem("Open");
+    menu.add(menuFileItem);
+    menuFileItem.addActionListener(event -> openFileListener());
+
+    menuFileItem = new JMenuItem("Save");
+    menu.add(menuFileItem);
+    menuFileItem.addActionListener(event -> saveFile());
+
+    menuFileItem = new JMenuItem("Save As");
+    menu.add(menuFileItem);
+    menuFileItem.addActionListener(event -> saveAsFileListener());
+
+    menu.add(new JSeparator());
+
+    menuFileItem = new JMenuItem("Exit");
+    menu.add(menuFileItem);
+    menuFileItem.addActionListener(event -> exitListener());
+  }
+  
+  private void addOptionMenu(JMenuBar menuBar){
+    JMenu menu = new JMenu("Option");
+    JMenuItem menuOptionItem;
+    menuBar.add(menu);
+
+    menuOptionItem = new JMenuItem("Color");
+    menu.add(menuOptionItem);
+    menuOptionItem.addActionListener(event -> colorListener());
+    
+    menuOptionItem = new JMenuItem("Undo");
+    menu.add(menuOptionItem);
+    menuOptionItem.addActionListener(event -> undoListener());
+
+  }
+  
+  private void addHelpMenu(JMenuBar menuBar){
+    JMenu menu = new JMenu("Help");
+    JMenuItem menuHelpItem;
+    menuBar.add(menu);
+
+    menuHelpItem = new JMenuItem("About");
+    menu.add(menuHelpItem);
+    menuHelpItem.addActionListener(event -> aboutListener());
   }
 
   private void newFile() {
