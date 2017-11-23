@@ -1,10 +1,14 @@
+
 import java.util.EventListener;
 import scribble.ScribbleCanvas;
-import scribble.Tool;
+import tools.Tool;
 
 public class DrawingCanvas extends ScribbleCanvas {
 
-  public DrawingCanvas() {}
+  private DrawingCanvasListener drawingCanvasListener;
+
+  public DrawingCanvas() {
+  }
 
   public final void setTool(Tool tool) {
     drawingCanvasListener.setTool(tool);
@@ -16,10 +20,8 @@ public class DrawingCanvas extends ScribbleCanvas {
 
   // factory method
   @Override
-  protected final EventListener makeCanvasListener() {
+  public final EventListener makeCanvasListener() {
     drawingCanvasListener = new DrawingCanvasListener(this);
     return drawingCanvasListener;
   }
-
-  protected DrawingCanvasListener drawingCanvasListener;
 }

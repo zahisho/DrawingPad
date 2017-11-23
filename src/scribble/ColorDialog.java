@@ -93,6 +93,7 @@ public class ColorDialog extends JDialog implements ActionListener {
   }
 
   class ColorPanel extends JPanel {
+
     protected Color color;
 
     protected int cellWidth;

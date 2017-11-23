@@ -1,3 +1,6 @@
+
+import tools.TwoEndsTool;
+import tools.ToolKit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -13,12 +16,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import scribble.Scribble;
 import scribble.ScribbleCanvas;
-import scribble.ScribbleTool;
-import scribble.Tool;
+import tools.ScribbleTool;
+import tools.Tool;
 
 public class DrawingPad extends Scribble {
-  protected ToolKit toolkit;
-  protected DrawingCanvas drawingCanvas;
+
+  private ToolKit toolkit;
+  private DrawingCanvas drawingCanvas;
 
   public DrawingPad(String title) {
     super(title);

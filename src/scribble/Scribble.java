@@ -1,5 +1,13 @@
 package scribble;
 
+import menu.listeners.UndoListener;
+import menu.listeners.AboutListener;
+import menu.listeners.ColorListener;
+import menu.listeners.SaveFileAsListener;
+import menu.listeners.ExitListener;
+import menu.listeners.OpenFileListener;
+import menu.listeners.NewFileListener;
+import menu.listeners.SaveListener;
 import java.awt.BorderLayout;
 import javax.swing.Box;
 import javax.swing.JFileChooser;
@@ -27,6 +35,7 @@ public class Scribble extends JFrame {
   private SaveFileAsListener saveFileAsListener;
   private ColorListener colorListener;
   private AboutListener aboutListener;
+  private UndoListener undoListener;
   private final ScribbleWindowAdapter windowAdapter;
 
   public Scribble(String title) {
@@ -100,6 +109,11 @@ public class Scribble extends JFrame {
     menu.add(mi);
     mi.addActionListener(colorListener);
 
+    undoListener = new UndoListener(this);
+    mi = new JMenuItem("Undo");
+    menu.add(mi);
+    mi.addActionListener(undoListener);
+
     // horizontal space
     menuBar.add(Box.createHorizontalGlue());
 
@@ -111,6 +125,10 @@ public class Scribble extends JFrame {
     mi = new JMenuItem("About");
     menu.add(mi);
     mi.addActionListener(aboutListener);
+  }
+
+  public final void undo() {
+    canvas.undo();
   }
 
   // factory method

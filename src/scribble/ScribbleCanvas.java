@@ -1,5 +1,7 @@
 package scribble;
 
+import drawing.ShapeList;
+import drawing.Shape;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,17 +12,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Iterator;
-import java.util.List;
 import javax.swing.JPanel;
 
 public class ScribbleCanvas extends JPanel {
 
   // The list of shapes of the drawing
   // The elements are instances of Stroke
-  protected List<Shape> shapes;
+  protected ShapeList shapes;
 
   protected Color curColor;
 
@@ -31,7 +31,7 @@ public class ScribbleCanvas extends JPanel {
   public int y;
 
   public ScribbleCanvas() {
-    shapes = new ArrayList<>();
+    shapes = new ShapeList();
     curColor = Color.black;
     mouseButtonDown = false;
     // calling factory method 
@@ -79,7 +79,7 @@ public class ScribbleCanvas extends JPanel {
   public final void openFile(String filename) {
     try {
       ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename));
-      shapes = (List) in.readObject();
+      shapes = (ShapeList) in.readObject();
       in.close();
       repaint();
     } catch (IOException e1) {
@@ -96,6 +96,7 @@ public class ScribbleCanvas extends JPanel {
       out.close();
       System.out.println("Save drawing to " + filename);
     } catch (IOException e) {
+      System.err.println(e);
       System.out.println("Unable to write file: " + filename);
     }
   }
@@ -103,5 +104,10 @@ public class ScribbleCanvas extends JPanel {
   // factory method
   protected EventListener makeCanvasListener() {
     return (new ScribbleCanvasListener(this));
+  }
+
+  public final void undo() {
+    shapes.removeLast();
+    repaint();
   }
 }

@@ -1,14 +1,17 @@
 package scribble;
 
+import tools.ScribbleTool;
+import tools.Tool;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class ScribbleCanvasListener 
-    implements MouseListener, MouseMotionListener {
-  protected ScribbleCanvas canvas; 
-  protected Tool tool; 
+public class ScribbleCanvasListener
+        implements MouseListener, MouseMotionListener {
+
+  protected ScribbleCanvas canvas;
+  protected Tool tool;
 
   public ScribbleCanvasListener(ScribbleCanvas canvas) {
     this.canvas = canvas;
@@ -42,20 +45,23 @@ public class ScribbleCanvasListener
   }
 
   @Override
-  public void mouseClicked(MouseEvent e) {}
+  public void mouseClicked(MouseEvent e) {
+  }
 
   @Override
-  public void mouseEntered(MouseEvent e) {}
+  public void mouseEntered(MouseEvent e) {
+  }
 
   @Override
-  public void mouseExited(MouseEvent e) {}
+  public void mouseExited(MouseEvent e) {
+  }
 
   @Override
-  public void mouseMoved(MouseEvent e) {}
+  public void mouseMoved(MouseEvent e) {
+  }
 
   protected ScribbleCanvasListener(ScribbleCanvas canvas, Tool tool) {
     this.canvas = canvas;
     this.tool = tool;
   }
 }
-
