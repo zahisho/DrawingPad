@@ -10,24 +10,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.EventListener;
-import java.util.List;
+import java.util.Iterator;
 import javax.swing.JPanel;
 
 public class Canvas extends JPanel {
 
-  private List<Shape> shapes = new ArrayList<>();
+  private ShapeList shapes;
+  private Color curColor = Color.black;
 
-  protected Color curColor = Color.black;
-
-  protected EventListener listener;
+  private EventListener listener;
 
   public boolean mouseButtonDown = false;
   public int x, y;
   private CanvasListener scribbleCanvasListener;
 
   public Canvas() {
+    this.shapes = new ShapeList();
     //calling factory method
     listener = makeCanvasListener();
     addMouseListener((MouseListener) listener);
@@ -68,7 +67,9 @@ public class Canvas extends JPanel {
     g.fillRect(0, 0, dim.width, dim.height);
     g.setColor(Color.black);
     if (shapes != null) {
-      for (Shape shape : shapes) {
+      Iterator iter = shapes.iterator();
+      while (iter.hasNext()) {
+        Shape shape = (Shape) iter.next();
         if (shape != null) {
           shape.draw(g);
         }
@@ -81,19 +82,16 @@ public class Canvas extends JPanel {
     repaint();
   }
 
-  ///lista
-  @SuppressWarnings("unchecked")
   public void openFile(String filename) {
-    try {
-      try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-        shapes = (List<Shape>) in.readObject();
-      }
-      repaint();
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+      shapes = (ShapeList) in.readObject();
     } catch (IOException e1) {
       System.out.println("Unable to open file: " + filename);
     } catch (ClassNotFoundException e2) {
       System.out.println(e2);
     }
+    repaint();
+    repaint();
   }
 
   public void saveFile(String filename) {
@@ -107,7 +105,7 @@ public class Canvas extends JPanel {
     }
   }
 
-  public List<Shape> getShapes() {
+  public ShapeList getShapes() {
     return shapes;
   }
 }

@@ -45,7 +45,7 @@ public class DrawingPad extends JFrame {
   public static final int HEIGHT = 400;
 
   public DrawingPad(String title) {
-    canvas = new Canvas();
+    canvas = makeCanvas();
     getContentPane().setLayout(new BorderLayout());
     menuBar = createMenuBar();
     getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -66,9 +66,8 @@ public class DrawingPad extends JFrame {
     JComponent toolbar = createToolBar(toolListener);
     getContentPane().add(toolbar, BorderLayout.WEST);
     JMenu menu = createToolMenu(toolListener);
-    menuBar.add(menu, 1); // insert at index position 1 
+    menuBar.add(menu, 2);
     revalidate();
-
   }
 
   private void init() {
@@ -104,6 +103,11 @@ public class DrawingPad extends JFrame {
       }
     }
     return menu;
+  }
+
+  public Canvas makeCanvas() {
+    canvas = new Canvas();
+    return canvas;
   }
 
   private JComponent createToolBar(ActionListener toolListener) {
@@ -164,6 +168,14 @@ public class DrawingPad extends JFrame {
     menu.add(menuItem);
     menuItem.addActionListener(event -> exit());
 
+    // edit menu
+    menu = new JMenu("Edit");
+    menuBars.add(menu);
+
+    menuItem = new JMenuItem("Undo");
+    menu.add(menuItem);
+    menuItem.addActionListener(event -> undo());
+
     // option menu
     menu = new JMenu("Option");
     menuBars.add(menu);
@@ -171,10 +183,6 @@ public class DrawingPad extends JFrame {
     menuItem = new JMenuItem("Color");
     menu.add(menuItem);
     menuItem.addActionListener(event -> chooseColor());
-
-    menuItem = new JMenuItem("Undo");
-    menu.add(menuItem);
-    menuItem.addActionListener(event -> undo());
 
     // horizontal space 
     menuBars.add(Box.createHorizontalGlue());
@@ -191,10 +199,8 @@ public class DrawingPad extends JFrame {
   }
 
   private void undo() {
-    if (canvas.getShapes().size() > 0) {
-      canvas.getShapes().remove(canvas.getShapes().size() - 1);
-      canvas.repaint();
-    }
+    canvas.getShapes().removeLast();
+    repaint();
   }
 
   private void saveAs() {

@@ -1,9 +1,7 @@
 package scribble;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
-import scribble.Shape;
 
 public class OvalShape extends Shape {
 

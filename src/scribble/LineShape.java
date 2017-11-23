@@ -1,9 +1,7 @@
 package scribble;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
-import scribble.Shape;
 
 /**
  *
@@ -22,5 +20,4 @@ public class LineShape extends Shape {
     }
     g.drawLine(x1, y1, x2, y2);
   }
-
 }
