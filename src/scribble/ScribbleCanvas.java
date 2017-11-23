@@ -112,19 +112,19 @@ public class ScribbleCanvas extends JPanel {
     return (new ScribbleCanvasListener(this));
   }
   
-  public boolean belongShape(Point p){
+  public Shape belongShape(Point p){
     if(shapes != null){
       Iterator iter = shapes.iterator();
       while (iter.hasNext()){
         Shape shape = (Shape) iter.next();
         if (shape != null){
           if(shape.belong(p)){
-            return true;
+            return shape;
           }
         }
       }
     }
-    return false;
+    return null;
   }
   
 }
