@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import scribble.ScribbleCanvas;
+import scribble.Canvas;
 import scribble.Tool;
 import scribble.Scribble;
 import scribble.ScribbleTool;
@@ -19,7 +19,7 @@ import scribble.ScribbleTool;
 public class DrawingPad extends Scribble {
 
   private ToolKit toolkit;
-  private DrawingCanvas drawingCanvas;
+  private Canvas drawingCanvas;
 
   public DrawingPad(String title) {
     super(title);
@@ -64,8 +64,8 @@ public class DrawingPad extends Scribble {
   }
 
   @Override
-  public ScribbleCanvas makeCanvas() {
-    drawingCanvas = new DrawingCanvas();
+  public Canvas makeCanvas() {
+    drawingCanvas = new Canvas();
     return drawingCanvas;
   }
 
@@ -81,10 +81,14 @@ public class DrawingPad extends Scribble {
       }
     }
     JButton button = new JButton("Selector");
-    button.addActionListener(toolListener);
+    button.addActionListener(event -> selector());
     toolbar.add(button);
 
     return toolbar;
+  }
+
+  private void selector() {
+
   }
 
   private JMenu createToolMenu(ActionListener toolListener) {

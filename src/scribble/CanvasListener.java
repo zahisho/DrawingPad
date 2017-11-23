@@ -5,15 +5,23 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class ScribbleCanvasListener
+public class CanvasListener
   implements MouseListener, MouseMotionListener {
 
-  protected ScribbleCanvas canvas;
-  protected Tool tool;
+  private Canvas canvas;
+  private Tool tool;
 
-  public ScribbleCanvasListener(ScribbleCanvas canvas) {
+  public CanvasListener(Canvas canvas) {
     this.canvas = canvas;
     tool = new ScribbleTool(canvas, "Scribble");
+  }
+
+  public Tool getTool() {
+    return tool;
+  }
+
+  public void setTool(Tool tool) {
+    this.tool = tool;
   }
 
   @Override
@@ -58,7 +66,7 @@ public class ScribbleCanvasListener
   public void mouseMoved(MouseEvent e) {
   }
 
-  protected ScribbleCanvasListener(ScribbleCanvas canvas, Tool tool) {
+  public CanvasListener(Canvas canvas, Tool tool) {
     this.canvas = canvas;
     this.tool = tool;
   }

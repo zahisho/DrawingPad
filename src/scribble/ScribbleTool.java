@@ -7,7 +7,7 @@ public class ScribbleTool extends AbstractTool {
 
   protected Stroke curStroke = null;
 
-  public ScribbleTool(ScribbleCanvas canvas, String name) {
+  public ScribbleTool(Canvas canvas, String name) {
     super(canvas, name);
   }
 

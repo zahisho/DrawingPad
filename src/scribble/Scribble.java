@@ -16,7 +16,7 @@ import javax.swing.JSeparator;
 
 public class Scribble extends JFrame {
 
-  public ScribbleCanvas canvas;
+  public Canvas canvas;
   public JMenuBar menuBar;
 
   private String currentFilename = null;
@@ -155,8 +155,8 @@ public class Scribble extends JFrame {
   }
 
 // factory method 
-  public ScribbleCanvas makeCanvas() {
-    return new ScribbleCanvas();
+  public Canvas makeCanvas() {
+    return new Canvas();
   }
 
   private void newFile() {

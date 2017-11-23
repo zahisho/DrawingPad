@@ -2,7 +2,7 @@ package scribble;
 
 public abstract class AbstractTool implements Tool {
 
-  protected ScribbleCanvas canvas;
+  protected Canvas canvas;
   protected String name;
 
   @Override
@@ -10,7 +10,7 @@ public abstract class AbstractTool implements Tool {
     return name;
   }
 
-  protected AbstractTool(ScribbleCanvas canvas, String name) {
+  protected AbstractTool(Canvas canvas, String name) {
     this.canvas = canvas;
     this.name = name;
   }

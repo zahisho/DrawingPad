@@ -7,7 +7,7 @@ import scribble.Shape;
  *
  * @author M16U3L
  */
-class ScribblePoint extends Shape {
+public class ScribblePoint extends Shape {
 
   public ScribblePoint(Color color) {
     super(color);

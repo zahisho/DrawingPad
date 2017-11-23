@@ -15,7 +15,7 @@ import java.util.EventListener;
 import java.util.List;
 import javax.swing.JPanel;
 
-public class ScribbleCanvas extends JPanel {
+public class Canvas extends JPanel {
 
   protected List<Shape> shapes = new ArrayList<>();
 
@@ -25,12 +25,26 @@ public class ScribbleCanvas extends JPanel {
 
   public boolean mouseButtonDown = false;
   public int x, y;
+  private CanvasListener scribbleCanvasListener;
 
-  public ScribbleCanvas() {
+  public Canvas() {
     //calling factory method
     listener = makeCanvasListener();
     addMouseListener((MouseListener) listener);
     addMouseMotionListener((MouseMotionListener) listener);
+  }
+
+  public void setTool(Tool tool) {
+    scribbleCanvasListener.setTool(tool);
+  }
+
+  public Tool getTool() {
+    return scribbleCanvasListener.getTool();
+  }
+
+  // factory method 
+  protected EventListener makeCanvasListener() {
+    return (scribbleCanvasListener = new CanvasListener(this));
   }
 
   public void setCurColor(Color curColor) {
@@ -92,11 +106,4 @@ public class ScribbleCanvas extends JPanel {
       System.out.println("Unable to write file: " + filename);
     }
   }
-
-  // factory method 
-  protected EventListener makeCanvasListener() {
-    return (new ScribbleCanvasListener(this));
-//      return null;
-  }
-
 }

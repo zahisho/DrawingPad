@@ -8,7 +8,7 @@ import java.awt.Point;
  */
 public class SelectorTool implements Tool {
 
-  public SelectorTool(ScribbleCanvas canvas, String name) {
+  public SelectorTool(Canvas canvas, String name) {
 
   }
 

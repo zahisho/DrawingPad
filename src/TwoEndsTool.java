@@ -2,7 +2,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import scribble.ScribbleCanvas;
+import scribble.Canvas;
 import scribble.AbstractTool;
 import scribble.Shape;
 
@@ -15,7 +15,7 @@ public class TwoEndsTool extends AbstractTool {
   private int shape = LINE;
   private int xStart, yStart;
 
-  public TwoEndsTool(ScribbleCanvas canvas, String name, int shape) {
+  public TwoEndsTool(Canvas canvas, String name, int shape) {
     super(canvas, name);
     this.shape = shape;
   }
@@ -49,8 +49,8 @@ public class TwoEndsTool extends AbstractTool {
   public void addPointToShape(Point p) {
     if (canvas.mouseButtonDown) {
       Graphics g = canvas.getGraphics();
-      g.setXORMode(Color.darkGray);
-      g.setColor(Color.lightGray);
+      g.setXORMode(canvas.getBackground());
+      g.setColor(canvas.getCurColor());
       switch (shape) {
         case LINE:
           drawLine(g, xStart, yStart, canvas.x, canvas.y);
