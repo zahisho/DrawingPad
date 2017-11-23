@@ -2,6 +2,7 @@ package scribble;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.io.Serializable;
 
 public abstract class Shape implements Serializable {
@@ -25,5 +26,7 @@ public abstract class Shape implements Serializable {
   }
 
   public abstract void draw(Graphics g);
+  
+  public abstract boolean belong(Point p);
 
 }

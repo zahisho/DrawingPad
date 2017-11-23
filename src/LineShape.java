@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.Point;
 
 public class LineShape extends TwoEndsShape {
 
@@ -9,8 +10,18 @@ public class LineShape extends TwoEndsShape {
     g.drawLine(x1, y1, x2, y2);
   }
 
-//  public void drawOutline(Graphics g, int x1, int y1, int x2, int y2) {
-//    g.drawLine(x1, y1, x2, y2);
-//  }
+  @Override
+  public boolean belong(Point p) {
+    int x = p.x;
+    int y = p.y;
+    
+      float m = (y2 - y1) / (x2 - x1);
+      float m2 = (y - y1) / (x - x1);
+      if (m == m2) {
+        return true;
+      }
 
+    return false;
+  }
+  
 }

@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.Point;
 
 public class OvalShape extends TwoEndsShape {
 
@@ -13,12 +14,9 @@ public class OvalShape extends TwoEndsShape {
     g.drawOval(x, y, w, h);
   }
 
-//  public void drawOutline(Graphics g, int x1, int y1, int x2, int y2) {
-//    int x = Math.min(x1, x2);
-//    int y = Math.min(y1, y2);
-//    int w = Math.abs(x1 - x2) + 1;
-//    int h = Math.abs(y1 - y2) + 1;
-//    g.drawOval(x, y, w, h);
-//  }
+  @Override
+  public boolean belong(Point p) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
 
 }
