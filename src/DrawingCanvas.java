@@ -1,19 +1,10 @@
-
-//package draw1; 
-
 import scribble.Tool;
 import scribble.ScribbleCanvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.*;
-import java.io.*;
-import java.awt.event.*;
 import java.util.EventListener;
-import javax.swing.*; 
 
 public class DrawingCanvas extends ScribbleCanvas {
+  
+  protected DrawingCanvasListener drawingCanvasListener; 
 
   public DrawingCanvas() {
   }
@@ -30,7 +21,5 @@ public class DrawingCanvas extends ScribbleCanvas {
   protected EventListener makeCanvasListener() {
     return (drawingCanvasListener = new DrawingCanvasListener(this)); 
   }
-
-  protected DrawingCanvasListener drawingCanvasListener; 
 
 }

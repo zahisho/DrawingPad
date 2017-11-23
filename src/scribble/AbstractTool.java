@@ -1,4 +1,3 @@
-
 package scribble;
 
 public abstract class AbstractTool implements Tool {
@@ -15,5 +14,5 @@ public abstract class AbstractTool implements Tool {
     this.canvas = canvas;
     this.name = name;
   }
-  
+
 }
