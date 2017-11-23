@@ -1,11 +1,13 @@
+package scribble;
+
 
 import java.awt.Color;
 import java.awt.Graphics;
 import scribble.Shape;
 
-public class OvalShape extends Shape {
+public class RectangleShape extends Shape {
 
-  public OvalShape(Color color) {
+  public RectangleShape(Color color) {
     super(color);
   }
 
@@ -18,6 +20,6 @@ public class OvalShape extends Shape {
     if (color != null) {
       g.setColor(color);
     }
-    g.drawOval(x, y, w, h);
+    g.drawRect(x, y, w, h);
   }
 }

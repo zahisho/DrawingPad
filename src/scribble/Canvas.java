@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 
 public class Canvas extends JPanel {
 
-  protected List<Shape> shapes = new ArrayList<>();
+  private List<Shape> shapes = new ArrayList<>();
 
   protected Color curColor = Color.black;
 
@@ -105,5 +105,9 @@ public class Canvas extends JPanel {
     } catch (IOException e) {
       System.out.println("Unable to write file: " + filename);
     }
+  }
+
+  public List<Shape> getShapes() {
+    return shapes;
   }
 }

@@ -1,3 +1,5 @@
+package scribble;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +9,10 @@ public class ToolKit {
 
   protected List<Tool> tools = new ArrayList<>();
   protected Tool selectedTool = null;
+
+  public ToolKit() {
+
+  }
 
   public int addTool(Tool tool) {
     if (tool != null) {

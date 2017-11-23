@@ -1,4 +1,6 @@
 
+import view.DrawingPad;
+
 /**
  *
  * @author M16U3L

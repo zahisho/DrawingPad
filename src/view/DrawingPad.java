@@ -1,20 +1,37 @@
-package scribble;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import javax.swing.AbstractButton;
 import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import scribble.Canvas;
+import scribble.ColorDialog;
+import scribble.ScribbleTool;
+import scribble.Tool;
+import scribble.ToolKit;
+import scribble.TwoEndsTool;
 
-public class Scribble extends JFrame {
+public class DrawingPad extends JFrame {
+
+  private ToolKit toolkit;
 
   public Canvas canvas;
   public JMenuBar menuBar;
@@ -27,15 +44,84 @@ public class Scribble extends JFrame {
   public static final int WIDTH = 600;
   public static final int HEIGHT = 400;
 
-  public Scribble(String title) {
-    super(title);
-    // calling factory method 
-    canvas = makeCanvas();
+  public DrawingPad(String title) {
+    canvas = new Canvas();
     getContentPane().setLayout(new BorderLayout());
     menuBar = createMenuBar();
     getContentPane().add(menuBar, BorderLayout.NORTH);
     getContentPane().add(canvas, BorderLayout.CENTER);
     eventCloseWindow();
+    init();
+    initTools();
+
+    ActionListener toolListener = (ActionEvent event) -> {
+      Object source = event.getSource();
+      if (source instanceof AbstractButton) {
+        AbstractButton button = (AbstractButton) source;
+        Tool tool = toolkit.setSelectedTool(button.getText());
+        canvas.setTool(tool);
+      }
+    };
+
+    JComponent toolbar = createToolBar(toolListener);
+    getContentPane().add(toolbar, BorderLayout.WEST);
+    JMenu menu = createToolMenu(toolListener);
+    menuBar.add(menu, 1); // insert at index position 1 
+    revalidate();
+
+  }
+
+  private void init() {
+    setSize(WIDTH, HEIGHT);
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    setLocation(screenSize.width / 2 - WIDTH / 2,
+      screenSize.height / 2 - HEIGHT / 2);
+    setVisible(true);
+  }
+
+  public Tool getSelectedTool() {
+    return toolkit.getSelectedTool();
+  }
+
+  private void initTools() {
+    toolkit = new ToolKit();
+    toolkit.addTool(new ScribbleTool(canvas, "Scribble"));
+    toolkit.addTool(new TwoEndsTool(canvas, "Line", TwoEndsTool.LINE));
+    toolkit.addTool(new TwoEndsTool(canvas, "Oval", TwoEndsTool.OVAL));
+    toolkit.addTool(new TwoEndsTool(canvas, "Rectangle", TwoEndsTool.RECT));
+    canvas.setTool(toolkit.getTool(0));
+  }
+
+  private JMenu createToolMenu(ActionListener toolListener) {
+    JMenu menu = new JMenu("Tools");
+    int n = toolkit.getToolCount();
+    for (int i = 0; i < n; i++) {
+      Tool tool = toolkit.getTool(i);
+      if (tool != null) {
+        JMenuItem menuitem = new JMenuItem(tool.getName());
+        menuitem.addActionListener(toolListener);
+        menu.add(menuitem);
+      }
+    }
+    return menu;
+  }
+
+  private JComponent createToolBar(ActionListener toolListener) {
+    JPanel toolbar = new JPanel(new GridLayout(0, 1));
+    int n = toolkit.getToolCount();
+    for (int i = 0; i < n; i++) {
+      Tool tool = toolkit.getTool(i);
+      if (tool != null) {
+        JButton button = new JButton(tool.getName());
+        button.addActionListener(toolListener);
+        toolbar.add(button);
+      }
+    }
+    JButton button = new JButton("Selector");
+    button.addActionListener(event -> selector());
+    toolbar.add(button);
+
+    return toolbar;
   }
 
   private void eventCloseWindow() {
@@ -105,13 +191,10 @@ public class Scribble extends JFrame {
   }
 
   private void undo() {
-    if (canvas.shapes.size() > 0) {
-      canvas.shapes.remove(canvas.shapes.size() - 1);
-      canvas.repaint();
-    } else {
+    if (canvas.getShapes().size() > 0) {
+      canvas.getShapes().remove(canvas.getShapes().size() - 1);
       canvas.repaint();
     }
-
   }
 
   private void saveAs() {
@@ -134,7 +217,7 @@ public class Scribble extends JFrame {
   }
 
   private void chooseColor() {
-    dialog = new ColorDialog(Scribble.this, "Choose color", canvas.getCurColor());
+    dialog = new ColorDialog(DrawingPad.this, "Choose color", canvas.getCurColor());
     Color result = dialog.showDialog();
     if (result != null) {
       canvas.setCurColor(result);
@@ -152,11 +235,6 @@ public class Scribble extends JFrame {
         }
       }
     }
-  }
-
-// factory method 
-  public Canvas makeCanvas() {
-    return new Canvas();
   }
 
   private void newFile() {
@@ -197,5 +275,8 @@ public class Scribble extends JFrame {
     } else {
       setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
+  }
+
+  private void selector() {
   }
 }

@@ -1,10 +1,8 @@
+package scribble;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import scribble.Canvas;
-import scribble.AbstractTool;
-import scribble.Shape;
 
 public class TwoEndsTool extends AbstractTool {
 
