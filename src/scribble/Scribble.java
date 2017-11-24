@@ -99,6 +99,9 @@ public class Scribble extends JFrame {
     menuEditItem = new JMenuItem("Undo");
     menu.add(menuEditItem);
     menuEditItem.addActionListener(event -> undoListener());
+    menuEditItem = new JMenuItem("Redo");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> redoListener());
   }
   
   private void addOptionMenu(JMenuBar menuBar){
@@ -175,6 +178,10 @@ public class Scribble extends JFrame {
   
   private void undoListener(){
     canvas.undo();
+  }
+  
+  private void redoListener(){
+    canvas.redo();
   }
   
   private void exitListener() {

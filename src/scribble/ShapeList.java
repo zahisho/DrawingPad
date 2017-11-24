@@ -8,9 +8,11 @@ import java.util.List;
 public class ShapeList implements Serializable {
 
   private final List<Shape> list;
+  private final List<Shape> shapesUndo;
 
   public ShapeList() {
     list = new ArrayList<>();
+    shapesUndo = new ArrayList<>();
   }
 
   public final void add(Shape s) {
@@ -31,14 +33,19 @@ public class ShapeList implements Serializable {
     }
   }
   
-  public final void remove(int index){
-    if (!list.isEmpty()){
-      list.remove(index);
-    }
-  }
-  
   public final int size(){
     return list.size();
   }
-          
+  
+  public final void remove(int index){
+    if (!list.isEmpty()){
+      shapesUndo.add(list.remove(index));
+    }
+  }
+  
+  public final void redo(){
+    if(!shapesUndo.isEmpty()){
+      list.add(shapesUndo.remove(shapesUndo.size() -1 ));
+    }
+  }
 }

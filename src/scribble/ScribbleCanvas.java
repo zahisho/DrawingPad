@@ -103,6 +103,11 @@ public class ScribbleCanvas extends JPanel {
     shapes.remove(lastShape);
     repaint();
   }
+  
+  public void redo(){
+    shapes.redo();
+    repaint();
+  }
   // factory method 
   protected EventListener makeCanvasListener() {
     return (new ScribbleCanvasListener(this));
