@@ -128,4 +128,8 @@ public class ScribbleCanvas extends JPanel {
     return null;
   }
   
+  public ShapeList getShapes(){
+    return shapes;
+  }
+  
 }

@@ -11,8 +11,8 @@ public class Select extends AbstractTool {
   private TwoEndsShape shapeTwoEnds;
   private Stroke shapeStroke;
   private Shape shape;
-  private Point pointInit;
-  private Point pointfinal;
+  private Point initPoint;
+  private Point finalPoint;
 
   public Select(ScribbleCanvas canvas, String name) {
     super(canvas, name);
@@ -20,7 +20,7 @@ public class Select extends AbstractTool {
 
   @Override
   public void startShape(Point p) {
-    pointInit = p;
+    initPoint = p;
     shape =  canvas.belongShape(p);
     
     if(shape instanceof TwoEndsShape){
@@ -34,14 +34,13 @@ public class Select extends AbstractTool {
 
   @Override
   public void addPointToShape(Point p) {
-    
   }
 
   @Override
   public void endShape(Point p) {
-    pointfinal = p;
-    int x = pointInit.x - pointfinal.x;
-    int y = pointInit.y - pointfinal.y;
+    finalPoint = p;
+    int x = initPoint.x - finalPoint.x;
+    int y = initPoint.y - finalPoint.y;
 
     if (shapeStroke != null) {
       List<Point> points = shapeStroke.getPoints();

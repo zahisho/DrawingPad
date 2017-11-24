@@ -58,6 +58,7 @@ public class DrawingPad extends Scribble {
     toolkit.addTool(new TwoEndsTool(canvas,  "Oval", TwoEndsTool.OVAL));
     toolkit.addTool(new TwoEndsTool(canvas,  "Rectangle", TwoEndsTool.RECT));
     toolkit.addTool(new Select(canvas, "Select"));
+    toolkit.addTool(new SelectAll(canvas, "Select All"));
     drawingCanvas.setTool(toolkit.getTool(0));
   }
 
