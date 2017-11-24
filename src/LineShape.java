@@ -14,13 +14,12 @@ public class LineShape extends TwoEndsShape {
   public boolean belong(Point p) {
     int x = p.x;
     int y = p.y;
-    
-      float m = (y2 - y1) / (x2 - x1);
-      float m2 = (y - y1) / (x - x1);
-      if (m == m2) {
-        return true;
-      }
-
+    float m = (y2 - y1) / (x2 - x1);
+    float m2 = (y - y1) / (x - x1);
+    if (m == m2) {
+      System.out.println("click in Line");
+      return true;
+    }
     return false;
   }
   

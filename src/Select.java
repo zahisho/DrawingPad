@@ -1,42 +1,66 @@
-
 import java.awt.Point;
+import java.util.List;
 import scribble.AbstractTool;
 import scribble.ScribbleCanvas;
+import scribble.Shape;
+import scribble.Stroke;
 
 
-public class Select extends AbstractTool{
-  
-  private TwoEndsShape shape;
+public class Select extends AbstractTool {
+
+  private TwoEndsShape shapeTwoEnds;
+  private Stroke shapeStroke;
+  private Shape shape;
   private Point pointInit;
   private Point pointfinal;
 
-  public Select(ScribbleCanvas canvas, String name){
+  public Select(ScribbleCanvas canvas, String name) {
     super(canvas, name);
   }
-  
+
   @Override
   public void startShape(Point p) {
-    shape = (TwoEndsShape) canvas.belongShape(p);
     pointInit = p;
+    shape =  canvas.belongShape(p);
+    
+    if(shape instanceof TwoEndsShape){
+      shapeTwoEnds = (TwoEndsShape) shape;
+    }
+    if(shape instanceof Stroke){
+      shapeStroke = (Stroke) shape;
+      
+    }
   }
-  
+
   @Override
   public void addPointToShape(Point p) {
     
   }
-  
+
   @Override
   public void endShape(Point p) {
-    if(shape !=null){
-      pointfinal = p;
-      int x = pointInit.x - pointfinal.x;
-      int y = pointInit.y - pointfinal.y;
-      shape.x1 = shape.x1 - x;
-      shape.x2 = shape.x2 - x;
-      shape.y1 = shape.y1 - y;
-      shape.y2 = shape.y2 - y;
+    pointfinal = p;
+    int x = pointInit.x - pointfinal.x;
+    int y = pointInit.y - pointfinal.y;
+
+    if (shapeStroke != null) {
+      List<Point> points = shapeStroke.getPoints();
+      for(Point point : points){
+        point.x = point.x - x;
+        point.y = point.y - y;
+      }
       canvas.repaint();
+      shapeStroke = null;
+    }
+    
+    if (shapeTwoEnds != null){
+      shapeTwoEnds.x1 = shapeTwoEnds.x1 - x;
+      shapeTwoEnds.x2 = shapeTwoEnds.x2 - x;
+      shapeTwoEnds.y1 = shapeTwoEnds.y1 - y;
+      shapeTwoEnds.y2 = shapeTwoEnds.y2 - y;
+      canvas.repaint();
+      shapeTwoEnds = null;
     }
   }
-  
+
 }

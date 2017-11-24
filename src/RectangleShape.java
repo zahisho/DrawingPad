@@ -16,7 +16,7 @@ public class RectangleShape extends TwoEndsShape {
 
   @Override
   public boolean belong(Point p) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    return p.x >= x1 && p.y >= y1 && p.x <= x2 && p.y <= y2;
   }
 
 }

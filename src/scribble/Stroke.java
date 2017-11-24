@@ -26,7 +26,7 @@ public class Stroke extends Shape {
     }
   }
 
-  public List getPoints() {
+  public List<Point> getPoints() {
     return points;
   }
   
@@ -48,7 +48,13 @@ public class Stroke extends Shape {
 
   @Override
   public boolean belong(Point p) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    for(Point point : points){
+      if(point.x == p.x && point.y == p.y){
+        System.out.println("click in stroke");
+        return true;        
+      }
+    }
+    return false;
   }
 
 }
