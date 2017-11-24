@@ -1,17 +1,24 @@
+package drawer;
 
-package scribble; 
-
-import java.util.*;
 import java.awt.Point;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Stroke extends Shape { 
+  
+  public List <Point> points;
 
-  public Stroke() {} 
+  public Stroke() {
+    this.points = new ArrayList <> ();
+  
+  } 
   
   public Stroke(Color color) {
     super(color); 
+    this.points = new ArrayList <> ();
   } 
 
   public void addPoint(Point p) {
@@ -24,6 +31,7 @@ public class Stroke extends Shape {
     return points; 
   }
 
+  @Override
   public void draw(Graphics g) {
     if (color != null) {
       g.setColor(color);
@@ -39,8 +47,5 @@ public class Stroke extends Shape {
     }
   }
 
-  // The list of points on the stroke
-  // elements are instances of java.awt.Point 
-  protected List points = new ArrayList();  
   
 }

@@ -1,5 +1,6 @@
+package drawer;
 
-package scribble;
+import pad.ScribbleCanvas;
 
 public abstract class AbstractTool implements Tool {
 
@@ -15,5 +16,5 @@ public abstract class AbstractTool implements Tool {
     this.canvas = canvas;
     this.name = name;
   }
-  
+
 }
