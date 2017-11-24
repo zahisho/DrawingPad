@@ -57,6 +57,7 @@ public class Scribble extends JFrame {
   protected JMenuBar createMenuBar() {
     JMenuBar menuBar = new JMenuBar();
     addFileMenu(menuBar);
+    addEditMenu(menuBar);
     addOptionMenu(menuBar);
     menuBar.add(Box.createHorizontalGlue());
     addHelpMenu(menuBar);
@@ -91,6 +92,15 @@ public class Scribble extends JFrame {
     menuFileItem.addActionListener(event -> exitListener());
   }
   
+  private void addEditMenu(JMenuBar menuBar){
+    JMenu menu = new JMenu("Edit");
+    JMenuItem menuEditItem;
+    menuBar.add(menu);
+    menuEditItem = new JMenuItem("Undo");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> undoListener());
+  }
+  
   private void addOptionMenu(JMenuBar menuBar){
     JMenu menu = new JMenu("Option");
     JMenuItem menuOptionItem;
@@ -100,9 +110,7 @@ public class Scribble extends JFrame {
     menu.add(menuOptionItem);
     menuOptionItem.addActionListener(event -> colorListener());
     
-    menuOptionItem = new JMenuItem("Undo");
-    menu.add(menuOptionItem);
-    menuOptionItem.addActionListener(event -> undoListener());
+    
 
   }
   

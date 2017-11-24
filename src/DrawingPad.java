@@ -39,7 +39,8 @@ public class DrawingPad extends Scribble {
     JComponent toolbar = createToolBar(toolListener);
     getContentPane().add(toolbar, BorderLayout.WEST);
     JMenu menu = createToolMenu(toolListener);
-    menuBar.add(menu, 1); // insert at index position 1 
+    menuBar.add(menu, 2); // insert at index position 2 
+    revalidate();
   }
   
   private void init(){

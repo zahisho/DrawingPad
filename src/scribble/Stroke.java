@@ -9,15 +9,15 @@ import java.util.List;
 
 public class Stroke extends Shape {
   
-  protected List points;
+  protected List<Point> points;
   
   public Stroke() {
-    points = new ArrayList();
+    points = new ArrayList<>();
   }
 
   public Stroke(Color color) {
     super(color);
-    points = new ArrayList();
+    points = new ArrayList<>();
   }
 
   public void addPoint(Point p) {
