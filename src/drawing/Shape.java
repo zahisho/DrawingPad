@@ -8,9 +8,9 @@ import java.io.Serializable;
 public class Shape implements Serializable {
 
   private final Color color;
-  private final Selectable figure;
+  private final Figure figure;
 
-  public Shape(Color color, Selectable figure) {
+  public Shape(Color color, Figure figure) {
     this.color = color;
     this.figure = figure;
   }
@@ -27,5 +27,14 @@ public class Shape implements Serializable {
   public final void draw(Graphics g) {
     g.setColor(color);
     figure.draw(g);
+  }
+
+  public final void setSelected(Graphics g) {
+    g.setColor(Color.gray);
+    figure.draw(g);
+  }
+
+  public final boolean isSelected(Point p) {
+    return figure.isSelected(p);
   }
 }

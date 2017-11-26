@@ -1,11 +1,13 @@
 package drawing;
 
-import java.awt.Point;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stroke implements Selectable {
+public class Stroke extends Figure {
+
+  private final double EPS = 5;
 
   private List<Point> points = new ArrayList<>();
 
@@ -39,6 +41,20 @@ public class Stroke implements Selectable {
 
   @Override
   public final boolean isSelected(Point p) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    boolean res = false;
+
+    for (Point point : points) {
+      res = Math.hypot(point.x - p.x, point.y - p.y) < EPS;
+      if (res) {
+        break;
+      }
+    }
+
+    return res;
+  }
+
+  @Override
+  public final Figure getFigure() {
+    return new Stroke();
   }
 }

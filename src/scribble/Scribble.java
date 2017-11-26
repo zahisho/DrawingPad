@@ -1,46 +1,60 @@
 package scribble;
 
-import menu.listeners.UndoListener;
-import menu.listeners.AboutListener;
-import menu.listeners.ColorListener;
-import menu.listeners.SaveFileAsListener;
-import menu.listeners.ExitListener;
-import menu.listeners.OpenFileListener;
-import menu.listeners.NewFileListener;
-import menu.listeners.SaveListener;
+import drawing.Line;
+import drawing.Oval;
+import drawing.Rectangle;
+import drawing.Stroke;
+import menu.listener.AboutListener;
+import menu.listener.ColorListener;
+import menu.listener.ExitListener;
+import menu.listener.NewFileListener;
+import menu.listener.SaveFileAsListener;
+import menu.listener.SaveListener;
+import menu.listener.OpenFileListener;
+import menu.listener.UndoListener;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.AbstractButton;
 import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import tool.DrawingTool;
+import tool.SelectTool;
+import tool.Tool;
+import tool.ToolKit;
 
 public class Scribble extends JFrame {
 
-  protected ScribbleCanvas canvas;
-  protected JMenuBar menuBar;
+  private final ScribbleCanvas canvas;
+  private JMenuBar menuBar;
 
-  protected String currentFilename;
-  protected JFileChooser chooser;
+  private String currentFilename;
+  private final JFileChooser chooser;
 
-  protected static int WIDTH = 600;
-  protected static int HEIGHT = 400;
+  private ToolKit toolkit;
 
-  private ExitListener exitListener;
-  private SaveListener saveListener;
-  private NewFileListener newFileListener;
-  private OpenFileListener openFileListener;
-  private SaveFileAsListener saveFileAsListener;
-  private ColorListener colorListener;
   private AboutListener aboutListener;
+  private ColorListener colorListener;
+  private ExitListener exitListener;
+  private NewFileListener newFileListener;
+  private SaveFileAsListener saveFileAsListener;
+  private SaveListener saveListener;
+  private OpenFileListener openFileListener;
   private UndoListener undoListener;
+
   private final ScribbleWindowAdapter windowAdapter;
 
   public Scribble(String title) {
     super(title);
-    // calling factory method
     chooser = new JFileChooser(".");
     currentFilename = null;
     canvas = makeCanvas();
@@ -50,6 +64,8 @@ public class Scribble extends JFrame {
     getContentPane().add(canvas, BorderLayout.CENTER);
     windowAdapter = new ScribbleWindowAdapter(this);
     addWindowListener(windowAdapter);
+    initTools();
+    initToolBar();
   }
 
   public final JFileChooser getChooser() {
@@ -100,6 +116,15 @@ public class Scribble extends JFrame {
     menu.add(mi);
     mi.addActionListener(exitListener);
 
+    // edit menu
+    menu = new JMenu("Edit");
+    menuBar.add(menu);
+
+    undoListener = new UndoListener(this);
+    mi = new JMenuItem("Undo");
+    menu.add(mi);
+    mi.addActionListener(undoListener);
+
     // option menu
     menu = new JMenu("Option");
     menuBar.add(menu);
@@ -108,11 +133,6 @@ public class Scribble extends JFrame {
     mi = new JMenuItem("Color");
     menu.add(mi);
     mi.addActionListener(colorListener);
-
-    undoListener = new UndoListener(this);
-    mi = new JMenuItem("Undo");
-    menu.add(mi);
-    mi.addActionListener(undoListener);
 
     // horizontal space
     menuBar.add(Box.createHorizontalGlue());
@@ -131,8 +151,7 @@ public class Scribble extends JFrame {
     canvas.undo();
   }
 
-  // factory method
-  protected ScribbleCanvas makeCanvas() {
+  private ScribbleCanvas makeCanvas() {
     return new ScribbleCanvas();
   }
 
@@ -160,5 +179,62 @@ public class Scribble extends JFrame {
     currentFilename = filename;
     canvas.saveFile(filename);
     setTitle("Scribble Pad [" + currentFilename + "]");
+  }
+
+  private void initToolBar() {
+    ActionListener toolListener = (ActionEvent event) -> {
+      Object source = event.getSource();
+      if (source instanceof AbstractButton) {
+        AbstractButton button = (AbstractButton) source;
+        Tool tool = toolkit.setSelectedTool(button.getText());
+        canvas.setTool(tool);
+      }
+    };
+    JComponent toolbar = createToolBar(toolListener);
+    getContentPane().add(toolbar, BorderLayout.WEST);
+    JMenu menu = createToolMenu(toolListener);
+    menuBar.add(menu, 2); // insert at index position 1
+  }
+
+  public final Tool getSelectedTool() {
+    return toolkit.getSelectedTool();
+  }
+
+  private void initTools() {
+    toolkit = new ToolKit();
+    toolkit.addTool(new DrawingTool(canvas, new Stroke(), "Scribble"));
+    toolkit.addTool(new DrawingTool(canvas, new Line(), "Line"));
+    toolkit.addTool(new DrawingTool(canvas, new Oval(), "Oval"));
+    toolkit.addTool(new DrawingTool(canvas, new Rectangle(), "Rectangle"));
+    toolkit.addTool(new SelectTool(canvas));
+    canvas.setTool(toolkit.getTool(0));
+  }
+
+  private JComponent createToolBar(ActionListener toolListener) {
+    JPanel toolbar = new JPanel(new GridLayout(0, 1));
+    int n = toolkit.getToolCount();
+    for (int i = 0; i < n; i++) {
+      Tool tool = toolkit.getTool(i);
+      if (tool != null) {
+        JButton button = new JButton(tool.getName());
+        button.addActionListener(toolListener);
+        toolbar.add(button);
+      }
+    }
+    return toolbar;
+  }
+
+  private JMenu createToolMenu(ActionListener toolListener) {
+    JMenu menu = new JMenu("Tools");
+    int n = toolkit.getToolCount();
+    for (int i = 0; i < n; i++) {
+      Tool tool = toolkit.getTool(i);
+      if (tool != null) {
+        JMenuItem menuitem = new JMenuItem(tool.getName());
+        menuitem.addActionListener(toolListener);
+        menu.add(menuitem);
+      }
+    }
+    return menu;
   }
 }

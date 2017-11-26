@@ -19,13 +19,13 @@ import javax.swing.JPanel;
 
 public class ColorDialog extends JDialog implements ActionListener {
 
-  protected JButton okButton;
-  protected JButton cancelButton;
-  protected JButton moreColorButton;
-  protected ColorPanel colorPanel;
-  protected JColorChooser chooser;
-  protected Color color;
-  protected Color result = null;
+  private JButton okButton;
+  private JButton cancelButton;
+  private JButton moreColorButton;
+  private ColorPanel colorPanel;
+  private JColorChooser chooser;
+  private Color color;
+  private Color result = null;
 
   public ColorDialog(JFrame owner, String title) {
     this(owner, title, Color.black);
@@ -94,16 +94,16 @@ public class ColorDialog extends JDialog implements ActionListener {
 
   class ColorPanel extends JPanel {
 
-    protected Color color;
+    private Color color;
 
-    protected int cellWidth;
-    protected int cellHeight;
-    protected int rowCount;
-    protected int columnCount;
-    protected int xpad;
-    protected int ypad;
-    protected Dimension dimension;
-    protected Color[][] COLOR_GRID = {
+    private int cellWidth;
+    private int cellHeight;
+    private int rowCount;
+    private int columnCount;
+    private int xpad;
+    private int ypad;
+    private Dimension dimension;
+    private Color[][] COLOR_GRID = {
       {Color.white, Color.lightGray, Color.darkGray, Color.black},
       {Color.gray, Color.blue, Color.cyan, Color.green},
       {Color.yellow, Color.orange, Color.pink, Color.red},

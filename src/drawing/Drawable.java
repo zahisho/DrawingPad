@@ -2,9 +2,8 @@ package drawing;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.io.Serializable;
 
-public interface Drawable extends Serializable {
+public interface Drawable {
 
   public void startFigure(Point p, Graphics g);
 

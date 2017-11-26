@@ -1,7 +1,7 @@
 package scribble;
 
-import drawing.ShapeList;
 import drawing.Shape;
+import drawing.ShapeList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,32 +12,52 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.EventListener;
 import java.util.Iterator;
 import javax.swing.JPanel;
+import tool.Tool;
 
 public class ScribbleCanvas extends JPanel {
 
   // The list of shapes of the drawing
   // The elements are instances of Stroke
-  protected ShapeList shapes;
+  private ShapeList shapes;
+  private Shape selectedShape;
 
-  protected Color curColor;
+  private Color curColor;
 
-  protected EventListener listener;
+  private final ScribbleCanvasListener listener;
 
-  public boolean mouseButtonDown;
-  public int x;
-  public int y;
+  private boolean mouseButtonDown;
+  private int x;
+  private int y;
 
   public ScribbleCanvas() {
     shapes = new ShapeList();
     curColor = Color.black;
     mouseButtonDown = false;
-    // calling factory method 
-    listener = makeCanvasListener();
+    listener = new ScribbleCanvasListener(this);
     addMouseListener((MouseListener) listener);
     addMouseMotionListener((MouseMotionListener) listener);
+  }
+
+  public final void setSelectedShape(Shape s) {
+    selectedShape = s;
+  }
+
+  public final boolean getMouseButtonDown() {
+    return mouseButtonDown;
+  }
+
+  public final void setMouseButtonDown(boolean bool) {
+    mouseButtonDown = bool;
+  }
+
+  public final void setX(int x) {
+     this.x = x;
+  }
+
+  public final void setY(int y) {
+    this.y = y;
   }
 
   public final void setCurColor(Color curColor) {
@@ -52,6 +72,10 @@ public class ScribbleCanvas extends JPanel {
     if (shape != null) {
       shapes.add(shape);
     }
+  }
+
+  public final ShapeList getShapes() {
+    return shapes;
   }
 
   @Override
@@ -69,6 +93,10 @@ public class ScribbleCanvas extends JPanel {
         }
       }
     }
+    if (selectedShape != null) {
+      selectedShape.setSelected(g);
+    }
+    revalidate();
   }
 
   public final void newFile() {
@@ -78,9 +106,10 @@ public class ScribbleCanvas extends JPanel {
 
   public final void openFile(String filename) {
     try {
-      ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename));
-      shapes = (ShapeList) in.readObject();
-      in.close();
+      try (ObjectInputStream in = new ObjectInputStream(
+              new FileInputStream(filename))) {
+        shapes = (ShapeList) in.readObject();
+      }
       repaint();
     } catch (IOException e1) {
       System.out.println("Unable to open file: " + filename);
@@ -91,9 +120,10 @@ public class ScribbleCanvas extends JPanel {
 
   public void saveFile(String filename) {
     try {
-      ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename));
-      out.writeObject(shapes);
-      out.close();
+      try (ObjectOutputStream out = new ObjectOutputStream(
+              new FileOutputStream(filename))) {
+        out.writeObject(shapes);
+      }
       System.out.println("Save drawing to " + filename);
     } catch (IOException e) {
       System.err.println(e);
@@ -101,13 +131,20 @@ public class ScribbleCanvas extends JPanel {
     }
   }
 
-  // factory method
-  protected EventListener makeCanvasListener() {
+  private ScribbleCanvasListener makeCanvasListener() {
     return (new ScribbleCanvasListener(this));
   }
 
   public final void undo() {
     shapes.removeLast();
     repaint();
+  }
+
+  public final void setTool(Tool tool) {
+    listener.setTool(tool);
+  }
+
+  public final Tool getTool() {
+    return listener.getTool();
   }
 }
