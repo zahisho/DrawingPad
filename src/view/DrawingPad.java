@@ -1,5 +1,6 @@
 package view;
 
+import scribble.SelectorTool;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,8 +42,8 @@ public class DrawingPad extends JFrame {
 
   private ColorDialog dialog;
 
-  public static final int WIDTH = 600;
-  public static final int HEIGHT = 400;
+  private static final int WIDTH = 600;
+  private static final int HEIGHT = 400;
 
   public DrawingPad(String title) {
     canvas = makeCanvas();
@@ -88,6 +89,7 @@ public class DrawingPad extends JFrame {
     toolkit.addTool(new TwoEndsTool(canvas, "Line", TwoEndsTool.LINE));
     toolkit.addTool(new TwoEndsTool(canvas, "Oval", TwoEndsTool.OVAL));
     toolkit.addTool(new TwoEndsTool(canvas, "Rectangle", TwoEndsTool.RECT));
+    toolkit.addTool(new SelectorTool(canvas, "Selector"));
     canvas.setTool(toolkit.getTool(0));
   }
 
@@ -121,10 +123,6 @@ public class DrawingPad extends JFrame {
         toolbar.add(button);
       }
     }
-    JButton button = new JButton("Selector");
-    button.addActionListener(event -> selector());
-    toolbar.add(button);
-
     return toolbar;
   }
 
@@ -284,5 +282,6 @@ public class DrawingPad extends JFrame {
   }
 
   private void selector() {
+    System.out.println("holaX");
   }
 }

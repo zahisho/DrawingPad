@@ -1,6 +1,7 @@
 package scribble;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.io.Serializable;
 
 public abstract class Shape implements Serializable, Drawable {
@@ -26,4 +27,6 @@ public abstract class Shape implements Serializable, Drawable {
     this.x2 = x2;
     this.y2 = y2;
   }
+
+  public abstract boolean isPoint(Point p);
 }

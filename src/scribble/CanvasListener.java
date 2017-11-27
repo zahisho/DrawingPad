@@ -27,7 +27,7 @@ public class CanvasListener
   @Override
   public void mousePressed(MouseEvent e) {
     Point p = e.getPoint();
-    tool.startShape(p);
+    tool.startAction(p);
     canvas.mouseButtonDown = true;
     canvas.x = p.x;
     canvas.y = p.y;
@@ -37,7 +37,7 @@ public class CanvasListener
   public void mouseDragged(MouseEvent e) {
     Point p = e.getPoint();
     if (canvas.mouseButtonDown) {
-      tool.addPointToShape(p);
+      tool.continueAction(p);
       canvas.x = p.x;
       canvas.y = p.y;
     }
@@ -46,7 +46,7 @@ public class CanvasListener
   @Override
   public void mouseReleased(MouseEvent e) {
     Point p = e.getPoint();
-    tool.endShape(p);
+    tool.endAction(p);
     canvas.mouseButtonDown = false;
   }
 

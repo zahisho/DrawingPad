@@ -1,17 +1,16 @@
 package scribble;
 
-
 import java.util.ArrayList;
 import java.util.List;
-import scribble.Tool;
 
 public class ToolKit {
 
-  protected List<Tool> tools = new ArrayList<>();
-  protected Tool selectedTool = null;
+  private List<Tool> tools;
+  private Tool selectedTool;
 
   public ToolKit() {
-
+    this.tools = new ArrayList<>();
+    this.selectedTool = null;
   }
 
   public int addTool(Tool tool) {

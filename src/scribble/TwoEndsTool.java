@@ -19,7 +19,7 @@ public class TwoEndsTool extends AbstractTool {
   }
 
   @Override
-  public void startShape(Point p) {
+  public void startAction(Point p) {
     canvas.mouseButtonDown = true;
     canvas.x = p.x;
     xStart = canvas.x;
@@ -44,7 +44,7 @@ public class TwoEndsTool extends AbstractTool {
   }
 
   @Override
-  public void addPointToShape(Point p) {
+  public void continueAction(Point p) {
     if (canvas.mouseButtonDown) {
       Graphics g = canvas.getGraphics();
       g.setXORMode(canvas.getBackground());
@@ -73,7 +73,7 @@ public class TwoEndsTool extends AbstractTool {
   }
 
   @Override
-  public void endShape(Point p) {
+  public void endAction(Point p) {
     canvas.mouseButtonDown = false;
     Shape newShape = null;
     switch (shape) {
