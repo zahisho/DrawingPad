@@ -1,14 +1,17 @@
+package model;
+
 
 import java.awt.Graphics;
 import java.awt.Color;
-import scribble.Shape;
+import java.awt.Point;
+import model.Shape;
 
-public abstract class TwoEndsShape extends Shape implements Cloneable {
+public abstract class TwoEndsShape extends Shape implements Cloneable{
 
-  protected int x1;
-  protected int y1;
-  protected int x2;
-  protected int y2;
+  public int x1;
+  public int y1;
+  public int x2;
+  public int y2;
 
   public TwoEndsShape() {
   }
@@ -53,6 +56,14 @@ public abstract class TwoEndsShape extends Shape implements Cloneable {
 
   public int getY2() {
     return y2;
+  }
+  
+  @Override
+  public void move(Point p) {
+    x1 = x1 - p.x;
+    x2 = x2 - p.x;
+    y1 = y1 - p.y;
+    y2 = y2 - p.y;
   }
 
 }

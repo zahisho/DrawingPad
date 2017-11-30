@@ -1,7 +1,9 @@
+package view;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import scribble.Tool;
+import tools.Tool;
 
 public class ToolKit {
 

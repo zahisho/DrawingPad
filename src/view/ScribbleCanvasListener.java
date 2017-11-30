@@ -1,5 +1,7 @@
-package scribble;
+package view;
 
+import tools.Tool;
+import tools.ScribbleTool;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

@@ -1,4 +1,6 @@
-package scribble;
+package tools;
+
+import view.ScribbleCanvas;
 
 public abstract class AbstractTool implements Tool {
 

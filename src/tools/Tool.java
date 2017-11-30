@@ -1,4 +1,4 @@
-package scribble;
+package tools;
 
 import java.awt.Point;
 

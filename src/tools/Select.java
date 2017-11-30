@@ -1,9 +1,11 @@
+package tools;
+
+import model.Stroke;
+import model.TwoEndsShape;
 import java.awt.Point;
 import java.util.List;
-import scribble.AbstractTool;
-import scribble.ScribbleCanvas;
-import scribble.Shape;
-import scribble.Stroke;
+import view.ScribbleCanvas;
+import model.Shape;
 
 
 public class Select extends AbstractTool {
@@ -41,22 +43,16 @@ public class Select extends AbstractTool {
     finalPoint = p;
     int x = initPoint.x - finalPoint.x;
     int y = initPoint.y - finalPoint.y;
+    Point movePoint = new Point(x, y);
 
     if (shapeStroke != null) {
-      List<Point> points = shapeStroke.getPoints();
-      for(Point point : points){
-        point.x = point.x - x;
-        point.y = point.y - y;
-      }
+      shapeStroke.move(movePoint);
       canvas.repaint();
       shapeStroke = null;
     }
     
     if (shapeTwoEnds != null){
-      shapeTwoEnds.x1 = shapeTwoEnds.x1 - x;
-      shapeTwoEnds.x2 = shapeTwoEnds.x2 - x;
-      shapeTwoEnds.y1 = shapeTwoEnds.y1 - y;
-      shapeTwoEnds.y2 = shapeTwoEnds.y2 - y;
+      shapeTwoEnds.move(movePoint);
       canvas.repaint();
       shapeTwoEnds = null;
     }

@@ -1,8 +1,7 @@
-package scribble;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -98,10 +97,13 @@ public class Scribble extends JFrame {
     menuBar.add(menu);
     menuEditItem = new JMenuItem("Undo");
     menu.add(menuEditItem);
-    menuEditItem.addActionListener(event -> undoListener());
+    menuEditItem.addActionListener(event -> canvas.undo());
     menuEditItem = new JMenuItem("Redo");
     menu.add(menuEditItem);
-    menuEditItem.addActionListener(event -> redoListener());
+    menuEditItem.addActionListener(event -> canvas.redo());
+    menuEditItem = new JMenuItem("Clear all");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> canvas.clearAll());
   }
   
   private void addOptionMenu(JMenuBar menuBar){
@@ -112,8 +114,6 @@ public class Scribble extends JFrame {
     menuOptionItem = new JMenuItem("Color");
     menu.add(menuOptionItem);
     menuOptionItem.addActionListener(event -> colorListener());
-    
-    
 
   }
   
@@ -174,14 +174,6 @@ public class Scribble extends JFrame {
       canvas.setCurColor(result);
     }
     dialog.setVisible(true);
-  }
-  
-  private void undoListener(){
-    canvas.undo();
-  }
-  
-  private void redoListener(){
-    canvas.redo();
   }
   
   private void exitListener() {

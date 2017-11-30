@@ -1,5 +1,6 @@
-import scribble.Tool;
-import scribble.ScribbleCanvasListener;
+package view;
+
+import tools.Tool;
 
 public class DrawingCanvasListener extends ScribbleCanvasListener {
 

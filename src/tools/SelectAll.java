@@ -1,12 +1,14 @@
+package tools;
 
+
+import model.Stroke;
+import model.TwoEndsShape;
 import java.awt.Point;
 import java.util.Iterator;
 import java.util.List;
-import scribble.AbstractTool;
-import scribble.ScribbleCanvas;
-import scribble.Shape;
-import scribble.ShapeList;
-import scribble.Stroke;
+import view.ScribbleCanvas;
+import model.Shape;
+import model.ShapeList;
 
 public class SelectAll extends AbstractTool{
   private Point initPoint;

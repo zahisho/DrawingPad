@@ -1,4 +1,4 @@
-package scribble;
+package model;
 
 import java.awt.Point;
 import java.awt.Color;
@@ -6,10 +6,12 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import model.Shape;
 
 public class Stroke extends Shape {
   
   protected List<Point> points;
+  private final double EPS = 5;
   
   public Stroke() {
     points = new ArrayList<>();
@@ -47,14 +49,28 @@ public class Stroke extends Shape {
   }
 
   @Override
-  public boolean belong(Point p) {
-    for(Point point : points){
-      if(point.x == p.x && point.y == p.y){
-        System.out.println("click in stroke");
-        return true;        
+  public boolean isSelected(Point p) {
+    boolean res = false;
+    for (Point point : points) {
+      res = Math.hypot(point.x - p.x, point.y - p.y) < EPS;
+      if (res) {
+        System.out.println("Click Stroke");
+        break;
       }
     }
-    return false;
+    return res;
   }
 
+  @Override
+  public void fillColor() {
+    withColorFill = true;
+  }
+
+  @Override
+  public void move(Point p) {
+    for (Point point : points) {
+      point.x = point.x - p.x;
+      point.y = point.y - p.y;
+    }
+  }
 }

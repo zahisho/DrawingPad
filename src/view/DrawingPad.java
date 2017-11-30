@@ -1,4 +1,9 @@
+package view;
 
+
+import tools.TwoEndsTool;
+import tools.Select;
+import tools.SelectAll;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -12,10 +17,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import scribble.ScribbleCanvas;
-import scribble.Tool;
-import scribble.Scribble;
-import scribble.ScribbleTool;
+import tools.ClearShape;
+import tools.FillColor;
+import tools.Tool;
+import tools.ScribbleTool;
 
 public class DrawingPad extends Scribble {
   
@@ -57,8 +62,10 @@ public class DrawingPad extends Scribble {
     toolkit.addTool(new TwoEndsTool(canvas,  "Line", TwoEndsTool.LINE));
     toolkit.addTool(new TwoEndsTool(canvas,  "Oval", TwoEndsTool.OVAL));
     toolkit.addTool(new TwoEndsTool(canvas,  "Rectangle", TwoEndsTool.RECT));
+    toolkit.addTool(new FillColor(canvas, "FillColor"));
     toolkit.addTool(new Select(canvas, "Select"));
     toolkit.addTool(new SelectAll(canvas, "Select All"));
+    toolkit.addTool(new ClearShape(canvas, "Clear Shape"));
     drawingCanvas.setTool(toolkit.getTool(0));
   }
 

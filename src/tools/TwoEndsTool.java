@@ -1,9 +1,14 @@
+package tools;
 
+
+import model.TwoEndsShape;
+import model.LineShape;
+import model.OvalShape;
+import model.RectangleShape;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import scribble.ScribbleCanvas;
-import scribble.AbstractTool;
+import view.ScribbleCanvas;
 
 public class TwoEndsTool extends AbstractTool {
 

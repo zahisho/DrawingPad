@@ -1,5 +1,7 @@
-package scribble;
+package view;
 
+import model.Shape;
+import model.ShapeList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -100,6 +102,7 @@ public class ScribbleCanvas extends JPanel {
 
   public void undo(){
     int lastShape = shapes.size() - 1;
+//    shapes.undo(lastShape.getBeforeState());
     shapes.remove(lastShape);
     repaint();
   }
@@ -108,6 +111,12 @@ public class ScribbleCanvas extends JPanel {
     shapes.redo();
     repaint();
   }
+  
+  public void clearAll(){
+    shapes.clearAll();
+    repaint();
+  }
+  
   // factory method 
   protected EventListener makeCanvasListener() {
     return (new ScribbleCanvasListener(this));
@@ -119,7 +128,7 @@ public class ScribbleCanvas extends JPanel {
       while (iter.hasNext()){
         Shape shape = (Shape) iter.next();
         if (shape != null){
-          if(shape.belong(p)){
+          if(shape.isSelected(p)){
             return shape;
           }
         }

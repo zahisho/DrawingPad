@@ -1,7 +1,10 @@
-package scribble;
+package tools;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import model.Stroke;
+import tools.AbstractTool;
+import view.ScribbleCanvas;
 
 public class ScribbleTool extends AbstractTool {
   

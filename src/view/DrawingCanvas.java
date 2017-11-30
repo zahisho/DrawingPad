@@ -1,5 +1,6 @@
-import scribble.Tool;
-import scribble.ScribbleCanvas;
+package view;
+
+import tools.Tool;
 import java.util.EventListener;
 
 public class DrawingCanvas extends ScribbleCanvas {
