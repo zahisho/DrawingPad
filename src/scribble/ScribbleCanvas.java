@@ -1,12 +1,11 @@
 package scribble;
 
-import drawing.Shape;
-import drawing.ShapeList;
+import scribble.drawing.Shape;
+import scribble.drawing.ShapeList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,50 +13,63 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import javax.swing.JPanel;
-import tool.Tool;
+import scribble.tool.Tool;
 
 public class ScribbleCanvas extends JPanel {
 
-  // The list of shapes of the drawing
-  // The elements are instances of Stroke
+  private final ShapeList selectedShapes;
   private ShapeList shapes;
-  private Shape selectedShape;
 
   private Color curColor;
 
-  private final ScribbleCanvasListener listener;
+  private Tool listener;
 
-  private boolean mouseButtonDown;
   private int x;
   private int y;
 
+  private boolean keyCtrlPressed;
+
   public ScribbleCanvas() {
     shapes = new ShapeList();
+    selectedShapes = new ShapeList();
     curColor = Color.black;
-    mouseButtonDown = false;
-    listener = new ScribbleCanvasListener(this);
-    addMouseListener((MouseListener) listener);
-    addMouseMotionListener((MouseMotionListener) listener);
+    listener = null;
+    keyCtrlPressed = false;
   }
 
-  public final void setSelectedShape(Shape s) {
-    selectedShape = s;
+  public final void setTool(Tool tool) {
+    if (listener != null) {
+      removeMouseListener(listener);
+      removeMouseMotionListener(listener);
+    }
+    listener = tool;
+    addMouseListener(listener);
+    addMouseMotionListener(listener);
+    requestFocusInWindow();
   }
 
-  public final boolean getMouseButtonDown() {
-    return mouseButtonDown;
+  public final void setKeyCtrlPressed(boolean f) {
+    keyCtrlPressed = f;
   }
 
-  public final void setMouseButtonDown(boolean bool) {
-    mouseButtonDown = bool;
+  public final boolean getKeyCtrlPressed() {
+    return keyCtrlPressed;
   }
 
-  public final void setX(int x) {
-     this.x = x;
+  public final void clearSelectedShapes() {
+    selectedShapes.clear();
   }
 
-  public final void setY(int y) {
-    this.y = y;
+  public final void addSelectedShape(Shape s) {
+    if (!selectedShapes.contains(s)) {
+      selectedShapes.add(s);
+    } else {
+      selectedShapes.remove(s);
+    }
+  }
+
+  public final ShapeList getSelectedShapes() {
+    return selectedShapes;
   }
 
   public final void setCurColor(Color curColor) {
@@ -89,12 +101,13 @@ public class ScribbleCanvas extends JPanel {
       while (iter.hasNext()) {
         Shape shape = (Shape) iter.next();
         if (shape != null) {
-          shape.draw(g);
+          if (selectedShapes.contains(shape)) {
+            shape.setSelected(g);
+          } else {
+            shape.draw(g);
+          }
         }
       }
-    }
-    if (selectedShape != null) {
-      selectedShape.setSelected(g);
     }
     revalidate();
   }
@@ -118,7 +131,7 @@ public class ScribbleCanvas extends JPanel {
     }
   }
 
-  public void saveFile(String filename) {
+  public final void saveFile(String filename) {
     try {
       try (ObjectOutputStream out = new ObjectOutputStream(
               new FileOutputStream(filename))) {
@@ -131,20 +144,64 @@ public class ScribbleCanvas extends JPanel {
     }
   }
 
-  private ScribbleCanvasListener makeCanvasListener() {
-    return (new ScribbleCanvasListener(this));
-  }
-
   public final void undo() {
     shapes.removeLast();
     repaint();
   }
 
-  public final void setTool(Tool tool) {
-    listener.setTool(tool);
+  public final void deleteAll() {
+    selectedShapes.clear();
+    shapes.clear();
+    repaint();
   }
 
-  public final Tool getTool() {
-    return listener.getTool();
+  public final void deleteSelected() {
+    Iterator it = selectedShapes.iterator();
+    while (it.hasNext()) {
+      Shape s = (Shape) it.next();
+      shapes.remove(s);
+    }
+    selectedShapes.clear();
+    repaint();
+  }
+
+  public final void fillSelectedShapes() {
+    Iterator selectedShape = selectedShapes.iterator();
+    while (selectedShape.hasNext()) {
+      ((Shape) selectedShape.next()).setFilled(true);
+    }
+    repaint();
+  }
+
+  public final void unfillSelectedShapes() {
+    Iterator selectedShape = selectedShapes.iterator();
+    while (selectedShape.hasNext()) {
+      ((Shape) selectedShape.next()).setFilled(false);
+    }
+    repaint();
+  }
+
+  public final void moveShapes(Point p) {
+    Iterator selectedShape = selectedShapes.iterator();
+    while (selectedShape.hasNext()) {
+      ((Shape) selectedShape.next()).move(p);
+    }
+    repaint();
+  }
+
+  public final void changeContour(Color c) {
+    Iterator selectedShape = selectedShapes.iterator();
+    while (selectedShape.hasNext()) {
+      ((Shape) selectedShape.next()).setContourColor(c);
+    }
+    repaint();
+  }
+
+  public final void changeFilling(Color c) {
+    Iterator selectedShape = selectedShapes.iterator();
+    while (selectedShape.hasNext()) {
+      ((Shape) selectedShape.next()).setFillingColor(c);
+    }
+    repaint();
   }
 }

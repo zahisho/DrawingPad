@@ -3,9 +3,9 @@ package scribble;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import menu.listener.ExitListener;
+import scribble.menu.listener.ExitListener;
 
-public class ScribbleWindowAdapter extends WindowAdapter {
+class ScribbleWindowAdapter extends WindowAdapter {
 
   private final Scribble frame;
 
