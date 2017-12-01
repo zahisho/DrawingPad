@@ -1,27 +1,16 @@
+package scribble;
 
-package scribble; 
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.io.Serializable;
 
-public abstract class Shape implements Serializable { 
+public interface Shape extends Serializable, Selectable, Drawable, Movable {
 
-  public Shape() {} 
-  
-  public Shape(Color color) {
-    this.color = color; 
-  } 
+  public void setColor(final Color color);
 
-  public void setColor(Color color) {
-    this.color = color; 
-  } 
+  public Color getColor();
 
-  public Color getColor() {
-    return color; 
-  }
-
-  public abstract void draw(Graphics g); 
-
-  protected Color color = Color.black; 
+  public boolean intersects(double x, double y, double width, double height);
 
 }

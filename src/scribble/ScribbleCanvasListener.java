@@ -1,52 +1,66 @@
+package scribble;
 
-package scribble; 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-import java.awt.*;
-import java.awt.event.*;
+public class ScribbleCanvasListener
+        implements MouseListener, MouseMotionListener {
 
-public class ScribbleCanvasListener 
-    implements MouseListener, MouseMotionListener {
+  private ScribbleCanvas canvas;
+  protected Tool tool;
 
   public ScribbleCanvasListener(ScribbleCanvas canvas) {
-    this.canvas = canvas; 
-    tool = new ScribbleTool(canvas, "Scribble"); 
+    this.canvas = canvas;
+    tool = new ScribbleTool(canvas, "Scribble");
   }
 
-  public void mousePressed(MouseEvent e) {
-    Point p = e.getPoint(); 
-    tool.startShape(p);    
-    canvas.mouseButtonDown = true;
-    canvas.x = p.x; 
-    canvas.y = p.y; 
-  } 
-
-  public void mouseDragged(MouseEvent e) {
-    Point p = e.getPoint(); 
-    if (canvas.mouseButtonDown) {
-      tool.addPointToShape(p);
-      canvas.x = p.x; 
-      canvas.y = p.y; 
-    }       
-  }
-
-  public void mouseReleased(MouseEvent e) {
-    Point p = e.getPoint(); 
-    tool.endShape(p);       
-    canvas.mouseButtonDown = false;       
-  }    
-
-  public void mouseClicked(MouseEvent e) {}
-  public void mouseEntered(MouseEvent e) {}  
-  public void mouseExited(MouseEvent e) {}
-  public void mouseMoved(MouseEvent e) {}     
-
-  protected ScribbleCanvasListener(ScribbleCanvas canvas, Tool tool) {
-    this.canvas = canvas; 
+  protected ScribbleCanvasListener(
+          final ScribbleCanvas canvas, final Tool tool) {
+    this.canvas = canvas;
     this.tool = tool;
   }
 
-  protected ScribbleCanvas canvas; 
-  protected Tool tool; 
+  @Override
+  public void mousePressed(MouseEvent e) {
+    Point p = e.getPoint();
+    tool.startAction(p);
+    canvas.mouseButtonDown = true;
+    canvas.x = p.x;
+    canvas.y = p.y;
+  }
 
+  @Override
+  public final void mouseDragged(final MouseEvent e) {
+    Point p = e.getPoint();
+    if (canvas.mouseButtonDown) {
+      tool.continueAction(p);
+      canvas.x = p.x;
+      canvas.y = p.y;
+    }
+  }
+
+  @Override
+  public final void mouseReleased(final MouseEvent e) {
+    Point p = e.getPoint();
+    tool.endAction(p);
+    canvas.mouseButtonDown = false;
+  }
+
+  @Override
+  public void mouseClicked(final MouseEvent e) {
+  }
+
+  @Override
+  public void mouseEntered(final MouseEvent e) {
+  }
+
+  @Override
+  public void mouseExited(final MouseEvent e) {
+  }
+
+  @Override
+  public void mouseMoved(final MouseEvent e) {
+  }
 }
-

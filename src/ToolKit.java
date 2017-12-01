@@ -1,74 +1,72 @@
 
-//package draw1; 
-
-import java.util.*; 
-import scribble.Tool; 
+import java.util.ArrayList;
+import java.util.List;
+import scribble.Tool;
 
 public class ToolKit {
 
-  public ToolKit() {
-  }
-  
   /**
-    Add a new tool to the tool kit. 
-    Return the index of the new tool. 
+   * Add a new tool to the tool kit. Return the index of the new tool.
+   *
+   * @param tool
+   * @return
    */
-  public int addTool(Tool tool) {
+  public final int addTool(final Tool tool) {
     if (tool != null) {
       tools.add(tool);
-      return (tools.size() - 1); 
+      return (tools.size() - 1);
     }
-    return -1; 
+    return -1;
   }
 
-  public int getToolCount() {
-    return tools.size(); 
+  public final int getToolCount() {
+    return tools.size();
   }
-  
-  public Tool getTool(int i) { 
-    if (i >= 0 &&
-	i < tools.size()) { 
-      return (Tool) tools.get(i); 
+
+  public final Tool getTool(final int i) {
+    if (i >= 0
+            && i < tools.size()) {
+      return (Tool) tools.get(i);
     }
     return null;
   }
 
-  public Tool findTool(String name) { 
+  public final Tool findTool(final String name) {
     if (name != null) {
-      for (int i = 0; i < tools.size(); i++) { 
-	Tool tool = (Tool) tools.get(i); 
-	if (name.equals(tool.getName())) {
-	  return tool;
-	}
+      for (int i = 0; i < tools.size(); i++) {
+        Tool tool = (Tool) tools.get(i);
+        if (name.equals(tool.getName())) {
+          return tool;
+        }
       }
     }
     return null;
   }
 
-  public void setSelectedTool(int i) { 
-    Tool tool = getTool(i); 
-    if (tool != null) { 
-      selectedTool = tool; 
+  public final void setSelectedTool(final int i) {
+    Tool tool = getTool(i);
+    if (tool != null) {
+      selectedTool = tool;
     }
   }
 
-  public Tool setSelectedTool(String name) { 
-    Tool tool = findTool(name); 
-    if (tool != null) { 
-      selectedTool = tool; 
+  public final Tool setSelectedTool(final String name) {
+    Tool tool = findTool(name);
+    if (tool != null) {
+      selectedTool = tool;
     }
     return tool;
   }
 
-  public void setSelectedTool(Tool tool) { 
-    selectedTool = tool; 
+  public final void setSelectedTool(final Tool tool) {
+    selectedTool = tool;
   }
 
-  public Tool getSelectedTool() { 
+  public final Tool getSelectedTool() {
     return selectedTool;
   }
 
-  protected List tools = new ArrayList(16); 
-  protected Tool selectedTool = null; 
+  private final List tools = new ArrayList(16);
+  private Tool selectedTool = null;
 
 }
