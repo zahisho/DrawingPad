@@ -32,6 +32,7 @@ import scribble.menu.listener.DeleteAllListener;
 import scribble.menu.listener.DeleteSelectedListener;
 import scribble.menu.listener.FillShapeListener;
 import scribble.menu.listener.FillingColorListener;
+import scribble.menu.listener.RedoListener;
 import scribble.menu.listener.UnfillShapeListener;
 import scribble.tool.DrawingTool;
 import scribble.tool.SelectTool;
@@ -56,6 +57,7 @@ public class Scribble extends JFrame {
   private SaveListener saveListener;
   private OpenFileListener openFileListener;
   private UndoListener undoListener;
+  private RedoListener redoListener;
   private FillShapeListener fillShapeListener;
   private UnfillShapeListener unfillShapeListener;
   private ContourColorListener contourColorListener;
@@ -213,6 +215,11 @@ public class Scribble extends JFrame {
     mi = new JMenuItem("Undo");
     menu.add(mi);
     mi.addActionListener(undoListener);
+
+    redoListener = new RedoListener(this);
+    mi = new JMenuItem("Redo");
+    menu.add(mi);
+    mi.addActionListener(redoListener);
   }
 
   private void buildOptionMenu() {

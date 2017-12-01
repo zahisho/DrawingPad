@@ -50,13 +50,24 @@ public class SelectTool extends Tool {
     while (!canDrag && it.hasNext()) {
       Shape s = (Shape) it.next();
       canDrag = s.isSelected(e.getPoint());
-      startPoint = e.getPoint();
-      curPoint = e.getPoint();
+      if (canDrag) {
+        startPoint = e.getPoint();
+        curPoint = e.getPoint();
+      }
     }
   }
 
   @Override
   public final void mouseReleased(MouseEvent e) {
+    if (canDrag) {
+      Point finalPoint = e.getPoint();
+      Point auxiliarPoint = new Point(finalPoint.x, finalPoint.y);
+      finalPoint.x -= curPoint.x;
+      finalPoint.y -= curPoint.y;
+      canvas.moveShapes(finalPoint);
+      canvas.repaint();
+      canvas.endMovement(startPoint, auxiliarPoint);
+    }
   }
 
   @Override

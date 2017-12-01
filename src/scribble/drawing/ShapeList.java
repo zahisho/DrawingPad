@@ -34,10 +34,12 @@ public class ShapeList implements Serializable {
   public final void remove(Shape s) {
     int i = 0;
 
-    while (list.get(i) != s) {
+    while (i < list.size() && list.get(i) != s) {
       i++;
     }
-    list.remove(i);
+    if (i < list.size()) {
+      list.remove(i);
+    }
   }
 
   public final boolean contains(Shape s) {
@@ -51,5 +53,9 @@ public class ShapeList implements Serializable {
     }
 
     return res;
+  }
+
+  public final boolean empty() {
+    return list.isEmpty();
   }
 }

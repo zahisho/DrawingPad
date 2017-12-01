@@ -38,7 +38,8 @@ public class DrawingTool extends Tool {
   public final void mouseReleased(MouseEvent e) {
     shape.updateFigure(e.getPoint(), canvas.getGraphics());
     shape.draw(canvas.getGraphics());
-    canvas.addShape(shape);
+    canvas.createShape(shape);
+    canvas.emptyRedo();
   }
 
   @Override

@@ -22,6 +22,14 @@ public class Shape implements Serializable {
     this.figure = figure;
   }
 
+  public final Color getContourColor() {
+    return contourColor;
+  }
+
+  public final Color getFillingColor() {
+    return fillingColor;
+  }
+
   public final void startFigure(Point p, Graphics g) {
     figure.startFigure(p, g);
   }
