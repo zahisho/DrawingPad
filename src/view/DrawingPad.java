@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import tools.ChangeColor;
 import tools.ClearShape;
 import tools.FillColor;
+import tools.GroupFigures;
 import tools.Move;
 import tools.Tool;
 import tools.ScribbleTool;
@@ -66,6 +67,7 @@ public class DrawingPad extends Scribble {
     toolkit.addTool(new ChangeColor(canvas, "Change Color"));
     toolkit.addTool(new FillColor(canvas, "Fill Color"));
     toolkit.addTool(new Select(canvas, "Select"));
+    toolkit.addTool(new GroupFigures(canvas, "Group Figures"));
     toolkit.addTool(new Move(canvas, "Move"));
     toolkit.addTool(new SelectAll(canvas, "Move All"));
     toolkit.addTool(new ClearShape(canvas, "Clear Shape"));

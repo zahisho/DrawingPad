@@ -25,9 +25,11 @@ public class ClearShape extends AbstractTool{
   public void endShape(Point p) {
     shape =  canvas.belongShape(p);
     if(shape != null){
+      shape.setUndoState(shape.clon());
       ShapeList shapes = canvas.getShapes();
       shapes.remove(shape);
       canvas.repaint();
+      shape.getUndoState().setRedoState(shape);
     }
   }
 }

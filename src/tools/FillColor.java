@@ -2,6 +2,7 @@ package tools;
 
 import java.awt.Point;
 import model.Shape;
+import model.ShapeList;
 import view.ScribbleCanvas;
 
 public class FillColor extends AbstractTool {
@@ -23,10 +24,16 @@ public class FillColor extends AbstractTool {
   @Override
   public void endShape(Point p) {
     shape =  canvas.belongShape(p);
+    ShapeList shapes = canvas.getShapes();
     if(shape != null){
+      shape.setUndoState(shape.clon());
+      
       shape.setColorFill(canvas.getCurColor());
       shape.fillColor();
       canvas.repaint();
+      
+      shape.getUndoState().setRedoState(shape);
+      shapes.moveToTheLas(shape);
     }
   }
 }

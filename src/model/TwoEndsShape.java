@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.Point;
 import model.Shape;
 
-public abstract class TwoEndsShape extends Shape implements Cloneable{
+public abstract class TwoEndsShape extends Shape{
 
   public int x1;
   public int y1;
@@ -18,11 +18,6 @@ public abstract class TwoEndsShape extends Shape implements Cloneable{
 
   public TwoEndsShape(Color color) {
     super(color);
-  }
-  
-  @Override
-  public Object clone() throws CloneNotSupportedException {
-    return super.clone();
   }
 
   public void setEnds(int x1, int y1, int x2, int y2) {

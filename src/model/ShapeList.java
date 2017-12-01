@@ -8,12 +8,12 @@ import java.util.List;
 public class ShapeList implements Serializable {
 
   private List<Shape> list;
-  private List<Shape> shapesUndo;
+  private List<Shape> shapesRedo;
   private boolean isClearAll;
 
   public ShapeList() {
     list = new ArrayList<>();
-    shapesUndo = new ArrayList<>();
+    shapesRedo = new ArrayList<>();
     isClearAll = false;
   }
 
@@ -41,32 +41,64 @@ public class ShapeList implements Serializable {
 
   public final void remove(int index) {
     if (isClearAll) {
-      list = shapesUndo;
-      shapesUndo = new ArrayList<>();
+      list = shapesRedo;
+      shapesRedo = new ArrayList<>();
       isClearAll = false;
     } 
     else{
       if (!list.isEmpty()) {
-        shapesUndo.add(list.remove(index));
+        shapesRedo.add(list.remove(index));
       }
     }
   }
   
   public final void remove(Shape selectShape){
     if(!list.isEmpty()){
-      shapesUndo.add(selectShape);
+      shapesRedo.add(selectShape);
       list.remove(selectShape);
     }
   }
 
+  public final void undo(){
+    if (!list.isEmpty()) {
+      int last = list.size() - 1;
+      if(list.get(last).getUndoState() != null){
+        list.set(last, list.get(last).getUndoState());                
+      }
+      else{
+        shapesRedo.add(list.remove(last));
+      }
+    }
+  }
+
   public final void redo() {
-    if (!shapesUndo.isEmpty()) {
-      list.add(shapesUndo.remove(shapesUndo.size() - 1));
+    if (!list.isEmpty()) {
+      int last = list.size() - 1;
+      if (list.get(last).getRedoState() != null) {
+        list.set(last, list.get(last).getRedoState());
+      } else {
+        if (!shapesRedo.isEmpty()) {
+          int shapesUndoLast = shapesRedo.size() - 1;
+          list.add(shapesRedo.remove(shapesUndoLast));
+        }
+      }
+    } else {
+      if (!shapesRedo.isEmpty()) {
+        int shapesUndoLast = shapesRedo.size() - 1;
+        list.add(shapesRedo.remove(shapesUndoLast));
+      }
+    }
+  }
+  
+  public void moveToTheLas(Shape shape){
+    if(!list.isEmpty()){
+      list.remove(shape);
+      list.add(shape);
     }
   }
 
   public final void clearAll(){
-    shapesUndo = list;
+    shapesRedo = list;
     list = new ArrayList<>();
     isClearAll = true;
   }

@@ -101,9 +101,7 @@ public class ScribbleCanvas extends JPanel {
   }
 
   public void undo(){
-    int lastShape = shapes.size() - 1;
-//    shapes.undo(lastShape.getBeforeState());
-    shapes.remove(lastShape);
+    shapes.undo();
     repaint();
   }
   
@@ -111,7 +109,7 @@ public class ScribbleCanvas extends JPanel {
     shapes.redo();
     repaint();
   }
-  
+    
   public void clearAll(){
     shapes.clearAll();
     repaint();

@@ -6,18 +6,14 @@ import model.Shape;
 import model.ShapeList;
 import view.ScribbleCanvas;
 
-public class Move extends AbstractTool{
-  
-  private Point initPoint;
-  private Point finalPoint;
+public class GroupFigures extends AbstractTool {
 
-  public Move(ScribbleCanvas canvas, String name) {
+  public GroupFigures(ScribbleCanvas canvas, String name) {
     super(canvas, name);
   }
 
   @Override
   public void startShape(Point p) {
-    initPoint = p;
   }
 
   @Override
@@ -26,10 +22,6 @@ public class Move extends AbstractTool{
 
   @Override
   public void endShape(Point p) {
-    finalPoint = p;
-    int x = initPoint.x - finalPoint.x;
-    int y = initPoint.y - finalPoint.y;
-    Point movePoint = new Point(x, y);
     ShapeList shapes = canvas.getShapes();
     if(shapes != null){
       Iterator iter = shapes.iterator();
@@ -37,9 +29,8 @@ public class Move extends AbstractTool{
         Shape shape = (Shape) iter.next();
         if(shape.getSelected()){
           shape.setUndoState(shape.clon());
-          shape.move(movePoint);
+          shape.groupFigure(p);
           shape.getUndoState().setRedoState(shape); 
-//          shapes.moveToTheLas(shape);
         }
       }
     }

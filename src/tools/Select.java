@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.List;
 import view.ScribbleCanvas;
 import model.Shape;
+import model.ShapeList;
 
 
 public class Select extends AbstractTool {
@@ -28,14 +29,21 @@ public class Select extends AbstractTool {
   @Override
   public void endShape(Point p) {
     shape =  canvas.belongShape(p);
+    ShapeList shapes = canvas.getShapes();
     if(shape != null){
       if(shape.getSelected()){
+        shape.setUndoState(shape.clon());
         shape.setSelected(false);
         shape.setColor(Color.black);
+        shape.getUndoState().setRedoState(shape);
+        shapes.moveToTheLas(shape);
       }
       else{
+        shape.setUndoState(shape.clon());
         shape.setSelected(true);  
-        shape.setColor(Color.yellow);
+        shape.setColor(Color.GREEN);
+        shape.getUndoState().setRedoState(shape);
+        shapes.moveToTheLas(shape);
       }
     }
     canvas.repaint();

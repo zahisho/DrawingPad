@@ -38,10 +38,16 @@ public class SelectAll extends AbstractTool{
       while (iter.hasNext()){
         Shape shape = (Shape) iter.next();
         if (shape instanceof TwoEndsShape){
+          shape.setUndoState(shape.clon());
           modifyPositionTwoEnd((TwoEndsShape)shape, x, y);
+           shape.getUndoState().setRedoState(shape);
+//           shapes.moveToTheLas(shape);
         }
         if (shape instanceof Stroke){
+          shape.setUndoState(shape.clon());
           modifyPositionStroke((Stroke)shape, x, y);
+          shape.getUndoState().setRedoState(shape);
+//          shapes.moveToTheLas(shape);
         }
       }
     }

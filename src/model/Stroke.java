@@ -32,6 +32,10 @@ public class Stroke extends Shape {
     return points;
   }
   
+  public void setPoints(List<Point> points){
+    this.points = points;
+  }
+  
   @Override
   public void draw(Graphics g) {
     if (color != null) {
@@ -72,5 +76,28 @@ public class Stroke extends Shape {
       point.x = point.x - p.x;
       point.y = point.y - p.y;
     }
+  }
+
+  @Override
+  public Shape clon() {
+    Stroke clon = new Stroke();
+    
+    clon.color = color;
+    clon.colorFill = colorFill;
+    clon.withColorFill = withColorFill;
+    clon.selected = selected;
+    
+    List<Point> pointsClon = new ArrayList<>();
+    for (Point point : points) {
+      Point p = new Point(point.x, point.y);
+      pointsClon.add(p);
+    }
+    clon.setPoints(pointsClon);
+    return (Shape) clon;
+  }
+
+  @Override
+  public void groupFigure(Point p) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 }

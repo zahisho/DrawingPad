@@ -85,6 +85,7 @@ public class TwoEndsTool extends AbstractTool {
     if (newShape != null) {
       newShape.setColor(canvas.getCurColor());
       newShape.setEnds(xStart, yStart, p.x, p.y);
+//      newShape.getUndoState().setRedoState(newShape);
       canvas.addShape(newShape);
     }
     Graphics g = canvas.getGraphics();
