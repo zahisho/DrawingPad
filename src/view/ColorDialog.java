@@ -70,7 +70,7 @@ public class ColorDialog extends JDialog implements ActionListener {
     Dimension dialogSize = getSize();
     setLocation(screenSize.width / 2 - dialogSize.width / 2,
             screenSize.height / 2 - dialogSize.height / 2);
-//    show();
+    setVisible(true);
     if (result != null) {
       color = result;
     }

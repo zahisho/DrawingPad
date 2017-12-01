@@ -4,14 +4,14 @@ import java.awt.Point;
 import model.Shape;
 import view.ScribbleCanvas;
 
-public class FillColor extends AbstractTool {
-  
+public class ChangeColor extends AbstractTool{
+
   private Shape shape;
   
-  public FillColor(ScribbleCanvas canvas, String name) {
+  public ChangeColor(ScribbleCanvas canvas, String name) {
     super(canvas, name);
   }
-  
+
   @Override
   public void startShape(Point p) {
   }
@@ -22,11 +22,11 @@ public class FillColor extends AbstractTool {
 
   @Override
   public void endShape(Point p) {
-    shape =  canvas.belongShape(p);
+    shape = canvas.belongShape(p);
     if(shape != null){
-      shape.setColorFill(canvas.getCurColor());
-      shape.fillColor();
+      shape.setColor(canvas.getCurColor());
       canvas.repaint();
     }
   }
+  
 }

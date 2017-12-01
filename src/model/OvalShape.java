@@ -16,11 +16,11 @@ public class OvalShape extends TwoEndsShape {
       g.setColor(color);
     }
     if(withColorFill){
+      g.setColor(colorFill);
       g.fillOval(x, y, w, h);
     }
-    else{
-      g.drawOval(x, y, w, h);      
-    }
+    g.setColor(color);
+    g.drawOval(x, y, w, h);      
   }
 
   @Override

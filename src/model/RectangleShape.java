@@ -17,12 +17,11 @@ public class RectangleShape extends TwoEndsShape {
       g.setColor(color);
     }
     if(withColorFill){
+      g.setColor(colorFill);
       g.fillRect(x, y, w, h);
     }
-    else{
-      g.drawRect(x, y, w, h);      
-    }
-
+    g.setColor(color);
+    g.drawRect(x, y, w, h);      
   }
 
   @Override

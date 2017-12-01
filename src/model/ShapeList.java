@@ -41,7 +41,9 @@ public class ShapeList implements Serializable {
 
   public final void remove(int index) {
     if (isClearAll) {
-      changeListToShape();
+      list = shapesUndo;
+      shapesUndo = new ArrayList<>();
+      isClearAll = false;
     } 
     else{
       if (!list.isEmpty()) {
@@ -52,8 +54,8 @@ public class ShapeList implements Serializable {
   
   public final void remove(Shape selectShape){
     if(!list.isEmpty()){
-      list.remove(selectShape);
       shapesUndo.add(selectShape);
+      list.remove(selectShape);
     }
   }
 
@@ -67,11 +69,5 @@ public class ShapeList implements Serializable {
     shapesUndo = list;
     list = new ArrayList<>();
     isClearAll = true;
-  }
-  
-  private void changeListToShape(){
-    list = shapesUndo;
-    shapesUndo = new ArrayList<>();
-    isClearAll = false;
   }
 }

@@ -170,10 +170,10 @@ public class Scribble extends JFrame {
   private void colorListener() {
     dialog = new ColorDialog(Scribble.this, "Choose color", canvas.getCurColor());
     Color result = dialog.showDialog();
+    System.out.println(result);
     if (result != null) {
       canvas.setCurColor(result);
     }
-    dialog.setVisible(true);
   }
   
   private void exitListener() {

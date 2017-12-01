@@ -8,7 +8,9 @@ import java.io.Serializable;
 public abstract class Shape implements Serializable {
 
   protected Color color;
+  protected Color colorFill;
   protected boolean withColorFill;
+  protected boolean selected;
 
   public Shape() {
    color = Color.black;
@@ -24,6 +26,21 @@ public abstract class Shape implements Serializable {
 
   public Color getColor() {
     return color;
+  }
+  
+  public void setColorFill(Color color){
+    this.colorFill = color;
+  }
+
+  public Color getColorFill(){
+    return colorFill;
+  }
+  
+  public void setSelected(boolean isSelected){
+    selected = isSelected;
+  }
+  public boolean getSelected(){
+    return selected;
   }
 
   public abstract void draw(Graphics g);

@@ -1,5 +1,6 @@
 package tools;
 
+import java.awt.Color;
 import model.Stroke;
 import model.TwoEndsShape;
 import java.awt.Point;
@@ -10,11 +11,7 @@ import model.Shape;
 
 public class Select extends AbstractTool {
 
-  private TwoEndsShape shapeTwoEnds;
-  private Stroke shapeStroke;
   private Shape shape;
-  private Point initPoint;
-  private Point finalPoint;
 
   public Select(ScribbleCanvas canvas, String name) {
     super(canvas, name);
@@ -22,16 +19,6 @@ public class Select extends AbstractTool {
 
   @Override
   public void startShape(Point p) {
-    initPoint = p;
-    shape =  canvas.belongShape(p);
-    
-    if(shape instanceof TwoEndsShape){
-      shapeTwoEnds = (TwoEndsShape) shape;
-    }
-    if(shape instanceof Stroke){
-      shapeStroke = (Stroke) shape;
-      
-    }
   }
 
   @Override
@@ -40,22 +27,18 @@ public class Select extends AbstractTool {
 
   @Override
   public void endShape(Point p) {
-    finalPoint = p;
-    int x = initPoint.x - finalPoint.x;
-    int y = initPoint.y - finalPoint.y;
-    Point movePoint = new Point(x, y);
-
-    if (shapeStroke != null) {
-      shapeStroke.move(movePoint);
-      canvas.repaint();
-      shapeStroke = null;
+    shape =  canvas.belongShape(p);
+    if(shape != null){
+      if(shape.getSelected()){
+        shape.setSelected(false);
+        shape.setColor(Color.black);
+      }
+      else{
+        shape.setSelected(true);  
+        shape.setColor(Color.yellow);
+      }
     }
-    
-    if (shapeTwoEnds != null){
-      shapeTwoEnds.move(movePoint);
-      canvas.repaint();
-      shapeTwoEnds = null;
-    }
+    canvas.repaint();
   }
 
 }
