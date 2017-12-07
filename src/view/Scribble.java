@@ -58,6 +58,8 @@ public class Scribble extends JFrame {
     addFileMenu(menuBar);
     addEditMenu(menuBar);
     addOptionMenu(menuBar);
+    addViewMenu(menuBar);
+    
     menuBar.add(Box.createHorizontalGlue());
     addHelpMenu(menuBar);
     return menuBar;
@@ -140,6 +142,20 @@ public class Scribble extends JFrame {
 
   }
   
+  private void addViewMenu(JMenuBar menuBar){
+    JMenu menu = new JMenu("View");
+    JMenuItem menuOptionItem;
+    menuBar.add(menu);
+    
+    menuOptionItem = new JMenuItem("Hide Tools");
+    menu.add(menuOptionItem);
+    menuOptionItem.addActionListener(event -> hideTools());
+    
+    menuOptionItem = new JMenuItem("Hide Tools");
+    menu.add(menuOptionItem);
+    menuOptionItem.addActionListener(event -> showTools());
+  }
+  
   private void addHelpMenu(JMenuBar menuBar){
     JMenu menu = new JMenu("Help");
     JMenuItem menuHelpItem;
@@ -188,6 +204,16 @@ public class Scribble extends JFrame {
         }
       }
     }
+  }
+  
+  protected void hideTools(){
+    getContentPane().setLayout(new BorderLayout());
+    getContentPane().add(menuBar, BorderLayout.NORTH);
+    getContentPane().add(canvas, BorderLayout.CENTER);
+  }
+  
+  protected void showTools(){
+    
   }
   
   private void colorListener() {

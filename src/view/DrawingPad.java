@@ -7,11 +7,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -24,13 +22,14 @@ public class DrawingPad extends Scribble {
   
   protected ToolKit toolkit;
   protected DrawingCanvas drawingCanvas;
+  private JComponent toolbar;
 
   public DrawingPad(String title) {
     super(title);
     init();
     initTools();
     
-    JComponent toolbar = createToolBar();
+    toolbar = createToolBar();
     getContentPane().add(toolbar, BorderLayout.WEST);
     JMenu menu = createToolMenu();
     menuBar.add(menu, 2); // insert at index position 2 
@@ -98,6 +97,20 @@ public class DrawingPad extends Scribble {
       Tool tool = toolkit.setSelectedTool(button.getText());
       drawingCanvas.setTool(tool);
     }
+  }
+  
+  @Override
+  protected void hideTools(){
+    BorderLayout layout = (BorderLayout) this.getContentPane().getLayout();
+    getContentPane().remove(layout.getLayoutComponent(BorderLayout.WEST));
+    revalidate();
+  }
+  
+  @Override
+  protected void showTools(){
+//    hideTools();
+    getContentPane().add(toolbar, BorderLayout.WEST);
+    revalidate();
   }
 
 }
