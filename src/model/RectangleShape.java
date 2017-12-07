@@ -1,27 +1,39 @@
 package model;
 
+import java.awt.Color;
 import model.TwoEndsShape;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
+import java.awt.Stroke;
 
 public class RectangleShape extends TwoEndsShape {
   
   private final double EPS = 5;
 
   public void draw(Graphics g) {
+    Graphics2D g2d = (Graphics2D) g;
+    Stroke previous = g2d.getStroke();
     int x = Math.min(x1, x2); 
     int y = Math.min(y1, y2); 
     int w = Math.abs(x1 - x2) + 1; 
     int h = Math.abs(y1 - y2) + 1;     
-    if (color != null) {
-      g.setColor(color);
-    }
     if(withColorFill){
       g.setColor(colorFill);
       g.fillRect(x, y, w, h);
     }
+    if(selected){
+      markSelected(g);
+    }
+    if (color != null) {
+      g.setColor(color);
+    }
     g.setColor(color);
-    g.drawRect(x, y, w, h);      
+    g.drawRect(x, y, w, h);  
+    shape = new Rectangle2D.Double(x, y, w, h);
+    g2d.setStroke(previous);
+    g2d.draw(shape);    
   }
 
   @Override
@@ -47,13 +59,13 @@ public class RectangleShape extends TwoEndsShape {
             == Math.abs(x1 - x2);
   }
 
-  @Override
-  public void fillColor() {
+  public void fillColor(Color color) {
     withColorFill = true;
+    colorFill = color;
   }
 
   @Override
-  public Shape clon() {
+  public ShapeAbstract clonShape() {
     RectangleShape clon = new RectangleShape();
     
     clon.color = color;
@@ -66,16 +78,7 @@ public class RectangleShape extends TwoEndsShape {
     clon.y1 = y1;
     clon.y2 = y2;
     
-    return (Shape) clon;
+    return (ShapeAbstract) clon;
   }
 
-  @Override
-  public void groupFigure(Point p) {
-    int newX2 = x1 - x2;
-    int newY2 = y1 - y2;
-    x1 = p.x;
-    y1 = p.y;
-    x2 = p.x + newX2;
-    y2 = p.y + newY2;
-  }
 }

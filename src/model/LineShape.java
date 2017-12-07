@@ -1,21 +1,33 @@
 package model;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import model.TwoEndsShape;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Line2D;
+import java.awt.Stroke;
 
 public class LineShape extends TwoEndsShape {
   
   private final double EPS = 0.01;
   
   public void draw(Graphics g) {
+    Graphics2D g2d = (Graphics2D) g;
+    Stroke previous = g2d.getStroke();
+    shape =   new Line2D.Double(x1, y1, x2, y2);
     if (color != null) {
       g.setColor(color);
     }
-    g.drawLine(x1, y1, x2, y2);
+    if (selected){
+      markSelected(g);
+    }
+    g.drawLine(x1, y1, x2, y2);      
+    g2d.setStroke(previous);
+    g2d.draw(shape);
   }
 
-  @Override
   public boolean isSelected(Point p) {
     int xv1 = p.x - x1;
     int yv1 = p.y - y1;
@@ -30,13 +42,11 @@ public class LineShape extends TwoEndsShape {
     return res;
   }
 
-  @Override
-  public void fillColor() {
-    withColorFill = true;
+  public void fillColor(Color color) {
   }
 
-  @Override
-  public Shape clon() {
+
+  public ShapeAbstract clonShape() {
     LineShape clon = new LineShape();
     
     clon.color = color;
@@ -49,17 +59,7 @@ public class LineShape extends TwoEndsShape {
     clon.y1 = y1;
     clon.y2 = y2;
     
-    return (Shape) clon;
-  }
-
-  @Override
-  public void groupFigure(Point p) {
-    int newX2 = x1 - x2;
-    int newY2 = y1 - y2;
-    x1 = p.x;
-    y1 = p.y;
-    x2 = p.x + newX2;
-    y2 = p.y + newY2;
+    return (ShapeAbstract) clon;
   }
     
 }

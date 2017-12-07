@@ -7,17 +7,13 @@ import java.util.List;
 
 public class ShapeList implements Serializable {
 
-  private List<Shape> list;
-  private List<Shape> shapesRedo;
-  private boolean isClearAll;
+  private List<ShapeAbstract> list;
 
   public ShapeList() {
     list = new ArrayList<>();
-    shapesRedo = new ArrayList<>();
-    isClearAll = false;
   }
 
-  public final void add(Shape s) {
+  public final void add(ShapeAbstract s) {
     list.add(s);
   }
 
@@ -40,66 +36,34 @@ public class ShapeList implements Serializable {
   }
 
   public final void remove(int index) {
-    if (isClearAll) {
-      list = shapesRedo;
-      shapesRedo = new ArrayList<>();
-      isClearAll = false;
-    } 
-    else{
-      if (!list.isEmpty()) {
-        shapesRedo.add(list.remove(index));
-      }
+    if (!list.isEmpty()) {
+      list.remove(index);
     }
   }
   
-  public final void remove(Shape selectShape){
+  public final void remove(ShapeAbstract selectShape){
     if(!list.isEmpty()){
-      shapesRedo.add(selectShape);
       list.remove(selectShape);
     }
   }
-
-  public final void undo(){
-    if (!list.isEmpty()) {
-      int last = list.size() - 1;
-      if(list.get(last).getUndoState() != null){
-        list.set(last, list.get(last).getUndoState());                
-      }
-      else{
-        shapesRedo.add(list.remove(last));
-      }
-    }
-  }
-
-  public final void redo() {
-    if (!list.isEmpty()) {
-      int last = list.size() - 1;
-      if (list.get(last).getRedoState() != null) {
-        list.set(last, list.get(last).getRedoState());
-      } else {
-        if (!shapesRedo.isEmpty()) {
-          int shapesUndoLast = shapesRedo.size() - 1;
-          list.add(shapesRedo.remove(shapesUndoLast));
-        }
-      }
-    } else {
-      if (!shapesRedo.isEmpty()) {
-        int shapesUndoLast = shapesRedo.size() - 1;
-        list.add(shapesRedo.remove(shapesUndoLast));
-      }
-    }
+  
+  public final void resetSelected(){
+    list.forEach((shape) -> {
+      shape.setSelected(false);
+    });
   }
   
-  public void moveToTheLas(Shape shape){
+  public void moveToTheLas(ShapeAbstract shape){
     if(!list.isEmpty()){
       list.remove(shape);
       list.add(shape);
     }
   }
-
-  public final void clearAll(){
-    shapesRedo = list;
-    list = new ArrayList<>();
-    isClearAll = true;
+  
+  public final void selectAll(){
+    list.forEach((shape) -> {
+      shape.setSelected(true);
+    });
   }
+ 
 }

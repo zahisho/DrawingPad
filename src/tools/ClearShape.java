@@ -2,34 +2,32 @@ package tools;
 
 import java.awt.Point;
 import view.ScribbleCanvas;
-import model.Shape;
+import model.ShapeAbstract;
 import model.ShapeList;
 
 public class ClearShape extends AbstractTool{
 
-  private Shape shape;
+  private ShapeAbstract shape;
   
   public ClearShape(ScribbleCanvas canvas, String name) {
     super(canvas, name);
   }
   
   @Override
-  public void startShape(Point p) {
+  public void startAction(Point p) {
   }
 
   @Override
-  public void addPointToShape(Point p) {
+  public void continueAction(Point p) {
   }
 
   @Override
-  public void endShape(Point p) {
+  public void endAction(Point p) {
     shape =  canvas.belongShape(p);
     if(shape != null){
-      shape.setUndoState(shape.clon());
       ShapeList shapes = canvas.getShapes();
       shapes.remove(shape);
       canvas.repaint();
-      shape.getUndoState().setRedoState(shape);
     }
   }
 }

@@ -2,48 +2,46 @@ package tools;
 
 import java.awt.Point;
 import java.util.Iterator;
-import model.Shape;
+import model.ShapeAbstract;
 import model.ShapeList;
 import view.ScribbleCanvas;
 
 public class Move extends AbstractTool{
   
-  private Point initPoint;
-  private Point finalPoint;
+  private Point curPoint;
 
   public Move(ScribbleCanvas canvas, String name) {
     super(canvas, name);
   }
 
   @Override
-  public void startShape(Point p) {
-    initPoint = p;
+  public void startAction(Point p) {
+    canvas.mouseButtonDown = true;
+    curPoint = p;
   }
 
   @Override
-  public void addPointToShape(Point p) {
-  }
-
-  @Override
-  public void endShape(Point p) {
-    finalPoint = p;
-    int x = initPoint.x - finalPoint.x;
-    int y = initPoint.y - finalPoint.y;
-    Point movePoint = new Point(x, y);
+  public void continueAction(Point p) {
+    Point actualPoint = new Point(p.x, p.y);
     ShapeList shapes = canvas.getShapes();
     if(shapes != null){
       Iterator iter = shapes.iterator();
+      p.x -= curPoint.x;
+      p.y -= curPoint.y;
       while(iter.hasNext()){
-        Shape shape = (Shape) iter.next();
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
         if(shape.getSelected()){
-          shape.setUndoState(shape.clon());
-          shape.move(movePoint);
-          shape.getUndoState().setRedoState(shape); 
-//          shapes.moveToTheLas(shape);
+          shape.move(p);
+          canvas.repaint();
+          curPoint = actualPoint;
         }
       }
     }
+  }
+
+  @Override
+  public void endAction(Point p) {
     canvas.repaint();
   }
-  
+
 }

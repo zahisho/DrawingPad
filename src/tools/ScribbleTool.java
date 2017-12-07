@@ -14,12 +14,12 @@ public class ScribbleTool extends AbstractTool {
     super(canvas, name);
   }
 
-  public void startShape(Point p) {
+  public void startAction(Point p) {
     curStroke = new Stroke(canvas.getCurColor());
     curStroke.addPoint(p);
   }
 
-  public void addPointToShape(Point p) {
+  public void continueAction(Point p) {
     if (curStroke != null) {
       curStroke.addPoint(p);
       Graphics g = canvas.getGraphics();
@@ -28,7 +28,7 @@ public class ScribbleTool extends AbstractTool {
     }
   }
 
-  public void endShape(Point p) {
+  public void endAction(Point p) {
     if (curStroke != null) {
       curStroke.addPoint(p);
       canvas.addShape(curStroke);

@@ -6,12 +6,13 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import model.Shape;
+import model.ShapeAbstract;
 
-public class Stroke extends Shape {
+public class Stroke extends ShapeAbstract {
   
   protected List<Point> points;
   private final double EPS = 5;
+  protected final float[] DASHED_STROKE = new float[]{5, 2};
   
   public Stroke() {
     points = new ArrayList<>();
@@ -65,21 +66,20 @@ public class Stroke extends Shape {
     return res;
   }
 
-  @Override
-  public void fillColor() {
+  public void fillColor(Color color) {
     withColorFill = true;
   }
 
   @Override
   public void move(Point p) {
     for (Point point : points) {
-      point.x = point.x - p.x;
-      point.y = point.y - p.y;
+      point.x = point.x + p.x;
+      point.y = point.y + p.y;
     }
   }
 
   @Override
-  public Shape clon() {
+  public ShapeAbstract clonShape() {
     Stroke clon = new Stroke();
     
     clon.color = color;
@@ -93,11 +93,11 @@ public class Stroke extends Shape {
       pointsClon.add(p);
     }
     clon.setPoints(pointsClon);
-    return (Shape) clon;
+    return (ShapeAbstract) clon;
   }
 
   @Override
-  public void groupFigure(Point p) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public void markSelected(Graphics g) {
+   
   }
 }

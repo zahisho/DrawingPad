@@ -95,12 +95,35 @@ public class Scribble extends JFrame {
     JMenu menu = new JMenu("Edit");
     JMenuItem menuEditItem;
     menuBar.add(menu);
+    
     menuEditItem = new JMenuItem("Undo");
     menu.add(menuEditItem);
     menuEditItem.addActionListener(event -> canvas.undo());
+    
     menuEditItem = new JMenuItem("Redo");
     menu.add(menuEditItem);
     menuEditItem.addActionListener(event -> canvas.redo());
+    
+    menuEditItem = new JMenuItem("fill Color");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> canvas.fillShape());
+    
+    menuEditItem = new JMenuItem("Contour Color");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> canvas.changeContourColor());
+    
+    menuEditItem = new JMenuItem("Group Shapes");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> canvas.groupShapes());
+    
+    menuEditItem = new JMenuItem("Ungroup Shapes");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> canvas.ungroupShapes());
+    
+    menuEditItem = new JMenuItem("Select all");
+    menu.add(menuEditItem);
+    menuEditItem.addActionListener(event -> canvas.selectAll());
+    
     menuEditItem = new JMenuItem("Clear all");
     menu.add(menuEditItem);
     menuEditItem.addActionListener(event -> canvas.clearAll());

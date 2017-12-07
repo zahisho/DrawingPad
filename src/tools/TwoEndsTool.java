@@ -1,12 +1,14 @@
 package tools;
 
 
+import java.awt.BasicStroke;
 import model.TwoEndsShape;
 import model.LineShape;
 import model.OvalShape;
 import model.RectangleShape;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import view.ScribbleCanvas;
 
@@ -25,7 +27,7 @@ public class TwoEndsTool extends AbstractTool {
     this.shape = shape;
   }
 
-  public void startShape(Point p) {
+  public void startAction(Point p) {
     canvas.mouseButtonDown = true;
     xStart = canvas.x = p.x;
     yStart = canvas.y = p.y;
@@ -45,7 +47,7 @@ public class TwoEndsTool extends AbstractTool {
     }
   }
 
-  public void addPointToShape(Point p) {
+  public void continueAction(Point p) {
     if (canvas.mouseButtonDown) {
       Graphics g = canvas.getGraphics();
       g.setXORMode(Color.darkGray);
@@ -69,7 +71,7 @@ public class TwoEndsTool extends AbstractTool {
     }
   }
 
-  public void endShape(Point p) {
+  public void endAction(Point p) {
     canvas.mouseButtonDown = false;
     TwoEndsShape newShape = null;
     switch (shape) {
@@ -121,5 +123,5 @@ public class TwoEndsTool extends AbstractTool {
     }
     g.drawOval(x, y, w, h);
   }
-
+    
 }

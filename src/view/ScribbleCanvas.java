@@ -1,6 +1,6 @@
 package view;
 
-import model.Shape;
+import model.ShapeAbstract;
 import model.ShapeList;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,10 +18,13 @@ import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JPanel;
+import model.GroupShapes;
 
 public class ScribbleCanvas extends JPanel {
 
   protected ShapeList shapes;
+  protected List<ShapeList> undoList;
+  protected List<ShapeList> redoList;
 
   protected Color curColor;
 
@@ -33,6 +36,10 @@ public class ScribbleCanvas extends JPanel {
   
   public ScribbleCanvas() {
     shapes = new ShapeList();
+    undoList = new ArrayList<>();
+    undoList.add(clonList());
+    redoList = new ArrayList<>();
+//    redoList.add(clonList());
     curColor = Color.black;
     mouseButtonDown = false;
     // calling factory method 
@@ -49,7 +56,7 @@ public class ScribbleCanvas extends JPanel {
     return curColor;
   }
 
-  public void addShape(Shape shape) {
+  public void addShape(ShapeAbstract shape) {
     if (shape != null) {
       shapes.add(shape);
     }
@@ -63,7 +70,7 @@ public class ScribbleCanvas extends JPanel {
     if (shapes != null) {
       Iterator iter = shapes.iterator();
       while (iter.hasNext()) {
-        Shape shape = (Shape) iter.next();
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
         if (shape != null) {
           shape.draw(g);
         }
@@ -101,18 +108,143 @@ public class ScribbleCanvas extends JPanel {
   }
 
   public void undo(){
-    shapes.undo();
+    if(undoList.size() > 0){
+      redoList.add(clonList());      
+      shapes = undoList.remove(undoList.size() - 1);     
+    }
     repaint();
   }
   
   public void redo(){
-    shapes.redo();
+    if(redoList.size() > 0){
+      undoList.add(clonList());
+      shapes = redoList.remove(redoList.size() - 1);
+    }
     repaint();
   }
     
-  public void clearAll(){
-    shapes.clearAll();
+  public void selectAll(){
+    shapes.selectAll();
     repaint();
+  }
+  
+  public void clearAll(){
+    undoList.add(clonList());
+    shapes = new ShapeList();
+    repaint();
+  }
+  
+  public void fillShape(){
+    if (shapes != null) {
+      undoList.add(clonList());
+      Iterator iter = shapes.iterator();
+      while (iter.hasNext()) {
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if(shape != null){
+          if (shape.getSelected()){
+            shape.fillColor(curColor);
+          }
+        }
+      }
+    }
+    repaint();
+  }
+  
+  public void changeContourColor(){
+    if (shapes != null) {
+      undoList.add(clonList());
+      Iterator iter = shapes.iterator();
+      while (iter.hasNext()) {
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if(shape != null){
+          if (shape.getSelected()){
+            shape.setColor(curColor);
+          }
+        }
+      }
+    }
+    repaint();
+  }
+  
+  public void groupShapes(){
+    undoList.add(clonList());
+    ShapeList selectedShapes = new ShapeList();
+    
+    if (shapes != null) {
+      Iterator iter = shapes.iterator();
+      while (iter.hasNext()) {
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if(shape != null){
+          if (shape.getSelected()){
+            selectedShapes.add(shape);
+          }
+        }
+      }
+    }
+    if(selectedShapes != null){
+      Iterator iter = selectedShapes.iterator();
+      while (iter.hasNext()) {
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if(shape != null){
+          shapes.remove(shape);
+        }
+      }
+    }
+    
+    GroupShapes group = new GroupShapes();
+    group.setShapes(selectedShapes);
+    
+    shapes.add(group);
+    shapes.resetSelected();
+    repaint();
+  }
+  
+  public void ungroupShapes(){
+    undoList.add(clonList());
+    ShapeList groupSelectedShapes = new ShapeList();
+    ShapeList updateShapes = new ShapeList();
+    if(shapes != null){
+      Iterator iter = shapes.iterator();
+      while (iter.hasNext()){
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if (shape != null){
+          if(shape.getSelected() && shape instanceof GroupShapes){
+            groupSelectedShapes.add(shape);
+          }
+          else{
+            updateShapes.add(shape);
+          }
+        }
+      }
+    }
+    
+    if(groupSelectedShapes != null){
+      Iterator iter = groupSelectedShapes.iterator();
+      while (iter.hasNext()){
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if (shape != null){
+          addExGroupListShapes( (GroupShapes) shape, updateShapes);
+        }
+      }
+    }
+    
+    shapes = updateShapes;
+    shapes.resetSelected();
+    repaint();
+    
+  }
+  
+  private void addExGroupListShapes(GroupShapes groupShapes, ShapeList updateShapes){
+    ShapeList exGroupShapes = groupShapes.getShapes();
+    if(exGroupShapes != null){
+      Iterator iter = exGroupShapes.iterator();
+      while (iter.hasNext()){
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if (shape != null){
+          updateShapes.add(shape);
+        }
+      }
+    }
   }
   
   // factory method 
@@ -120,11 +252,11 @@ public class ScribbleCanvas extends JPanel {
     return (new ScribbleCanvasListener(this));
   }
   
-  public Shape belongShape(Point p){
+  public ShapeAbstract belongShape(Point p){
     if(shapes != null){
       Iterator iter = shapes.iterator();
       while (iter.hasNext()){
-        Shape shape = (Shape) iter.next();
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
         if (shape != null){
           if(shape.isSelected(p)){
             return shape;
@@ -137,6 +269,20 @@ public class ScribbleCanvas extends JPanel {
   
   public ShapeList getShapes(){
     return shapes;
+  }
+  
+  public ShapeList clonList(){
+    ShapeList clonShapes = new ShapeList();
+    if (shapes != null) {
+      Iterator iter = shapes.iterator();
+      while (iter.hasNext()) {
+        ShapeAbstract shape = (ShapeAbstract) iter.next();
+        if(shape != null){
+          clonShapes.add(shape.clonShape());
+        }
+      }
+    }
+    return clonShapes;
   }
   
 }
