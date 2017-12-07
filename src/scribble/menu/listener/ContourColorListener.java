@@ -19,8 +19,6 @@ public class ContourColorListener implements ActionListener {
   @Override
   public final void actionPerformed(ActionEvent e) {
     Color result = dialog.showDialog();
-    if (result != null) {
-      frame.getCanvas().changeContour(result);
-    }
+    frame.getCanvas().changeContour(result);
   }
 }

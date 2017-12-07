@@ -4,16 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import scribble.Scribble;
 
-public class FillShapeListener implements ActionListener {
+public class GroupShapesListener implements ActionListener {
 
   private final Scribble frame;
 
-  public FillShapeListener(Scribble s) {
-    frame = s;
+  public GroupShapesListener(Scribble f) {
+    frame = f;
   }
 
   @Override
   public final void actionPerformed(ActionEvent e) {
-    frame.getCanvas().fillSelectedShapes();
+    frame.getCanvas().groupShapes();
   }
 }

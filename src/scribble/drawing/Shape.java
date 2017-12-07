@@ -1,86 +1,91 @@
 package scribble.drawing;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Stroke;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Shape implements Serializable {
 
-  private Color fillingColor;
-  private Color contourColor;
-  private final Figure figure;
+  private final List<Figure> figures;
 
-  private final float[] DASHED_STROKE = new float[]{5, 2};
-
-  public Shape(Color color, Figure figure) {
-    contourColor = color;
-    fillingColor = color;
-    this.figure = figure;
+  public Shape() {
+    figures = new ArrayList<>();
   }
 
-  public final Color getContourColor() {
-    return contourColor;
+  public Shape(Figure figure) {
+    figures = new ArrayList<>();
+    if (figure instanceof Fillable) {
+      ((Fillable) figure).setFillingColor(null);
+    }
+    figures.add(figure);
   }
 
-  public final Color getFillingColor() {
-    return fillingColor;
+  public final void addFigure(Figure f) {
+    figures.add(f);
+  }
+
+  public final List<Figure> getFigures() {
+    return figures;
   }
 
   public final void startFigure(Point p, Graphics g) {
-    figure.startFigure(p, g);
+    figures.forEach((figure) -> {
+      figure.startFigure(p, g);
+    });
   }
 
   public final void updateFigure(Point p, Graphics g) {
-    g.setColor(contourColor);
-    figure.updateFigure(p, g);
+    figures.forEach((figure) -> {
+      figure.updateFigure(p, g);
+    });
   }
 
   public final void draw(Graphics g) {
-    if (figure instanceof Fillable) {
-      g.setColor(fillingColor);
-      ((Fillable) figure).fillInside(g);
-    }
-    g.setColor(contourColor);
-    figure.draw(g);
-  }
-
-  public final void setSelected(Graphics g) {
-    Graphics2D graph = (Graphics2D) g;
-    Stroke previous = graph.getStroke();
-    graph.setColor(Color.gray);
-    graph.setStroke(new BasicStroke(2,
-            BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-            0, DASHED_STROKE, 0));
-    figure.draw(graph);
-    if (figure instanceof Fillable) {
-      ((Fillable) figure).fillInside(g);
-    }
-    graph.setStroke(previous);
+    figures.forEach((figure) -> {
+      figure.draw(g);
+    });
   }
 
   public final boolean isSelected(Point p) {
-    return figure.isSelected(p);
-  }
+    boolean selected = false;
 
-  public final void setFilled(boolean f) {
-    if (figure instanceof Fillable) {
-      ((Fillable) figure).setFilled(f);
+    for (Figure figure : figures) {
+      if (figure.isSelected(p)) {
+        selected = true;
+        break;
+      }
     }
+    return selected;
   }
 
   public final void move(Point p) {
-    figure.move(p);
+    figures.forEach(figure -> {
+      figure.move(p);
+    });
   }
 
   public final void setContourColor(Color c) {
-    contourColor = c;
+    figures.forEach(figure -> {
+      figure.setContour(c);
+    });
   }
 
   public final void setFillingColor(Color c) {
-    fillingColor = c;
+    figures.forEach(figure -> {
+      if (figure instanceof Fillable) {
+        ((Fillable) figure).setFillingColor(c);
+      }
+    });
+  }
+
+  public final Shape copy() {
+    Shape nShape = new Shape();
+    figures.forEach((f) -> {
+      nShape.addFigure(f.copy());
+    });
+    return nShape;
   }
 }

@@ -28,12 +28,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import scribble.menu.listener.ContourColorListener;
-import scribble.menu.listener.DeleteAllListener;
+import scribble.menu.listener.SelectAllListener;
 import scribble.menu.listener.DeleteSelectedListener;
-import scribble.menu.listener.FillShapeListener;
 import scribble.menu.listener.FillingColorListener;
+import scribble.menu.listener.GroupShapesListener;
 import scribble.menu.listener.RedoListener;
-import scribble.menu.listener.UnfillShapeListener;
+import scribble.menu.listener.SplitShapesListener;
 import scribble.tool.DrawingTool;
 import scribble.tool.SelectTool;
 import scribble.tool.Tool;
@@ -58,11 +58,11 @@ public class Scribble extends JFrame {
   private OpenFileListener openFileListener;
   private UndoListener undoListener;
   private RedoListener redoListener;
-  private FillShapeListener fillShapeListener;
-  private UnfillShapeListener unfillShapeListener;
+  private GroupShapesListener groupShapesListener;
+  private SplitShapesListener splitShapesListener;
   private ContourColorListener contourColorListener;
   private FillingColorListener fillingColorListener;
-  private DeleteAllListener deleteAllListener;
+  private SelectAllListener selectAllListener;
   private DeleteSelectedListener deleteSelectedListener;
 
   private final ScribbleWindowAdapter windowAdapter;
@@ -201,15 +201,25 @@ public class Scribble extends JFrame {
     menu = new JMenu("Edit");
     menuBar.add(menu);
 
+    selectAllListener = new SelectAllListener(this);
+    mi = new JMenuItem("Select all");
+    menu.add(mi);
+    mi.addActionListener(selectAllListener);
+
+    groupShapesListener = new GroupShapesListener(this);
+    mi = new JMenuItem("Group");
+    menu.add(mi);
+    mi.addActionListener(groupShapesListener);
+
+    splitShapesListener = new SplitShapesListener(this);
+    mi = new JMenuItem("Split");
+    menu.add(mi);
+    mi.addActionListener(splitShapesListener);
+
     deleteSelectedListener = new DeleteSelectedListener(this);
     mi = new JMenuItem("Delete");
     menu.add(mi);
     mi.addActionListener(deleteSelectedListener);
-
-    deleteAllListener = new DeleteAllListener(this);
-    mi = new JMenuItem("Delete all");
-    menu.add(mi);
-    mi.addActionListener(deleteAllListener);
 
     undoListener = new UndoListener(this);
     mi = new JMenuItem("Undo");
@@ -241,16 +251,6 @@ public class Scribble extends JFrame {
 
     menu = new JMenu("Format");
     menuBar.add(menu);
-
-    fillShapeListener = new FillShapeListener(this);
-    mi = new JMenuItem("Fill shape");
-    menu.add(mi);
-    mi.addActionListener(fillShapeListener);
-
-    unfillShapeListener = new UnfillShapeListener(this);
-    mi = new JMenuItem("Unfill shape");
-    menu.add(mi);
-    mi.addActionListener(unfillShapeListener);
 
     contourColorListener = new ContourColorListener(this);
     mi = new JMenuItem("Contour color");
@@ -313,4 +313,5 @@ public class Scribble extends JFrame {
     canvas.saveFile(filename);
     setTitle("Scribble Pad [" + currentFilename + "]");
   }
+
 }

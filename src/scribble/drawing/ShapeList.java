@@ -25,12 +25,6 @@ public class ShapeList implements Serializable {
     list.clear();
   }
 
-  public final void removeLast() {
-    if (list.size() > 0) {
-      list.remove(list.size() - 1);
-    }
-  }
-
   public final void remove(Shape s) {
     int i = 0;
 
@@ -57,5 +51,31 @@ public class ShapeList implements Serializable {
 
   public final boolean empty() {
     return list.isEmpty();
+  }
+
+  public final void addAll(ShapeList shapes) {
+    Iterator it = shapes.iterator();
+    while (it.hasNext()) {
+      list.add((Shape) it.next());
+    }
+  }
+
+  public final void removeAll(ShapeList shapes) {
+    Iterator it = shapes.iterator();
+    while (it.hasNext()) {
+      list.remove((Shape) it.next());
+    }
+  }
+
+  public final ShapeList copy() {
+    ShapeList nShapeList = new ShapeList();
+    list.forEach((s) -> {
+      nShapeList.add(s.copy());
+    });
+    return nShapeList;
+  }
+
+  public final int size() {
+    return list.size();
   }
 }

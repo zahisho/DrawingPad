@@ -12,7 +12,8 @@ public class Oval extends Figure implements Fillable {
   private int y1;
   private int x2;
   private int y2;
-  private boolean filled;
+
+  private Color fillingColor;
 
   private void setEnds(int x1, int y1, int x2, int y2) {
     this.x1 = x1;
@@ -22,11 +23,9 @@ public class Oval extends Figure implements Fillable {
   }
 
   private void overDraw(Graphics g) {
-    Color curColor = g.getColor();
     g.setXORMode(Color.darkGray);
     g.setColor(Color.lightGray);
     draw(g);
-    g.setColor(curColor);
   }
 
   @Override
@@ -35,6 +34,11 @@ public class Oval extends Figure implements Fillable {
     int y = Math.min(y1, y2);
     int w = Math.abs(x1 - x2) + 1;
     int h = Math.abs(y1 - y2) + 1;
+    if (fillingColor != null) {
+      g.setColor(fillingColor);
+      g.fillOval(x, y, w, h);
+    }
+    g.setColor(contourColor);
     g.drawOval(x, y, w, h);
   }
 
@@ -63,7 +67,7 @@ public class Oval extends Figure implements Fillable {
             + Math.pow(yc - p.y, 2) / Math.pow(b, 2));
     boolean res;
 
-    if (filled) {
+    if (fillingColor != null) {
       res = eq <= 1 + EPS;
     } else {
       res = Math.abs(1 - eq) < EPS;
@@ -86,18 +90,16 @@ public class Oval extends Figure implements Fillable {
   }
 
   @Override
-  public final void setFilled(boolean f) {
-    filled = f;
+  public void setFillingColor(Color c) {
+    fillingColor = c;
   }
 
   @Override
-  public final void fillInside(Graphics g) {
-    if (filled) {
-      int x = Math.min(x1, x2);
-      int y = Math.min(y1, y2);
-      int w = Math.abs(x1 - x2) + 1;
-      int h = Math.abs(y1 - y2) + 1;
-      g.fillOval(x, y, w, h);
-    }
+  public Figure copy() {
+    Oval nFigure = new Oval();
+    nFigure.setContour(contourColor);
+    nFigure.setFillingColor(fillingColor);
+    nFigure.setEnds(x1, y1, x2, y2);
+    return nFigure;
   }
 }

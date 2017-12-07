@@ -1,35 +1,39 @@
 package scribble;
 
+import java.awt.BasicStroke;
 import scribble.drawing.Shape;
 import scribble.drawing.ShapeList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
-import scribble.action.Action;
-import scribble.action.ChangeContourColorAction;
-import scribble.action.ChangeFillingColorAction;
-import scribble.action.CreateShapeAction;
-import scribble.action.FillFigureAction;
-import scribble.action.MoveAction;
-import scribble.action.RemoveShapeAction;
-import scribble.action.UnfillFigureAction;
+import scribble.drawing.Figure;
 import scribble.tool.Tool;
 
 public class ScribbleCanvas extends JPanel {
 
+  private final float[] DASHED_STROKE = new float[]{5, 2};
+  private int dashed_phase;
+
+  private final Thread thread;
+
   private final Stack<Action> undoStack;
   private final Stack<Action> redoStack;
 
-  private final ShapeList selectedShapes;
+  private ShapeList selectedShapes;
   private ShapeList shapes;
 
   private Color curColor;
@@ -49,6 +53,24 @@ public class ScribbleCanvas extends JPanel {
     keyCtrlPressed = false;
     undoStack = new Stack<>();
     redoStack = new Stack<>();
+    dashed_phase = 0;
+    thread = new Thread(new Runnable() {
+      @Override
+      public void run() {
+        while (true) {
+          if (!selectedShapes.empty()) {
+            dashed_phase += 2;
+            repaint();
+          }
+          try {
+            Thread.sleep(200);
+          } catch (InterruptedException ex) {
+            Logger.getLogger(ScribbleCanvas.class.getName()).log(Level.SEVERE, null, ex);
+          }          
+        }
+      }
+    });
+    thread.start();
   }
 
   public final void setTool(Tool tool) {
@@ -94,21 +116,158 @@ public class ScribbleCanvas extends JPanel {
     return curColor;
   }
 
-  public final void createShape(Shape shape) {
-    if (shape != null) {
-      undoStack.push(new CreateShapeAction(shape));
-      addShape(shape);
-    }
+  public final ShapeList getShapes() {
+    return shapes;
   }
 
   public final void addShape(Shape shape) {
-    if (shape != null) {
-      shapes.add(shape);
+    ShapeList newShapes = new ShapeList();
+    newShapes.add(shape);
+    redoStack.clear();
+    undoStack.push(new Action(null, newShapes));
+    addShapes(newShapes);
+    repaint();
+  }
+
+  public final void addShapes(ShapeList ss) {
+    if (ss != null) {
+      shapes.addAll(ss);
     }
   }
 
-  public final ShapeList getShapes() {
-    return shapes;
+  public final void deleteSelected() {
+    if (!selectedShapes.empty()) {
+      redoStack.clear();
+      ShapeList pShapes = selectedShapes;
+      undoStack.push(new Action(pShapes, null));
+      removeShapes(pShapes);
+      selectedShapes = new ShapeList();
+      repaint();
+    }
+  }
+
+  public final void removeShapes(ShapeList ss) {
+    if (ss != null) {
+      shapes.removeAll(ss);
+    }
+  }
+
+  public final void startMovement() {
+    ShapeList pShapes = selectedShapes;
+    ShapeList nShapes = pShapes.copy();
+    redoStack.clear();
+    undoStack.push(new Action(pShapes, nShapes));
+    removeShapes(pShapes);
+    addShapes(nShapes);
+    selectedShapes = new ShapeList();
+    selectedShapes.addAll(nShapes);
+  }
+
+  public final void moveShapes(Point p) {
+    Iterator selectedShape = selectedShapes.iterator();
+    while (selectedShape.hasNext()) {
+      Shape s = (Shape) selectedShape.next();
+      s.move(p);
+    }
+    repaint();
+  }
+
+  public final void changeContour(Color c) {
+    ShapeList nShapes = selectedShapes.copy();
+    Iterator it = nShapes.iterator();
+    while (it.hasNext()) {
+      Shape s = (Shape) it.next();
+      s.setContourColor(c);
+    }
+    ShapeList pShapes = selectedShapes;
+    removeShapes(pShapes);
+    addShapes(nShapes);
+    redoStack.clear();
+    undoStack.push(new Action(pShapes, nShapes));
+    selectedShapes = new ShapeList();
+    selectedShapes.addAll(nShapes);
+    repaint();
+  }
+
+  public final void changeFilling(Color c) {
+    ShapeList nShapes = selectedShapes.copy();
+    Iterator it = nShapes.iterator();
+    while (it.hasNext()) {
+      Shape s = (Shape) it.next();
+      s.setFillingColor(c);
+    }
+    ShapeList pShapes = selectedShapes;
+    removeShapes(pShapes);
+    addShapes(nShapes);
+    redoStack.clear();
+    undoStack.push(new Action(pShapes, nShapes));
+    selectedShapes = new ShapeList();
+    selectedShapes.addAll(nShapes);
+    repaint();
+  }
+
+  public final void groupShapes() {
+    if (selectedShapes.size() > 1) {
+      Shape nShape = new Shape();
+      Iterator it = selectedShapes.iterator();
+      while (it.hasNext()) {
+        List<Figure> figures = ((Shape) it.next()).getFigures();
+        figures.forEach(figure -> {
+          nShape.addFigure(figure);
+        });
+      }
+      ShapeList nShapes = new ShapeList();
+      nShapes.add(nShape);
+      ShapeList pShapes = selectedShapes;
+      removeShapes(pShapes);
+      addShapes(nShapes);
+      redoStack.clear();
+      undoStack.push(new Action(pShapes, nShapes));
+      selectedShapes = new ShapeList();
+      selectedShapes.add(nShape);
+    }
+  }
+
+  public final void splitShapes() {
+    ShapeList nShapes = new ShapeList();
+    ShapeList pShapes = selectedShapes;
+    Iterator it = selectedShapes.iterator();
+    while (it.hasNext()) {
+      Shape s = (Shape) it.next();
+      s.getFigures().forEach((figure) -> {
+        nShapes.add(new Shape(figure));
+      });
+    }
+    redoStack.clear();
+    undoStack.push(new Action(pShapes, nShapes));
+    removeShapes(pShapes);
+    addShapes(nShapes);
+    selectedShapes = new ShapeList();
+    selectedShapes.addAll(nShapes);
+  }
+
+  public final void selectAll() {
+    selectedShapes.clear();
+    selectedShapes.addAll(shapes);
+    repaint();
+  }
+
+  public final void undo() {
+    if (!undoStack.isEmpty()) {
+      Action act = undoStack.pop();
+      redoStack.push(act.revertAction(this));
+      selectedShapes.clear();
+      repaint();
+    }
+  }
+
+  public final void redo() {
+    if (!redoStack.isEmpty()) {
+      Action act = redoStack.pop();
+      undoStack.push(act.revertAction(this));
+      selectedShapes.clear();
+      repaint();
+    }
   }
 
   @Override
@@ -123,7 +282,15 @@ public class ScribbleCanvas extends JPanel {
         Shape shape = (Shape) iter.next();
         if (shape != null) {
           if (selectedShapes.contains(shape)) {
-            shape.setSelected(g);
+            Graphics2D graph = (Graphics2D) g;
+            Stroke previous = graph.getStroke();
+            graph.setColor(Color.gray);
+            graph.setStroke(new BasicStroke(2,
+                    BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, DASHED_STROKE, dashed_phase));
+            shape.draw(graph);
+            graph.setStroke(previous);
+
           } else {
             shape.draw(g);
           }
@@ -165,111 +332,4 @@ public class ScribbleCanvas extends JPanel {
     }
   }
 
-  public final void undo() {
-    if (!undoStack.isEmpty()) {
-      Action act = undoStack.pop();
-      redoStack.push(act.revertAction(this));
-      repaint();
-    }
-  }
-
-  public final void redo() {
-    if (!redoStack.isEmpty()) {
-      Action act = redoStack.pop();
-      undoStack.push(act.revertAction(this));
-      repaint();
-    }
-  }
-
-  public final void deleteAll() {
-    selectedShapes.clear();
-    shapes.clear();
-    repaint();
-  }
-
-  public final void deleteSelected() {
-    startAction();
-    Iterator it = selectedShapes.iterator();
-    while (it.hasNext()) {
-      Shape s = (Shape) it.next();
-      shapes.remove(s);
-      undoStack.push(new RemoveShapeAction(s));
-    }
-    selectedShapes.clear();
-    repaint();
-  }
-
-  public final void fillSelectedShapes() {
-    startAction();
-    Iterator selectedShape = selectedShapes.iterator();
-    while (selectedShape.hasNext()) {
-      Shape s = (Shape) selectedShape.next();
-      s.setFilled(true);
-      undoStack.push(new FillFigureAction(s));
-    }
-    repaint();
-  }
-
-  public final void unfillSelectedShapes() {
-    startAction();
-    Iterator selectedShape = selectedShapes.iterator();
-    while (selectedShape.hasNext()) {
-      Shape s = (Shape) selectedShape.next();
-      s.setFilled(false);
-      undoStack.push(new UnfillFigureAction(s));
-    }
-    repaint();
-  }
-
-  public final void moveShapes(Point p) {
-    Iterator selectedShape = selectedShapes.iterator();
-    while (selectedShape.hasNext()) {
-      Shape s = (Shape) selectedShape.next();
-      s.move(p);
-    }
-    repaint();
-  }
-
-  public final void endMovement(Point start, Point end) {
-    startAction();
-    Point desp = new Point(end.x - start.x, end.y - start.y);
-    Iterator selectedShape = selectedShapes.iterator();
-    while (selectedShape.hasNext()) {
-      Shape s = (Shape) selectedShape.next();
-      undoStack.push(new MoveAction(s, desp));
-    }
-    repaint();
-  }
-
-  public final void changeContour(Color c) {
-    startAction();
-    Iterator selectedShape = selectedShapes.iterator();
-    while (selectedShape.hasNext()) {
-      Shape s = (Shape) selectedShape.next();
-      undoStack.push(new ChangeContourColorAction(s, s.getContourColor(), c));
-      s.setContourColor(c);
-    }
-    repaint();
-  }
-
-  public final void changeFilling(Color c) {
-    startAction();
-    Iterator selectedShape = selectedShapes.iterator();
-    while (selectedShape.hasNext()) {
-      Shape s = (Shape) selectedShape.next();
-      undoStack.push(new ChangeFillingColorAction(s, s.getFillingColor(), c));
-      s.setFillingColor(c);
-    }
-    repaint();
-  }
-
-  private void startAction() {
-    if (!selectedShapes.empty()) {
-      redoStack.clear();
-    }
-  }
-
-  public final void emptyRedo() {
-    redoStack.clear();
-  }
 }

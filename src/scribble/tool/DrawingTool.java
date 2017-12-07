@@ -30,7 +30,10 @@ public class DrawingTool extends Tool {
 
   @Override
   public final void mousePressed(MouseEvent e) {
-    shape = new Shape(canvas.getCurColor(), figure.getFigure());
+    canvas.clearSelectedShapes();
+    Figure nFigure = figure.getFigure();
+    nFigure.setContour(canvas.getCurColor());
+    shape = new Shape(nFigure);
     shape.startFigure(e.getPoint(), canvas.getGraphics());
   }
 
@@ -38,8 +41,7 @@ public class DrawingTool extends Tool {
   public final void mouseReleased(MouseEvent e) {
     shape.updateFigure(e.getPoint(), canvas.getGraphics());
     shape.draw(canvas.getGraphics());
-    canvas.createShape(shape);
-    canvas.emptyRedo();
+    canvas.addShape(shape);
   }
 
   @Override

@@ -19,8 +19,6 @@ public class FillingColorListener implements ActionListener {
   @Override
   public final void actionPerformed(ActionEvent e) {
     Color result = dialog.showDialog();
-    if (result != null) {
-      frame.getCanvas().changeFilling(result);
-    }
+    frame.getCanvas().changeFilling(result);
   }
 }

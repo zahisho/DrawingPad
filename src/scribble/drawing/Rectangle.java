@@ -12,7 +12,8 @@ public class Rectangle extends Figure implements Fillable {
   private int y1;
   private int x2;
   private int y2;
-  private boolean filled;
+
+  private Color fillingColor;
 
   private boolean between(int x, int x1, int x2) {
     return x >= Math.min(x1, x2) && x <= Math.max(x1, x2);
@@ -31,11 +32,9 @@ public class Rectangle extends Figure implements Fillable {
   }
 
   private void overDraw(Graphics g) {
-    Color curColor = g.getColor();
     g.setXORMode(Color.darkGray);
     g.setColor(Color.lightGray);
     draw(g);
-    g.setColor(curColor);
   }
 
   @Override
@@ -44,6 +43,11 @@ public class Rectangle extends Figure implements Fillable {
     int y = Math.min(y1, y2);
     int w = Math.abs(x1 - x2) + 1;
     int h = Math.abs(y1 - y2) + 1;
+    if (fillingColor != null) {
+      g.setColor(fillingColor);
+      g.fillRect(x, y, w, h);
+    }
+    g.setColor(contourColor);
     g.drawRect(x, y, w, h);
   }
 
@@ -63,7 +67,7 @@ public class Rectangle extends Figure implements Fillable {
   @Override
   public final boolean isSelected(Point p) {
     boolean res = false;
-    if (filled) {
+    if (fillingColor != null) {
       res = between(p.x, x1, x2) && between(p.y, y1, y2);
     }
     if (!res) {
@@ -95,18 +99,16 @@ public class Rectangle extends Figure implements Fillable {
   }
 
   @Override
-  public final void setFilled(boolean f) {
-    filled = f;
+  public void setFillingColor(Color c) {
+    fillingColor = c;
   }
 
   @Override
-  public final void fillInside(Graphics g) {
-    if (filled) {
-      int x = Math.min(x1, x2);
-      int y = Math.min(y1, y2);
-      int w = Math.abs(x1 - x2) + 1;
-      int h = Math.abs(y1 - y2) + 1;
-      g.fillRect(x, y, w, h);
-    }
+  public Figure copy() {
+    Rectangle nFigure = new Rectangle();
+    nFigure.setContour(contourColor);
+    nFigure.setFillingColor(fillingColor);
+    nFigure.setEnds(x1, y1, x2, y2);
+    return nFigure;
   }
 }

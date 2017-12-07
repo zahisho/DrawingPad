@@ -20,18 +20,20 @@ import javax.swing.JPanel;
 class ColorDialog extends JDialog implements ActionListener {
 
   private final JButton okButton;
+  private final JButton noneButton;
   private final JButton cancelButton;
   private final JButton moreColorButton;
   private final ColorPanel colorPanel;
   private JColorChooser chooser;
   private Color color;
   private Color result = null;
+  private final Color initialColor;
 
   public ColorDialog(JFrame owner, String title, Color color) {
     super(owner, title, true);
     this.color = color;
-
-    getContentPane().setLayout(new BorderLayout());
+    initialColor = color;
+    setLayout(new BorderLayout());
 
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new BorderLayout());
@@ -40,17 +42,20 @@ class ColorDialog extends JDialog implements ActionListener {
     moreColorButton = new JButton("More colors");
     moreColorButton.addActionListener(this);
     topPanel.add(moreColorButton, BorderLayout.SOUTH);
-    getContentPane().add(topPanel, BorderLayout.CENTER);
+    add(topPanel, BorderLayout.CENTER);
 
     JPanel bottomPanel = new JPanel();
     bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
     okButton = new JButton("Ok");
     okButton.addActionListener(this);
     bottomPanel.add(okButton);
+    noneButton = new JButton("None");
+    noneButton.addActionListener(this);
+    bottomPanel.add(noneButton);
     cancelButton = new JButton("Cancel");
     cancelButton.addActionListener(this);
     bottomPanel.add(cancelButton);
-    getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+    add(bottomPanel, BorderLayout.SOUTH);
 
     pack();
   }
@@ -82,6 +87,8 @@ class ColorDialog extends JDialog implements ActionListener {
         colorPanel.repaint();
       }
       return;
+    } else if (source == cancelButton) {
+      result = initialColor;
     }
     setVisible(false);
   }

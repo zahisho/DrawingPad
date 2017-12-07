@@ -10,7 +10,6 @@ import scribble.ScribbleCanvas;
 public class SelectTool extends Tool {
 
   private final ScribbleCanvas canvas;
-  private Point startPoint;
   private Point curPoint;
   private boolean canDrag;
 
@@ -25,18 +24,22 @@ public class SelectTool extends Tool {
 
   @Override
   public final void mouseClicked(MouseEvent e) {
-    startPoint = e.getPoint();
+    Point startPoint = e.getPoint();
     ShapeList shapes = canvas.getShapes();
     if (!canvas.getKeyCtrlPressed()) {
       canvas.clearSelectedShapes();
     }
     if (shapes != null) {
       Iterator iter = shapes.iterator();
+      Shape selected = null;
       while (iter.hasNext()) {
         Shape shape = (Shape) iter.next();
         if (shape.isSelected(startPoint)) {
-          canvas.addSelectedShape(shape);
+          selected = shape;
         }
+      }
+      if (selected != null) {
+        canvas.addSelectedShape(selected);
       }
     }
     canvas.repaint();
@@ -51,23 +54,17 @@ public class SelectTool extends Tool {
       Shape s = (Shape) it.next();
       canDrag = s.isSelected(e.getPoint());
       if (canDrag) {
-        startPoint = e.getPoint();
         curPoint = e.getPoint();
       }
     }
+    if (canDrag) {
+      canvas.startMovement();
+    }
+    canvas.repaint();
   }
 
   @Override
   public final void mouseReleased(MouseEvent e) {
-    if (canDrag) {
-      Point finalPoint = e.getPoint();
-      Point auxiliarPoint = new Point(finalPoint.x, finalPoint.y);
-      finalPoint.x -= curPoint.x;
-      finalPoint.y -= curPoint.y;
-      canvas.moveShapes(finalPoint);
-      canvas.repaint();
-      canvas.endMovement(startPoint, auxiliarPoint);
-    }
   }
 
   @Override

@@ -21,15 +21,14 @@ public class Line extends Figure {
   }
 
   private void overDraw(Graphics g) {
-    Color curColor = g.getColor();
     g.setXORMode(Color.darkGray);
     g.setColor(Color.lightGray);
     draw(g);
-    g.setColor(curColor);
   }
 
   @Override
   public final void draw(Graphics g) {
+    g.setColor(contourColor);
     g.drawLine(x1, y1, x2, y2);
   }
 
@@ -58,6 +57,7 @@ public class Line extends Figure {
     boolean res = Math.abs(angle) < EPS && Math.abs(p.x - x2)
             + Math.abs(xv1) == Math.abs(xv2) && Math.abs(p.y - y2)
             + Math.abs(yv1) == Math.abs(yv2);
+
     return res;
   }
 
@@ -72,5 +72,13 @@ public class Line extends Figure {
     x2 += p.x;
     y1 += p.y;
     y2 += p.y;
+  }
+
+  @Override
+  public Figure copy() {
+    Line nFigure = new Line();
+    nFigure.setContour(contourColor);
+    nFigure.setEnds(x1, y1, x2, y2);
+    return nFigure;
   }
 }

@@ -1,10 +1,8 @@
 package scribble.drawing;
 
-import java.awt.Graphics;
+import java.awt.Color;
 
 interface Fillable {
 
-  public void setFilled(boolean f);
-
-  public void fillInside(Graphics g);
+  public void setFillingColor(Color c);
 }

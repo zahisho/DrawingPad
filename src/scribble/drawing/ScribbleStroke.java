@@ -11,6 +11,17 @@ public class ScribbleStroke extends Figure {
 
   private List<Point> points = new ArrayList<>();
 
+  public ScribbleStroke() {
+    points = new ArrayList<>();
+  }
+
+  public ScribbleStroke(List<Point> ps) {
+    points = new ArrayList<>();
+    ps.forEach((p) -> {
+      points.add(new Point(p.x, p.y));
+    });
+  }
+
   @Override
   public final void updateFigure(Point p, Graphics g) {
     if (points == null || points.isEmpty()) {
@@ -24,6 +35,7 @@ public class ScribbleStroke extends Figure {
 
   @Override
   public final void draw(Graphics g) {
+    g.setColor(contourColor);
     Point prev = null;
     for (Point cur : points) {
       if (prev != null) {
@@ -35,7 +47,6 @@ public class ScribbleStroke extends Figure {
 
   @Override
   public final void startFigure(Point p, Graphics g) {
-    points = new ArrayList<>();
     points.add(p);
   }
 
@@ -66,5 +77,12 @@ public class ScribbleStroke extends Figure {
     }).forEachOrdered((point) -> {
       point.y += p.y;
     });
+  }
+
+  @Override
+  public Figure copy() {
+    ScribbleStroke nFigure = new ScribbleStroke(points);
+    nFigure.setContour(contourColor);
+    return nFigure;
   }
 }
