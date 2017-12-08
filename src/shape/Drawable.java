@@ -1,6 +1,7 @@
-package scribble;
+package shape;
 
 import java.awt.Graphics;
+import java.awt.Point;
 
 /**
  *

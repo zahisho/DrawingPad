@@ -1,4 +1,4 @@
-package scribble;
+package views;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,6 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
+/**
+ * @author M16U3L
+ */
 public class ColorPanel extends JPanel {
 
   private Color color;
@@ -106,5 +109,4 @@ public class ColorPanel extends JPanel {
     {Color.magenta, new Color(230, 230, 250), new Color(0, 0, 128),
       new Color(64, 224, 208)}
   };
-
 }
