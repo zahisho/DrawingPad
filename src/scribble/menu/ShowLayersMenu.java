@@ -1,6 +1,7 @@
 package scribble.menu;
 
 import javax.swing.JMenu;
+import scribble.frame.LayerList;
 import scribble.frame.Scribble;
 
 public class ShowLayersMenu extends JMenu {
@@ -11,16 +12,17 @@ public class ShowLayersMenu extends JMenu {
     super("Show layers");
     frame = s;
 
-    addItems();
+    updateLayers();
   }
 
-  public final void addItems() {
-    int nLayers = frame.getCanvas().getLayers().size();
+  public final void updateLayers() {
+    LayerList layers = frame.getCanvas().getLayers();
+    int nLayers = layers.size();
 
     removeAll();
 
     for (int i = 0; i < nLayers; i++) {
-      add(new LayerCheckbox(frame, i));
+      add(new LayerCheckbox(frame, i, layers.get(i).getShow()));
     }
   }
 }

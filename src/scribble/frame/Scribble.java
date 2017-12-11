@@ -9,6 +9,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -25,6 +26,7 @@ import scribble.menu.SaveListener;
 import scribble.menu.OpenFileListener;
 import scribble.menu.UndoMenuItem;
 import scribble.menu.ContourColorMenuItem;
+import scribble.menu.CurrentLayerComboBox;
 import scribble.menu.SelectAllMenuItem;
 import scribble.menu.DeleteSelectedMenuItem;
 import scribble.menu.FillingColorMenuItem;
@@ -83,6 +85,7 @@ public class Scribble extends JFrame {
   private NewLayerMenuItem newLayerMenuItem;
   private RemoveLayerMenuItem removeLayerMenuItem;
   private ShowLayersMenu showLayersMenu;
+  private CurrentLayerComboBox curLayerCB;
 
   private DrawingTool scribbleTool;
   private DrawingTool lineTool;
@@ -105,6 +108,7 @@ public class Scribble extends JFrame {
     initScribble();
     initTools();
     initToolComponents();
+    initCurLayerView();
   }
 
   private void initScribble() {
@@ -335,6 +339,14 @@ public class Scribble extends JFrame {
     menuBar.add(menu, 2);
   }
 
+  private void initCurLayerView() {
+    JPanel bottom = new JPanel();
+    bottom.add(new JLabel("Current layer:"));
+    curLayerCB = new CurrentLayerComboBox(this);
+    bottom.add(curLayerCB);
+    add(bottom, "South");
+  }
+
   public final void hideToolbar() {
     remove(toolbar);
     revalidate();
@@ -417,7 +429,8 @@ public class Scribble extends JFrame {
   }
 
   public final void updateLayersMenu() {
-    showLayersMenu.addItems();
+    showLayersMenu.updateLayers();
+    curLayerCB.updateLayers();
     revalidate();
   }
 }

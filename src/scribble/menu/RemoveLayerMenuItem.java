@@ -22,7 +22,5 @@ public class RemoveLayerMenuItem extends JMenuItem implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     frame.getCanvas().removeCurrentLayer();
-    frame.updateLayersMenu();
-    frame.getCanvas().repaint();
   }
 }

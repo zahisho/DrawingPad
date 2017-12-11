@@ -22,6 +22,5 @@ public class NewLayerMenuItem extends JMenuItem implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     frame.getCanvas().newLayer();
-    frame.updateLayersMenu();
   }
 }

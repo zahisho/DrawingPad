@@ -159,10 +159,10 @@ public class ScribbleCanvas extends JPanel {
 
     clearRedo();
 
-    pushNewAction(new Action(pShapes, nShapes));
+    pushNewAction(new Action(pShapes, nShapes, curLayer, curLayer));
 
-    removeShapes(pShapes);
-    addShapes(nShapes);
+    removeShapes(pShapes, curLayer);
+    addShapes(nShapes, curLayer);
 
     clearSelectedShapes();
     addSelectedShapes(nShapes);
@@ -256,25 +256,25 @@ public class ScribbleCanvas extends JPanel {
     repaint();
   }
 
-  public final ShapeList getShapes() {
+  public final ShapeList getCurLayer() {
     return curLayer;
   }
 
   public final void addNewShape(Shape shape) {
-    ShapeList newShapes = new ShapeList();
-    newShapes.add(shape);
+    ShapeList nShapes = new ShapeList();
+    nShapes.add(shape);
 
     clearRedo();
-    pushNewAction(new Action(null, newShapes));
+    pushNewAction(new Action(null, nShapes, curLayer, curLayer));
 
-    addShapes(newShapes);
+    addShapes(nShapes, curLayer);
 
     repaint();
   }
 
-  public final void addShapes(ShapeList ss) {
-    if (ss != null) {
-      curLayer.addAll(ss);
+  public final void addShapes(ShapeList ss, ShapeList layer) {
+    if (ss != null && curLayer != null) {
+      layer.addAll(ss);
     }
   }
 
@@ -284,18 +284,18 @@ public class ScribbleCanvas extends JPanel {
 
       ShapeList pShapes = selectedShapes;
 
-      pushNewAction(new Action(pShapes, null));
+      pushNewAction(new Action(pShapes, null, curLayer, curLayer));
 
-      removeShapes(pShapes);
+      removeShapes(pShapes, curLayer);
       clearSelectedShapes();
 
       repaint();
     }
   }
 
-  public final void removeShapes(ShapeList ss) {
+  public final void removeShapes(ShapeList ss, ShapeList layer) {
     if (ss != null) {
-      curLayer.removeAll(ss);
+      layer.removeAll(ss);
     }
   }
 
@@ -325,10 +325,10 @@ public class ScribbleCanvas extends JPanel {
       ShapeList nShapes = new ShapeList();
       nShapes.add(nShape);
       ShapeList pShapes = selectedShapes;
-      removeShapes(pShapes);
-      addShapes(nShapes);
+      removeShapes(pShapes, curLayer);
+      addShapes(nShapes, curLayer);
       clearRedo();
-      pushNewAction(new Action(pShapes, nShapes));
+      pushNewAction(new Action(pShapes, nShapes, curLayer, curLayer));
       clearSelectedShapes();
       addSelectedShapes(nShapes);
     }
@@ -346,9 +346,9 @@ public class ScribbleCanvas extends JPanel {
         });
       }
       clearRedo();
-      pushNewAction(new Action(pShapes, nShapes));
-      removeShapes(pShapes);
-      addShapes(nShapes);
+      pushNewAction(new Action(pShapes, nShapes, curLayer, curLayer));
+      removeShapes(pShapes, curLayer);
+      addShapes(nShapes, curLayer);
       clearSelectedShapes();
       addSelectedShapes(nShapes);
     }
@@ -396,6 +396,8 @@ public class ScribbleCanvas extends JPanel {
         layers.remove(curLayer);
         layers.add(index + 1, curLayer);
       }
+      scribble.updateLayersMenu();
+      clearSelectedShapes();
     }
   }
 
@@ -406,6 +408,8 @@ public class ScribbleCanvas extends JPanel {
         layers.remove(curLayer);
         layers.add(index - 1, curLayer);
       }
+      scribble.updateLayersMenu();
+      clearSelectedShapes();
     }
   }
 
@@ -416,6 +420,8 @@ public class ScribbleCanvas extends JPanel {
         layers.remove(curLayer);
         layers.add(curLayer);
       }
+      scribble.updateLayersMenu();
+      clearSelectedShapes();
     }
   }
 
@@ -426,36 +432,47 @@ public class ScribbleCanvas extends JPanel {
         layers.remove(curLayer);
         layers.add(0, curLayer);
       }
+      scribble.updateLayersMenu();
+      clearSelectedShapes();
     }
   }
 
   public final void showLayer(int index) {
     layers.get(index).show();
-    curLayer = layers.get(index);
+    scribble.updateLayersMenu();
   }
 
   public final void hideLayer(int index) {
     layers.get(index).hide();
     if (curLayer == layers.get(index)) {
       curLayer = null;
+      selectedShapes.clear();
     }
+    scribble.updateLayersMenu();
+    clearSelectedShapes();
   }
 
   public final void newLayer() {
     ShapeList nLayer = new ShapeList();
-    curLayer = nLayer;
     layers.add(nLayer);
+    scribble.updateLayersMenu();
+    clearSelectedShapes();
   }
 
   public final void removeCurrentLayer() {
     layers.remove(curLayer);
     curLayer = null;
+    scribble.updateLayersMenu();
+    clearSelectedShapes();
   }
 
   public final void setCurLayer(int index) {
     if (index >= 0 && index < layers.size()) {
       curLayer = layers.get(index);
+    } else {
+      curLayer = null;
     }
+    clearSelectedShapes();
   }
 
   public final LayerList getLayers() {

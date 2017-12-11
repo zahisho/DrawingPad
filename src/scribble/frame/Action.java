@@ -5,15 +5,20 @@ class Action {
   private final ShapeList previousShapes;
   private final ShapeList newShapes;
 
-  public Action(ShapeList p, ShapeList n) {
+  private final ShapeList previousLayer;
+  private final ShapeList newLayer;
+
+  public Action(ShapeList p, ShapeList n, ShapeList pL, ShapeList nL) {
     previousShapes = p;
     newShapes = n;
+    previousLayer = pL;
+    newLayer = nL;
   }
 
   public final Action revertAction(ScribbleCanvas canvas) {
-    canvas.removeShapes(newShapes);
-    canvas.addShapes(previousShapes);
+    canvas.removeShapes(newShapes, newLayer);
+    canvas.addShapes(previousShapes, previousLayer);
     canvas.repaint();
-    return new Action(newShapes, previousShapes);
+    return new Action(newShapes, previousShapes, newLayer, previousLayer);
   }
 }

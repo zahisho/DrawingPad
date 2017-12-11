@@ -33,7 +33,7 @@ public class SelectTool extends Tool implements KeyListener {
   @Override
   public final void mouseClicked(MouseEvent e) {
     Point startPoint = e.getPoint();
-    ShapeList shapes = canvas.getShapes();
+    ShapeList shapes = canvas.getCurLayer();
     if (!ctrlPressed) {
       canvas.clearSelectedShapes();
     }
