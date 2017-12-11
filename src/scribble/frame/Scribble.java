@@ -29,8 +29,15 @@ import scribble.menu.SelectAllMenuItem;
 import scribble.menu.DeleteSelectedMenuItem;
 import scribble.menu.FillingColorMenuItem;
 import scribble.menu.GroupShapesMenuItem;
+import scribble.menu.ShowLayersMenu;
 import scribble.menu.LineStyleMenu;
+import scribble.menu.MoveLayerBottomMenuItem;
+import scribble.menu.MoveLayerTopMenuItem;
+import scribble.menu.MoveLayerBackMenuItem;
+import scribble.menu.MoveLayerFrontMenuItem;
+import scribble.menu.NewLayerMenuItem;
 import scribble.menu.RedoMenuItem;
+import scribble.menu.RemoveLayerMenuItem;
 import scribble.menu.ShowToolbarCheckbox;
 import scribble.menu.SplitShapesMenuItem;
 import scribble.menu.ThicknessMenu;
@@ -69,6 +76,13 @@ public class Scribble extends JFrame {
   private ThicknessMenu thicknessMenu;
   private LineStyleMenu lineStyleMenu;
   private ShowToolbarCheckbox showToolbarCheckbox;
+  private MoveLayerBottomMenuItem moveLayerBottomMenuItem;
+  private MoveLayerTopMenuItem moveLayerTopMenuItem;
+  private MoveLayerBackMenuItem moveLayerBackMenuItem;
+  private MoveLayerFrontMenuItem moveLayerFrontMenuItem;
+  private NewLayerMenuItem newLayerMenuItem;
+  private RemoveLayerMenuItem removeLayerMenuItem;
+  private ShowLayersMenu showLayersMenu;
 
   private DrawingTool scribbleTool;
   private DrawingTool lineTool;
@@ -178,6 +192,29 @@ public class Scribble extends JFrame {
 
     redoMenuItem = new RedoMenuItem(this);
     menu.add(redoMenuItem);
+
+    menu.add(new JSeparator());
+
+    moveLayerBottomMenuItem = new MoveLayerBottomMenuItem(this);
+    menu.add(moveLayerBottomMenuItem);
+
+    moveLayerTopMenuItem = new MoveLayerTopMenuItem(this);
+    menu.add(moveLayerTopMenuItem);
+
+    moveLayerBackMenuItem = new MoveLayerBackMenuItem(this);
+    menu.add(moveLayerBackMenuItem);
+
+    moveLayerFrontMenuItem = new MoveLayerFrontMenuItem(this);
+    menu.add(moveLayerFrontMenuItem);
+
+    newLayerMenuItem = new NewLayerMenuItem(this);
+    menu.add(newLayerMenuItem);
+
+    removeLayerMenuItem = new RemoveLayerMenuItem(this);
+    menu.add(removeLayerMenuItem);
+
+    showLayersMenu = new ShowLayersMenu(this);
+    menu.add(showLayersMenu);
   }
 
   private void buildFormatMenu() {
@@ -377,5 +414,10 @@ public class Scribble extends JFrame {
     deleteSelectedMenuItem.setEnabled(false);
     groupShapesMenuItem.setEnabled(false);
     splitShapesMenuItem.setEnabled(false);
+  }
+
+  public final void updateLayersMenu() {
+    showLayersMenu.addItems();
+    revalidate();
   }
 }

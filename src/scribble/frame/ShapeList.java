@@ -9,9 +9,11 @@ import scribble.drawing.Shape;
 public class ShapeList implements Serializable {
 
   private final List<Shape> list;
+  private boolean show;
 
   public ShapeList() {
     list = new ArrayList<>();
+    show = true;
   }
 
   public final void add(Shape s) {
@@ -78,5 +80,17 @@ public class ShapeList implements Serializable {
 
   public final int size() {
     return list.size();
+  }
+
+  public final void hide() {
+    show = false;
+  }
+
+  public final void show() {
+    show = true;
+  }
+
+  public final boolean getShow() {
+    return show;
   }
 }

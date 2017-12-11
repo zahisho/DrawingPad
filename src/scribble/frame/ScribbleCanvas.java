@@ -30,7 +30,7 @@ public class ScribbleCanvas extends JPanel {
   private final Stack<Action> undoStack;
   private final Stack<Action> redoStack;
 
-  private final LayerList layers;
+  private LayerList layers;
   private ShapeList selectedShapes;
   private ShapeList curLayer;
 
@@ -389,32 +389,108 @@ public class ScribbleCanvas extends JPanel {
     }
   }
 
+  public final void moveLayerFront() {
+    if (curLayer != null) {
+      int index = layers.indexOf(curLayer);
+      if (index < layers.size() - 1) {
+        layers.remove(curLayer);
+        layers.add(index + 1, curLayer);
+      }
+    }
+  }
+
+  public final void moveLayerBack() {
+    if (curLayer != null) {
+      int index = layers.indexOf(curLayer);
+      if (index > 0) {
+        layers.remove(curLayer);
+        layers.add(index - 1, curLayer);
+      }
+    }
+  }
+
+  public final void moveLayerTop() {
+    if (curLayer != null) {
+      int index = layers.indexOf(curLayer);
+      if (index < layers.size() - 1) {
+        layers.remove(curLayer);
+        layers.add(curLayer);
+      }
+    }
+  }
+
+  public final void moveLayerBottom() {
+    if (curLayer != null) {
+      int index = layers.indexOf(curLayer);
+      if (index > 0) {
+        layers.remove(curLayer);
+        layers.add(0, curLayer);
+      }
+    }
+  }
+
+  public final void showLayer(int index) {
+    layers.get(index).show();
+    curLayer = layers.get(index);
+  }
+
+  public final void hideLayer(int index) {
+    layers.get(index).hide();
+    if (curLayer == layers.get(index)) {
+      curLayer = null;
+    }
+  }
+
+  public final void newLayer() {
+    ShapeList nLayer = new ShapeList();
+    curLayer = nLayer;
+    layers.add(nLayer);
+  }
+
+  public final void removeCurrentLayer() {
+    layers.remove(curLayer);
+    curLayer = null;
+  }
+
+  public final void setCurLayer(int index) {
+    if (index >= 0 && index < layers.size()) {
+      curLayer = layers.get(index);
+    }
+  }
+
+  public final LayerList getLayers() {
+    return layers;
+  }
+
   @Override
   public final void paint(final Graphics g) {
     Dimension dim = getSize();
     g.setColor(Color.white);
     g.fillRect(0, 0, dim.width, dim.height);
     g.setColor(Color.black);
-    if (curLayer != null) {
-      Iterator iter = curLayer.iterator();
-      while (iter.hasNext()) {
-        Shape shape = (Shape) iter.next();
-        if (shape != null) {
-          if (selectedShapes.contains(shape)) {
-            if (showSelected) {
+    layers.forEach((layer) -> {
+      if (layer.getShow()) {
+        Iterator iter = layer.iterator();
+        while (iter.hasNext()) {
+          Shape shape = (Shape) iter.next();
+          if (shape != null) {
+            if (selectedShapes.contains(shape)) {
+              if (showSelected) {
+                shape.draw(g);
+              }
+            } else {
               shape.draw(g);
             }
-          } else {
-            shape.draw(g);
           }
         }
       }
-    }
+    });
     revalidate();
   }
 
   public final void newFile() {
-    curLayer.clear();
+    layers = new LayerList();
+    curLayer = new ShapeList();
     repaint();
   }
 
@@ -422,7 +498,8 @@ public class ScribbleCanvas extends JPanel {
     try {
       try (ObjectInputStream in = new ObjectInputStream(
               new FileInputStream(filename))) {
-        curLayer = (ShapeList) in.readObject();
+        layers = (LayerList) in.readObject();
+        scribble.updateLayersMenu();
       }
       repaint();
     } catch (IOException e1) {
@@ -436,7 +513,7 @@ public class ScribbleCanvas extends JPanel {
     try {
       try (ObjectOutputStream out = new ObjectOutputStream(
               new FileOutputStream(filename))) {
-        out.writeObject(curLayer);
+        out.writeObject(layers);
       }
       System.out.println("Save drawing to " + filename);
     } catch (IOException e) {
