@@ -1,19 +1,19 @@
-package scribble.menu.listener;
+package scribble.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import scribble.Scribble;
+import scribble.frame.Scribble;
 
-public class GroupShapesListener implements ActionListener {
+public class SaveListener implements ActionListener {
 
   private final Scribble frame;
 
-  public GroupShapesListener(Scribble f) {
+  public SaveListener(Scribble f) {
     frame = f;
   }
 
   @Override
   public final void actionPerformed(ActionEvent e) {
-    frame.getCanvas().groupShapes();
+    frame.saveFile();
   }
 }

@@ -9,51 +9,36 @@ import java.util.List;
 
 public class Shape implements Serializable {
 
-  private final List<Figure> figures;
+  private final List<ShapeElement> elements;
 
   public Shape() {
-    figures = new ArrayList<>();
+    elements = new ArrayList<>();
   }
 
-  public Shape(Figure figure) {
-    figures = new ArrayList<>();
-    if (figure instanceof Fillable) {
-      ((Fillable) figure).setFillingColor(null);
-    }
-    figures.add(figure);
+  public Shape(ShapeElement sElement) {
+    elements = new ArrayList<>();
+    elements.add(sElement);
   }
 
-  public final void addFigure(Figure f) {
-    figures.add(f);
+  public final void addShapeElement(ShapeElement sElement) {
+    elements.add(sElement);
   }
 
-  public final List<Figure> getFigures() {
-    return figures;
-  }
-
-  public final void startFigure(Point p, Graphics g) {
-    figures.forEach((figure) -> {
-      figure.startFigure(p, g);
-    });
-  }
-
-  public final void updateFigure(Point p, Graphics g) {
-    figures.forEach((figure) -> {
-      figure.updateFigure(p, g);
-    });
+  public final List<ShapeElement> getElements() {
+    return elements;
   }
 
   public final void draw(Graphics g) {
-    figures.forEach((figure) -> {
-      figure.draw(g);
+    elements.forEach((element) -> {
+      element.draw(g);
     });
   }
 
   public final boolean isSelected(Point p) {
     boolean selected = false;
 
-    for (Figure figure : figures) {
-      if (figure.isSelected(p)) {
+    for (ShapeElement element : elements) {
+      if (element.isSelected(p)) {
         selected = true;
         break;
       }
@@ -62,29 +47,45 @@ public class Shape implements Serializable {
   }
 
   public final void move(Point p) {
-    figures.forEach(figure -> {
+    elements.forEach(figure -> {
       figure.move(p);
     });
   }
 
   public final void setContourColor(Color c) {
-    figures.forEach(figure -> {
+    elements.forEach(figure -> {
       figure.setContour(c);
     });
   }
 
   public final void setFillingColor(Color c) {
-    figures.forEach(figure -> {
+    elements.forEach(figure -> {
       if (figure instanceof Fillable) {
         ((Fillable) figure).setFillingColor(c);
       }
     });
   }
 
+  public final void setThickness(float t) {
+    elements.forEach(element -> {
+      if (element instanceof Figure) {
+        ((Figure) element).setThickness(t);
+      }
+    });
+  }
+
+  public final void setLineStyle(float[] d) {
+    elements.forEach(element -> {
+      if (element instanceof Figure) {
+        ((Figure) element).setLineStyle(d);
+      }
+    });
+  }
+
   public final Shape copy() {
     Shape nShape = new Shape();
-    figures.forEach((f) -> {
-      nShape.addFigure(f.copy());
+    elements.forEach((f) -> {
+      nShape.addShapeElement(f.copy());
     });
     return nShape;
   }

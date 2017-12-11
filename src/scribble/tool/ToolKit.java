@@ -28,12 +28,12 @@ public class ToolKit {
 
   public final Tool getTool(int i) {
     if (i >= 0 && i < tools.size()) {
-      return (Tool) tools.get(i);
+      return tools.get(i);
     }
     return null;
   }
 
-  public final Tool findTool(String name) {
+  private Tool findTool(String name) {
     if (name != null) {
       for (int i = 0; i < tools.size(); i++) {
         Tool tool = (Tool) tools.get(i);

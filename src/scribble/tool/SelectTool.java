@@ -1,20 +1,28 @@
 package scribble.tool;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import scribble.drawing.Shape;
-import scribble.drawing.ShapeList;
+import scribble.frame.ShapeList;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
-import scribble.ScribbleCanvas;
+import scribble.frame.ScribbleCanvas;
 
-public class SelectTool extends Tool {
+public class SelectTool extends Tool implements KeyListener {
+
+  private final int CTRL_CODE = 17;
+
+  private boolean ctrlPressed;
 
   private final ScribbleCanvas canvas;
   private Point curPoint;
   private boolean canDrag;
+  private boolean startingDrag;
 
   public SelectTool(ScribbleCanvas canvas) {
     this.canvas = canvas;
+    ctrlPressed = false;
   }
 
   @Override
@@ -26,7 +34,7 @@ public class SelectTool extends Tool {
   public final void mouseClicked(MouseEvent e) {
     Point startPoint = e.getPoint();
     ShapeList shapes = canvas.getShapes();
-    if (!canvas.getKeyCtrlPressed()) {
+    if (!ctrlPressed) {
       canvas.clearSelectedShapes();
     }
     if (shapes != null) {
@@ -55,10 +63,8 @@ public class SelectTool extends Tool {
       canDrag = s.isSelected(e.getPoint());
       if (canDrag) {
         curPoint = e.getPoint();
+        startingDrag = true;
       }
-    }
-    if (canDrag) {
-      canvas.startMovement();
     }
     canvas.repaint();
   }
@@ -78,6 +84,11 @@ public class SelectTool extends Tool {
   @Override
   public final void mouseDragged(MouseEvent e) {
     if (canDrag) {
+      if (startingDrag) {
+        canvas.startMovement();
+        startingDrag = false;
+      }
+
       Point finalPoint = e.getPoint();
       Point auxiliarPoint = new Point(finalPoint.x, finalPoint.y);
       finalPoint.x -= curPoint.x;
@@ -90,5 +101,23 @@ public class SelectTool extends Tool {
 
   @Override
   public final void mouseMoved(MouseEvent e) {
+  }
+
+  @Override
+  public void keyTyped(KeyEvent e) {
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e) {
+    if (e.getKeyCode() == CTRL_CODE) {
+      ctrlPressed = true;
+    }
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e) {
+    if (e.getKeyCode() == CTRL_CODE) {
+      ctrlPressed = false;
+    }
   }
 }

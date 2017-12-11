@@ -1,9 +1,10 @@
-package scribble.drawing;
+package scribble.frame;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import scribble.drawing.Shape;
 
 public class ShapeList implements Serializable {
 

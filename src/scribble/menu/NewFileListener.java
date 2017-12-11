@@ -1,19 +1,19 @@
-package scribble.menu.listener;
+package scribble.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import scribble.Scribble;
+import scribble.frame.Scribble;
 
-public class SplitShapesListener implements ActionListener {
+public class NewFileListener implements ActionListener {
 
   private final Scribble frame;
 
-  public SplitShapesListener(Scribble f) {
+  public NewFileListener(Scribble f) {
     frame = f;
   }
 
   @Override
   public final void actionPerformed(ActionEvent e) {
-    frame.getCanvas().splitShapes();
+    frame.newFile();
   }
 }

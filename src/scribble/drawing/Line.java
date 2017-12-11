@@ -1,7 +1,9 @@
 package scribble.drawing;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class Line extends Figure {
@@ -28,8 +30,11 @@ public class Line extends Figure {
 
   @Override
   public final void draw(Graphics g) {
-    g.setColor(contourColor);
-    g.drawLine(x1, y1, x2, y2);
+    Graphics2D gr = (Graphics2D) g;
+    gr.setColor(contourColor);
+    gr.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT,
+            BasicStroke.JOIN_BEVEL, 0, lineStyle, 0));
+    gr.drawLine(x1, y1, x2, y2);
   }
 
   @Override
@@ -79,6 +84,8 @@ public class Line extends Figure {
     Line nFigure = new Line();
     nFigure.setContour(contourColor);
     nFigure.setEnds(x1, y1, x2, y2);
+    nFigure.setThickness(thickness);
+    nFigure.setLineStyle(lineStyle);
     return nFigure;
   }
 }

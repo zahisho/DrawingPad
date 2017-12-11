@@ -1,16 +1,23 @@
-package scribble.menu.listener;
+package scribble.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import scribble.Scribble;
+import scribble.frame.Scribble;
 
-public class AboutListener implements ActionListener {
+public class AboutMenuItem extends JMenuItem implements ActionListener {
 
   private final Scribble frame;
 
-  public AboutListener(Scribble f) {
+  public AboutMenuItem(Scribble f) {
+    super("About");
     frame = f;
+    addListener();
+  }
+
+  private void addListener() {
+    addActionListener(this);
   }
 
   @Override

@@ -1,7 +1,9 @@
 package scribble.drawing;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class Rectangle extends Figure implements Fillable {
@@ -47,8 +49,11 @@ public class Rectangle extends Figure implements Fillable {
       g.setColor(fillingColor);
       g.fillRect(x, y, w, h);
     }
-    g.setColor(contourColor);
-    g.drawRect(x, y, w, h);
+    Graphics2D gr = (Graphics2D) g;
+    gr.setColor(contourColor);
+    gr.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT,
+            BasicStroke.JOIN_BEVEL, 0, lineStyle, 0));
+    gr.drawRect(x, y, w, h);
   }
 
   @Override
@@ -109,6 +114,8 @@ public class Rectangle extends Figure implements Fillable {
     nFigure.setContour(contourColor);
     nFigure.setFillingColor(fillingColor);
     nFigure.setEnds(x1, y1, x2, y2);
+    nFigure.setThickness(thickness);
+    nFigure.setLineStyle(lineStyle);
     return nFigure;
   }
 }

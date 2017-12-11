@@ -3,7 +3,7 @@ package scribble.tool;
 import scribble.drawing.Figure;
 import scribble.drawing.Shape;
 import java.awt.event.MouseEvent;
-import scribble.ScribbleCanvas;
+import scribble.frame.ScribbleCanvas;
 
 public class DrawingTool extends Tool {
 
@@ -11,7 +11,7 @@ public class DrawingTool extends Tool {
   private final Figure figure;
   private final String name;
 
-  private Shape shape;
+  private Figure nFigure;
 
   public DrawingTool(ScribbleCanvas canvas, Figure figure, String name) {
     this.canvas = canvas;
@@ -31,17 +31,20 @@ public class DrawingTool extends Tool {
   @Override
   public final void mousePressed(MouseEvent e) {
     canvas.clearSelectedShapes();
-    Figure nFigure = figure.getFigure();
-    nFigure.setContour(canvas.getCurColor());
-    shape = new Shape(nFigure);
-    shape.startFigure(e.getPoint(), canvas.getGraphics());
+
+    nFigure = figure.getFigure();
+    nFigure.setContour(canvas.getContourColor());
+    nFigure.setThickness(canvas.getThickness());
+    nFigure.setLineStyle(canvas.getLineStyle());
+
+    nFigure.startFigure(e.getPoint(), canvas.getGraphics());
   }
 
   @Override
   public final void mouseReleased(MouseEvent e) {
-    shape.updateFigure(e.getPoint(), canvas.getGraphics());
-    shape.draw(canvas.getGraphics());
-    canvas.addShape(shape);
+    nFigure.updateFigure(e.getPoint(), canvas.getGraphics());
+    nFigure.draw(canvas.getGraphics());
+    canvas.addNewShape(new Shape(nFigure));
   }
 
   @Override
@@ -54,7 +57,7 @@ public class DrawingTool extends Tool {
 
   @Override
   public final void mouseDragged(MouseEvent e) {
-    shape.updateFigure(e.getPoint(), canvas.getGraphics());
+    nFigure.updateFigure(e.getPoint(), canvas.getGraphics());
   }
 
   @Override

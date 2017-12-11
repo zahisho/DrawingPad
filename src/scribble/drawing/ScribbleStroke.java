@@ -1,6 +1,8 @@
 package scribble.drawing;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +37,14 @@ public class ScribbleStroke extends Figure {
 
   @Override
   public final void draw(Graphics g) {
-    g.setColor(contourColor);
+    Graphics2D gr = (Graphics2D) g;
+    gr.setColor(contourColor);
+    gr.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT,
+            BasicStroke.JOIN_BEVEL, 0, lineStyle, 0));
     Point prev = null;
     for (Point cur : points) {
       if (prev != null) {
-        g.drawLine(prev.x, prev.y, cur.x, cur.y);
+        gr.drawLine(prev.x, prev.y, cur.x, cur.y);
       }
       prev = cur;
     }
@@ -83,6 +88,8 @@ public class ScribbleStroke extends Figure {
   public Figure copy() {
     ScribbleStroke nFigure = new ScribbleStroke(points);
     nFigure.setContour(contourColor);
+    nFigure.setThickness(thickness);
+    nFigure.setLineStyle(lineStyle);
     return nFigure;
   }
 }

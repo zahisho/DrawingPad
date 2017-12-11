@@ -1,10 +1,10 @@
-package scribble.menu.listener;
+package scribble.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
-import scribble.Scribble;
+import scribble.frame.Scribble;
 
 public class OpenFileListener implements ActionListener {
 

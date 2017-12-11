@@ -1,6 +1,4 @@
-package scribble;
-
-import scribble.drawing.ShapeList;
+package scribble.frame;
 
 class Action {
 

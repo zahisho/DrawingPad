@@ -2,7 +2,7 @@ package scribble.main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import scribble.Scribble;
+import scribble.frame.Scribble;
 
 public class Main {
 

@@ -1,17 +1,24 @@
 package scribble.drawing;
 
-import java.awt.Color;
-import java.io.Serializable;
+import java.awt.Graphics;
+import java.awt.Point;
 
-public abstract class Figure implements Serializable, Drawable, Selectable, Movable {
+public abstract class Figure extends ShapeElement {
 
-  protected Color contourColor;
+  protected float thickness;
+  protected float[] lineStyle;
 
-  public final void setContour(Color c) {
-    contourColor = c;
+  public final void setThickness(float t) {
+    thickness = t;
+  }
+
+  public final void setLineStyle(float[] f) {
+    lineStyle = f;
   }
 
   public abstract Figure getFigure();
 
-  public abstract Figure copy();
+  public abstract void startFigure(Point p, Graphics g);
+
+  public abstract void updateFigure(Point p, Graphics g);
 }
