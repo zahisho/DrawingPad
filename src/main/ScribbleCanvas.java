@@ -3,14 +3,11 @@ package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.EventListener;
 import java.util.Iterator;
 import javax.swing.JPanel;
 import shape.Fillable;
@@ -27,35 +24,29 @@ public class ScribbleCanvas extends JPanel {
   private Color curColor;
   private Color fillColor;
 
-  private final EventListener listener;
+  private Tool listener;
 
-  public boolean mouseButtonDown = false;
   public int x;
   public int y;
-  private ScribbleCanvasListener scribbleCanvasListener;
 
   public ScribbleCanvas() {
     shapes = new ShapeList();
     // calling factory method
-    listener = makeCanvasListener();
-    addMouseListener((MouseListener) listener);
-    addMouseMotionListener((MouseMotionListener) listener);
     selectedShapes = new ShapeList();
     curColor = Color.black;
+    listener = null;
     fillColor = new Color(255, 255, 255, 0);
   }
 
-  public final void setTool(final Tool tool) {
-    scribbleCanvasListener.setTool(tool);
-  }
-
-  public final Tool getTool() {
-    return scribbleCanvasListener.getTool();
-  }
-
-  protected final EventListener makeCanvasListener() {
-    scribbleCanvasListener = new ScribbleCanvasListener(this);
-    return scribbleCanvasListener;
+  public void setTool(Tool tool) {
+    if (listener != null) {
+      removeMouseListener(listener);
+      removeMouseMotionListener(listener);
+    }
+    listener = tool;
+    addMouseListener(listener);
+    addMouseMotionListener(listener);
+    requestFocusInWindow();
   }
 
   public final void setCurColor(final Color curColor) {
@@ -208,19 +199,32 @@ public class ScribbleCanvas extends JPanel {
       selectedShapes.add(group);
       repaint();
     }
-    System.out.println(selectedShapes.isEmpty());
   }
 
   public final void ungroupSelectedShapes() {
     if (!selectedShapes.isEmpty()) {
-      GroupShape group;
-      ShapeList ungroupedShapes = new ShapeList();
-
-      /*selectedShapes.stream().filter((s)-> (s instanceof GroupShape)).map((s) -> {
-      ungroupedShapes.addAll(((GroupShape) s).getShapes());
-      return s;
-      }).forEachOrdered((s) -> shapes.remove(s));
-      ungroupedShapes.forEach((us) -> addShape(us));*/
+      ShapeList ungrouped = new ShapeList();
+      Iterator iter = selectedShapes.iterator();
+      while (iter.hasNext()) {
+        Shape shape = (Shape) iter.next();
+        if (shape != null && shape instanceof GroupShape) {
+          Iterator iterator = ((GroupShape) shape).getShapes().iterator();
+          while (iterator.hasNext()) {
+            Shape shapeCast = (Shape) iterator.next();
+            if (shapeCast != null) {
+              ungrouped.add(shapeCast);
+            }
+          }
+          shapes.remove(shape);
+        }
+      }
+      Iterator it = ungrouped.iterator();
+      while (it.hasNext()) {
+        Shape shape = (Shape) it.next();
+        if (shape != null) {
+          shapes.add(shape);
+        }
+      }
       repaint();
     }
   }

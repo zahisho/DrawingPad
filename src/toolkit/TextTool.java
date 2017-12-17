@@ -1,15 +1,17 @@
 package toolkit;
 
-import java.awt.Point;
+import java.awt.event.MouseEvent;
 import main.ScribbleCanvas;
+import shape.Shape;
 
 /**
  *
  * @author M16U3L
  */
-public class TextTool implements Tool {
+public class TextTool extends Tool {
 
   private ScribbleCanvas panelCanvas;
+  private Shape shape;
 
   public TextTool(ScribbleCanvas panelCanvas) {
     this.panelCanvas = panelCanvas;
@@ -21,14 +23,31 @@ public class TextTool implements Tool {
   }
 
   @Override
-  public void startAction(Point p) {
+  public void mouseClicked(MouseEvent e) {
+    
   }
 
   @Override
-  public void continueAction(Point p) {
+  public void mousePressed(MouseEvent e) {
+   }
+
+  @Override
+  public void mouseReleased(MouseEvent e) {
   }
 
   @Override
-  public void endAction(Point p) {
+  public void mouseEntered(MouseEvent e) {
+  }
+
+  @Override
+  public void mouseExited(MouseEvent e) {
+ }
+
+  @Override
+  public void mouseDragged(MouseEvent e) {
+ }
+
+  @Override
+  public void mouseMoved(MouseEvent e) {
   }
 }

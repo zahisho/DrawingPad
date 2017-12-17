@@ -1,7 +1,6 @@
 package views;
 
 import toolkit.TextTool;
-import toolkit.DriverTool;
 import main.ScribbleCanvas;
 import toolkit.ToolKit;
 import java.awt.GridLayout;
@@ -12,10 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import scribble.ScribbleTool;
+import toolkit.ClassTool;
 import toolkit.SelectorTool;
 import toolkit.Tool;
-import toolkit.TwoEndsTool;
+import toolkit.RelationTool;
 
 /**
  *
@@ -47,12 +46,9 @@ public class ToolPanel extends JPanel {
 
   private void initTools() {
     toolkit.addTool(new SelectorTool(panelCanvas));
-    toolkit.addTool(new ScribbleTool(panelCanvas, "Scribble"));
-    toolkit.addTool(new TwoEndsTool(panelCanvas, "Line", TwoEndsTool.LINE));
-    toolkit.addTool(new TwoEndsTool(panelCanvas, "Oval", TwoEndsTool.OVAL));
-    toolkit.addTool(new TwoEndsTool(panelCanvas, "Rectangle", TwoEndsTool.RECT));
+    toolkit.addTool(new RelationTool(panelCanvas));
+    toolkit.addTool(new ClassTool(panelCanvas));
     toolkit.addTool(new TextTool(panelCanvas));
-    toolkit.addTool(new DriverTool(panelCanvas));
     panelCanvas.setTool(toolkit.getTool(1));
   }
 

@@ -108,4 +108,8 @@ public class GroupShape implements Shape, Fillable {
   public boolean getSelect() {
     return selected;
   }
+
+  @Override
+  public void setEnds(int x, int y, int x0, int y0) {
+  }
 }

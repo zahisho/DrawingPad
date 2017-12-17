@@ -10,7 +10,7 @@ import java.awt.geom.Line2D;
  *
  * @author M16U3L
  */
-public class LineShape extends TwoEndsShape {
+public class LineShape extends TwoEndsShape implements Relationable {
 
   public LineShape(Color color) {
     super(color);
@@ -27,9 +27,5 @@ public class LineShape extends TwoEndsShape {
     g.drawLine(x1, y1, x2, y2);
     g2g.setStroke(previous);
     g2g.draw(shape);
-  }
-
-  @Override
-  public void setFillColor(Color fillColor) {
   }
 }

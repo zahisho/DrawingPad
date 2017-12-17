@@ -18,4 +18,7 @@ public interface Shape extends Serializable, Selectable, Movable, Drawable {
   public void setSelect(boolean b);
 
   public boolean getSelect();
+
+  public void setEnds(int x, int y, int x0, int y0);
+
 }

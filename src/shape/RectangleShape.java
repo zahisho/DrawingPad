@@ -11,16 +11,18 @@ import java.awt.geom.Rectangle2D;
  *
  * @author M16U3L
  */
-public class RectangleShape extends TwoEndsShape implements Fillable {
+public class RectangleShape extends TwoEndsShape implements Fillable, Initializable {
 
   private boolean filled;
   private final double EPS = 5;
   private Color fillColor;
+  private String name;
 
-  public RectangleShape(Color color, Color fillColor) {
+  public RectangleShape(Color color, Color fillColor, String name) {
     super(color);
     this.fillColor = fillColor;
     filled = false;
+    this.name = name;
   }
 
   @Override
@@ -42,6 +44,8 @@ public class RectangleShape extends TwoEndsShape implements Fillable {
     shape = new Rectangle2D.Double(x, y, w, h);
     g2g.setStroke(previous);
     g2g.draw(shape);
+    g2g.drawString(name, x + 2, y + 12);
+    g2g.drawRect(x, y, w, 15);
   }
 
   @Override
@@ -74,7 +78,14 @@ public class RectangleShape extends TwoEndsShape implements Fillable {
   }
 
   @Override
-  public final void setFillColor(Color fillColor) {
-    this.fillColor = fillColor;
+  public boolean contents(Point p) {
+    double x = p.getX();
+    double y = p.getY();
+    double boxX = x - HIT_BOX_SIZE / 2;
+    double boxY = y - HIT_BOX_SIZE / 2;
+    double width = HIT_BOX_SIZE;
+    double height = HIT_BOX_SIZE;
+    boolean res = shape.contains(boxX, boxY, width, height);
+    return res;
   }
 }

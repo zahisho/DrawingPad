@@ -22,7 +22,7 @@ public abstract class TwoEndsShape implements Shape {
   protected java.awt.Shape shape;
   protected boolean selected;
   protected static final int HIT_BOX_SIZE = 2;
-  private final float[] DASHED_STROKE = new float[]{5, 2};
+  private final float[] DASHED_STROKE = new float[]{5, 5};
   protected Color fillColor;
 
   public TwoEndsShape(Color color) {
@@ -35,6 +35,7 @@ public abstract class TwoEndsShape implements Shape {
     this.color = color;
   }
 
+  @Override
   public final void setEnds(final int x1, final int y1,
     final int x2, final int y2) {
     this.x1 = x1;
@@ -91,7 +92,7 @@ public abstract class TwoEndsShape implements Shape {
     Graphics2D graph = (Graphics2D) g;
     Stroke previous = graph.getStroke();
     graph.setColor(this.color);
-    graph.setStroke(new BasicStroke(2,
+    graph.setStroke(new BasicStroke(3,
       BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
       0, DASHED_STROKE, 0));
     this.draw(graph);
@@ -121,6 +122,4 @@ public abstract class TwoEndsShape implements Shape {
   public boolean getSelect() {
     return selected;
   }
-
-  public abstract void setFillColor(Color fillColor);
 }

@@ -1,18 +1,13 @@
 package toolkit;
 
-import java.awt.Point;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 /**
  *
  * @author M16U3L
  */
-public interface Tool {
+public abstract class Tool implements MouseListener, MouseMotionListener {
 
-  public String getName();
-
-  public void startAction(Point p);
-
-  public void continueAction(Point p);
-
-  public void endAction(Point p);
+  public abstract String getName();
 }

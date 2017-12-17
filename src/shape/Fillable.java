@@ -9,4 +9,5 @@ import java.awt.Color;
 public interface Fillable {
 
   public void fill(Color c);
+
 }
