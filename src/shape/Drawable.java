@@ -1,12 +1,14 @@
 package shape;
 
 import java.awt.Graphics;
+import java.awt.Point;
 
-/**
- *
- * @author M16U3L
- */
-public interface Drawable {
+interface Drawable {
 
-  public void draw(Graphics g);
+  public void startFigure(Point p, Graphics g);
+
+  public void updateFigure(Point p, Graphics g);
+
+  public void draw(Graphics g);  
+  
 }

@@ -103,11 +103,11 @@ public class DrawingpadMenu extends JMenuBar {
 
     menuItem = new JMenuItem("Group selected");
     menu.add(menuItem);
-    menuItem.addActionListener(e -> panelCanvas.groupSelectedShapes());
+    //menuItem.addActionListener(e -> panelCanvas.groupSelectedShapes());
 
     menuItem = new JMenuItem("Ungroup selected");
     menu.add(menuItem);
-    menuItem.addActionListener(e -> panelCanvas.ungroupSelectedShapes());
+    //menuItem.addActionListener(e -> panelCanvas.ungroupSelectedShapes());
 
     menu.add(new JSeparator());
 
@@ -147,6 +147,10 @@ public class DrawingpadMenu extends JMenuBar {
   private void createOptionMenu() {
     menu = new JMenu("Option");
     add(menu);
+
+    menuItem = new JMenuItem("Generate Code");
+    menu.add(menuItem);
+    menuItem.addActionListener(e -> generarCodigoListener());
   }
 
   private void createHelpMenu() {
@@ -232,5 +236,24 @@ public class DrawingpadMenu extends JMenuBar {
 
   public final ExitListener getExitListener() {
     return exitListener;
+  }
+
+  private void generarCodigoListener() {
+    int retval = chooser.showDialog(null, "Generate");
+    if (retval == JFileChooser.APPROVE_OPTION) {
+      File theFile = chooser.getSelectedFile();
+      if (theFile != null) {
+        if (!theFile.isDirectory()) {
+          String filename = chooser.getSelectedFile().getAbsolutePath();
+          generateCodeAs(filename);
+        }
+      }
+    }
+  }
+
+  public void generateCodeAs(String filename) {
+    currentFilename = filename;
+    panelCanvas.generateCode(filename);
+    frame.setTitle("Scribble Pad [" + currentFilename + "]");
   }
 }

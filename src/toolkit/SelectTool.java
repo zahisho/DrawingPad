@@ -1,22 +1,20 @@
 package toolkit;
 
 import java.awt.Point;
+import shape.Shape;
+import shape.ShapeList;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import main.ScribbleCanvas;
-import shape.Shape;
-import shape.ShapeList;
 
-/**
- *
- * @author M16U3L
- */
-public class SelectorTool extends Tool {
+public class SelectTool extends Tool {
 
   private final ScribbleCanvas panelCanvas;
+  private Point startPoint;
   private Point curPoint;
+  private boolean canDrag;
 
-  public SelectorTool(ScribbleCanvas canvas) {
+  public SelectTool(ScribbleCanvas canvas) {
     this.panelCanvas = canvas;
   }
 
@@ -26,7 +24,7 @@ public class SelectorTool extends Tool {
   }
 
   @Override
-  public void mouseClicked(MouseEvent e) {
+  public final void mouseClicked(MouseEvent e) {
     ShapeList selectedShapes = panelCanvas.getSelectedShapes();
     ShapeList shapes = panelCanvas.getShapes();
     if (!shapes.isEmpty()) {
@@ -48,24 +46,25 @@ public class SelectorTool extends Tool {
   }
 
   @Override
-  public void mousePressed(MouseEvent e) {
+  public final void mousePressed(MouseEvent e) {
     curPoint = e.getPoint();
   }
 
   @Override
-  public void mouseReleased(MouseEvent e) {
+  public final void mouseReleased(MouseEvent e) {
+
   }
 
   @Override
-  public void mouseEntered(MouseEvent e) {
+  public final void mouseEntered(MouseEvent e) {
   }
 
   @Override
-  public void mouseExited(MouseEvent e) {
+  public final void mouseExited(MouseEvent e) {
   }
 
   @Override
-  public void mouseDragged(MouseEvent e) {
+  public final void mouseDragged(MouseEvent e) {
     ShapeList selectedShapes = panelCanvas.getSelectedShapes();
     Point auxiliarPoint = e.getPoint();
     Point finalPoint = e.getPoint();
@@ -80,11 +79,10 @@ public class SelectorTool extends Tool {
         curPoint = auxiliarPoint;
       }
     }
-
     panelCanvas.repaint();
   }
 
   @Override
-  public void mouseMoved(MouseEvent e) {
+  public final void mouseMoved(MouseEvent e) {
   }
 }

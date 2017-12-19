@@ -3,87 +3,56 @@ package toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author M16U3L
- */
 public class ToolKit {
 
-  private List<Tool> tools;
+  private final List<Tool> tools;
   private Tool selectedTool;
-  private List<Tool> extraTools;
 
   public ToolKit() {
-    tools = new ArrayList<>();
-    extraTools = new ArrayList<>();
+    tools = new ArrayList<>(16);
     selectedTool = null;
   }
 
-  public final int addExtraTool(Tool tool) {
-    if (tool != null) {
-      extraTools.add(tool);
-      return (extraTools.size() - 1);
-    }
-    return -1;
-  }
-
   public final int addTool(Tool tool) {
+    int res = -1;
     if (tool != null) {
       tools.add(tool);
-      return (tools.size() - 1);
+      res = (tools.size() - 1);
     }
-    return -1;
+    return res;
   }
 
   public final int getToolCount() {
     return tools.size();
   }
 
-  public final Tool getExtraTool(int i) {
-    Tool res = null;
-    if (i >= 0 && i < extraTools.size()) {
-      res = extraTools.get(i);
-    }
-    return res;
-  }
-
   public final Tool getTool(int i) {
-    Tool res = null;
     if (i >= 0 && i < tools.size()) {
-      res = tools.get(i);
+      return (Tool) tools.get(i);
     }
-    return res;
+    return null;
   }
 
   public final Tool findTool(String name) {
-    Tool res = null;
     if (name != null) {
       for (int i = 0; i < tools.size(); i++) {
-        Tool toolX = tools.get(i);
-        if (name.equals(toolX.getName())) {
-          res = toolX;
-          break;
-        }
-      }
-      for (int i = 0; i < extraTools.size(); i++) {
-        Tool toolX = extraTools.get(i);
-        if (name.equals(toolX.getName())) {
-          res = toolX;
-          break;
+        Tool tool = (Tool) tools.get(i);
+        if (name.equals(tool.getName())) {
+          return tool;
         }
       }
     }
-    return res;
+    return null;
   }
 
-  public void setSelectedTool(int i) {
+  public final void setSelectedTool(int i) {
     Tool tool = getTool(i);
     if (tool != null) {
       selectedTool = tool;
     }
   }
 
-  public Tool setSelectedTool(String name) {
+  public final Tool setSelectedTool(String name) {
     Tool tool = findTool(name);
     if (tool != null) {
       selectedTool = tool;
@@ -97,9 +66,5 @@ public class ToolKit {
 
   public final Tool getSelectedTool() {
     return selectedTool;
-  }
-
-  public int getExtraToolCount() {
-    return extraTools.size();
   }
 }

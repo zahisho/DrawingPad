@@ -1,19 +1,21 @@
 package main;
 
+import shape.Shape;
+import shape.ShapeList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.HeadlessException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import shape.Fillable;
-import shape.GroupShape;
-import shape.Shape;
-import shape.ShapeList;
 import toolkit.Tool;
 
 public class ScribbleCanvas extends JPanel {
@@ -22,7 +24,6 @@ public class ScribbleCanvas extends JPanel {
   private ShapeList selectedShapes;
 
   private Color curColor;
-  private Color fillColor;
 
   private Tool listener;
 
@@ -35,7 +36,6 @@ public class ScribbleCanvas extends JPanel {
     selectedShapes = new ShapeList();
     curColor = Color.black;
     listener = null;
-    fillColor = new Color(255, 255, 255, 0);
   }
 
   public void setTool(Tool tool) {
@@ -57,7 +57,7 @@ public class ScribbleCanvas extends JPanel {
     return curColor;
   }
 
-  public final void addShape(final Shape shape) {
+  public final void createShape(final Shape shape) {
     if (shape != null) {
       shapes.add(shape);
     }
@@ -106,7 +106,6 @@ public class ScribbleCanvas extends JPanel {
     repaint();
   }
 
-  @SuppressWarnings("unchecked")
   public final void openFile(final String filename) {
     try {
       try (ObjectInputStream in = new ObjectInputStream(
@@ -144,25 +143,12 @@ public class ScribbleCanvas extends JPanel {
     selectedShapes = new ShapeList();
   }
 
-  public final void changeFillSelectedShapes() {
+  public void changeBorderlineSelectedShapes() {
     if (!selectedShapes.isEmpty()) {
       Iterator iter = selectedShapes.iterator();
       while (iter.hasNext()) {
         Shape shape = (Shape) iter.next();
-        if (shape instanceof Fillable) {
-          ((Fillable) shape).fill(fillColor);
-          repaint();
-        }
-      }
-    }
-  }
-
-  public final void changeBorderlineSelectedShapes() {
-    if (!selectedShapes.isEmpty()) {
-      Iterator iter = selectedShapes.iterator();
-      while (iter.hasNext()) {
-        Shape shape = (Shape) iter.next();
-        shape.setColor(curColor);
+        shape.setContourColor(curColor);
         repaint();
       }
     }
@@ -186,6 +172,7 @@ public class ScribbleCanvas extends JPanel {
     }
   }
 
+  /*
   public final void groupSelectedShapes() {
     if (!selectedShapes.isEmpty()) {
       GroupShape group = new GroupShape(selectedShapes);
@@ -200,7 +187,7 @@ public class ScribbleCanvas extends JPanel {
       repaint();
     }
   }
-
+   *//*
   public final void ungroupSelectedShapes() {
     if (!selectedShapes.isEmpty()) {
       ShapeList ungrouped = new ShapeList();
@@ -227,13 +214,31 @@ public class ScribbleCanvas extends JPanel {
       }
       repaint();
     }
-  }
+  }*/
 
-  public void setFillColor(Color color) {
-    fillColor = color;
-  }
+  public void generateCode(String filename) {
+    ArrayList<File> files = new ArrayList<>();
+    try {
+      File f1 = new File(filename);
+      f1.mkdir();
 
-  public Color getFillColor() {
-    return fillColor;
+      Iterator iter = shapes.iterator();
+      while (iter.hasNext()) {
+        Shape shape = (Shape) iter.next();
+        if (shape.getNameClass() != null) {
+          File f2 = new File(f1.getPath());
+          f2.mkdirs();
+          files.add(f2);
+        }
+      }
+      Iterator it = shapes.iterator();
+      while (it.hasNext()) {
+        Shape shape = (Shape) it.next();
+        shape.generarCodigo(f1.getPath(), files);
+      }
+      JOptionPane.showMessageDialog(null, "SAVE:  " + f1.getPath());
+    } catch (HeadlessException e) {
+      JOptionPane.showMessageDialog(null, "ERROR " + e);
+    }
   }
 }

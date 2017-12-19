@@ -1,5 +1,9 @@
 package views;
 
+import umlObjects.objects.Interface;
+import umlObjects.objects.UmlClass;
+import umlObjects.objects.UmlAbstractClass;
+import shape.Text;
 import toolkit.TextTool;
 import main.ScribbleCanvas;
 import toolkit.ToolKit;
@@ -11,10 +15,20 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import umlObjects.relations.AgregationLink;
+import umlObjects.relations.AssociationLink;
+import umlObjects.relations.DirectAssociationLink;
+import umlObjects.relations.CompositionLink;
+import umlObjects.relations.ExtendsLink;
+import umlObjects.relations.ImplementsLink;
+import toolkit.ClassAbstractTool;
+import toolkit.ClassInterfaceTool;
 import toolkit.ClassTool;
-import toolkit.SelectorTool;
+import toolkit.ElementsTool;
+import toolkit.ExtendsTool;
+import toolkit.ImplementsTool;
 import toolkit.Tool;
-import toolkit.RelationTool;
+import toolkit.SelectTool;
 
 /**
  *
@@ -23,12 +37,12 @@ import toolkit.RelationTool;
 public class ToolPanel extends JPanel {
 
   private ToolKit toolkit;
-  private ScribbleCanvas panelCanvas;
+  private ScribbleCanvas canvas;
   private ActionListener toolListener;
   private boolean isVisible;
 
   public ToolPanel(ScribbleCanvas panelCanvas, ToolKit toolKit) {
-    this.panelCanvas = panelCanvas;
+    this.canvas = panelCanvas;
     this.toolkit = toolKit;
     isVisible = true;
     setLayout(new GridLayout(0, 1));
@@ -45,11 +59,28 @@ public class ToolPanel extends JPanel {
   }
 
   private void initTools() {
-    toolkit.addTool(new SelectorTool(panelCanvas));
-    toolkit.addTool(new RelationTool(panelCanvas));
-    toolkit.addTool(new ClassTool(panelCanvas));
-    toolkit.addTool(new TextTool(panelCanvas));
-    panelCanvas.setTool(toolkit.getTool(1));
+    toolkit.addTool(new SelectTool(canvas));
+    toolkit.addTool(new ClassTool(canvas, new UmlClass(),
+      "Class"));
+    toolkit.addTool(new ClassAbstractTool(canvas, new UmlAbstractClass(),
+      "Abstract Class"));
+    toolkit.addTool(new ClassInterfaceTool(canvas, new Interface(),
+      "Interface"));
+    toolkit.addTool(new ImplementsTool(canvas, new ImplementsLink(),
+      "Implements"));
+    toolkit.addTool(new ExtendsTool(canvas, new ExtendsLink(),
+      "Inheritance"));
+    toolkit.addTool(new ElementsTool(canvas, new AgregationLink(),
+      "Agregation"));
+    toolkit.addTool(new ElementsTool(canvas, new CompositionLink(),
+      "Composition"));
+    toolkit.addTool(new ElementsTool(canvas, new AssociationLink(),
+      "Assosiation Direct"));
+    toolkit.addTool(new ElementsTool(canvas, new DirectAssociationLink(),
+      "Assosiation"));
+    toolkit.addTool(new TextTool(canvas, new Text(), "Text"));
+    canvas.setTool(toolkit.getTool(1));
+    canvas.requestFocusInWindow();
   }
 
   private void init() {

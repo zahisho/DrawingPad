@@ -11,19 +11,16 @@ import main.ScribbleCanvas;
  */
 public class ColorDialog extends JPanel {
 
-  private FillColorPanel fillColorPanel;
   private StrokeColorPanel drawColorPanel;
   private ScribbleCanvas panelCanvas;
   private boolean isVisible;
 
   public ColorDialog(ScribbleCanvas panelCanvas) {
-    isVisible = true;
-    setVisible(true);
+    isVisible = false;
+    setVisible(false);
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     drawColorPanel = new StrokeColorPanel(panelCanvas);
     add(drawColorPanel, BorderLayout.CENTER);
-    fillColorPanel = new FillColorPanel(panelCanvas);
-    add(fillColorPanel, BorderLayout.CENTER);
   }
 
   public boolean getVisiblePanel() {
