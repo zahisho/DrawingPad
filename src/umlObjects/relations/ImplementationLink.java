@@ -5,9 +5,11 @@ import shape.UmlElement;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import umlObjects.UmlObject;
+import java.awt.Point;
 
-public class ImplementsLink extends UmlRelationship {
+public class ImplementationLink extends UmlRelationship {
+
+  public float[] DASHED = new float[]{5, 2};
 
   @Override
   public final void draw(Graphics g) {
@@ -29,15 +31,12 @@ public class ImplementsLink extends UmlRelationship {
 
   @Override
   public final UmlElement getFigure() {
-    return new ImplementsLink();
+    return new ImplementationLink();
   }
 
   @Override
-  public boolean validAbstractions(UmlObject i, UmlObject e) {
-    return false;
-  }
-
-  @Override
-  public void update() {
+  public void updateLink(Point p, Graphics g) {
+    setEndPoint(p);
+    overDraw(g);
   }
 }

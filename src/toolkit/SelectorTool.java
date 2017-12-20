@@ -9,13 +9,13 @@ import main.ScribbleCanvas;
 
 public class SelectorTool extends Tool {
 
-  private final ScribbleCanvas panelCanvas;
+  private final ScribbleCanvas canvas;
   private Point startPoint;
   private Point curPoint;
   private boolean canDrag;
 
   public SelectorTool(ScribbleCanvas canvas) {
-    this.panelCanvas = canvas;
+    this.canvas = canvas;
   }
 
   @Override
@@ -25,7 +25,7 @@ public class SelectorTool extends Tool {
 
   @Override
   public final void mouseClicked(MouseEvent e) {
-    ShapeList shapes = panelCanvas.getShapes();
+    ShapeList shapes = canvas.getShapes();
     if (!shapes.isEmpty()) {
       Iterator iter = shapes.iterator();
       while (iter.hasNext()) {
@@ -33,15 +33,15 @@ public class SelectorTool extends Tool {
         if (shape.isSelected(e.getPoint())) {
           if (!shape.getSelect()) {
             shape.setSelect(true);
-            panelCanvas.addSelectedShape(shape);
+            canvas.addSelectedShape(shape);
           } else {
             shape.setSelect(false);
-            panelCanvas.removeSelectedShape(shape);
+            canvas.removeSelectedShape(shape);
           }
         }
       }
     }
-    panelCanvas.repaint();
+    canvas.repaint();
   }
 
   @Override
@@ -51,7 +51,6 @@ public class SelectorTool extends Tool {
 
   @Override
   public final void mouseReleased(MouseEvent e) {
-
   }
 
   @Override
@@ -64,7 +63,7 @@ public class SelectorTool extends Tool {
 
   @Override
   public final void mouseDragged(MouseEvent e) {
-    ShapeList selectedShapes = panelCanvas.getSelectedShapes();
+    ShapeList selectedShapes = canvas.getSelectedShapes();
     Point auxiliarPoint = e.getPoint();
     Point finalPoint = e.getPoint();
     if (!selectedShapes.isEmpty()) {
@@ -74,11 +73,11 @@ public class SelectorTool extends Tool {
       while (it.hasNext()) {
         Shape shape = (Shape) it.next();
         shape.move(finalPoint);
-        panelCanvas.repaint();
+        canvas.repaint();
         curPoint = auxiliarPoint;
       }
     }
-    panelCanvas.repaint();
+    canvas.repaint();
   }
 
   @Override

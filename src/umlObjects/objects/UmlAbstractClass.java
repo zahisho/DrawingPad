@@ -1,7 +1,6 @@
 package umlObjects.objects;
 
 import umlObjects.UmlObject;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.BufferedWriter;
@@ -62,25 +61,67 @@ public class UmlAbstractClass extends UmlObject {
             + clas.getNameClass() + " " + "{");
           printWriter.write("}");
           printWriter.close();
-        } else {
-          String res = "";
-          for (int j = 0; j < clas.getNameClasss().size(); j++) {
-            res = res + clas.getNameClasss().get(j) + ",";
-          }
-          res = res.substring(0, res.length() - 1);
-
-          printWriter.println(" ");
-          printWriter.println(" ");
-          if (0 != clas.getNameClasss().size()) {
-            printWriter.println("public abstract class " + " "
-              + clas.getNameClass() + " "
+        } else if (!clas.getTypeClass().equals("N")
+          && !clas.getTypeClass().equals("I")) {
+          if (!clas.getNameClasss().isEmpty()) {
+            String res = " ";
+            for (int j = 0; j < clas.getNameClasss().size(); j++) {
+              res = res + clas.getNameClasss().get(j) + ",";
+            }
+            res = res.substring(0, res.length() - 1);
+            printWriter.println(" ");
+            printWriter.println(" ");
+            printWriter.println("public abstract class " + clas.getNameClass() + " "
               + "implements " + res + " {");
-          } else {
-            printWriter.println("public abstract class " + " "
-              + clas.getNameClass() + " {");
+            printWriter.write("}");
+            printWriter.close();
           }
-          printWriter.write("}");
-          printWriter.close();
+          if (!clas.getNameClasss().isEmpty()
+            && clas.getNameTypeClass() != null) {
+            String res = " ";
+            for (int j = 0; j < clas.getNameClasss().size(); j++) {
+              res = res + clas.getNameClasss().get(j) + ",";
+            }
+            res = res.substring(0, res.length() - 1);
+            printWriter.println(" ");
+            printWriter.println(" ");
+            printWriter.println("public abstract class " + clas.getNameClass() + " "
+              + "extends " + " " + clas.getNameClass2() + " "
+              + "implements " + " " + res + " {");
+            printWriter.write("}");
+            printWriter.close();
+          }
+          if ("abstract".equals(clas.getNameTypeClass())) {
+            if (clas.getNameClasss().isEmpty()) {
+              printWriter.println(" ");
+              printWriter.println(" ");
+              printWriter.println("public abstract  class " + clas.getNameClass()
+                + " " + "extends " + " " + clas.getNameClass2() + " {");
+              printWriter.write("}");
+              printWriter.close();
+            }
+            if (!clas.getNameClasss().isEmpty()) {
+              String res = " ";
+              for (int j = 0; j < clas.getNameClasss().size(); j++) {
+                res = res + clas.getNameClasss().get(j) + ",";
+              }
+              res = res.substring(0, res.length() - 1);
+              printWriter.println(" ");
+              printWriter.println(" ");
+              printWriter.println("public abstract class " + clas.getNameClass() + " "
+                + "extends " + " " + clas.getNameClass2() + " "
+                + "implements " + " " + res + " {");
+              printWriter.write("}");
+              printWriter.close();
+            }
+          } else {
+            printWriter.println(" ");
+            printWriter.println(" ");
+            printWriter.println("public abstract class "
+              + clas.getNameClass() + " " + "{");
+            printWriter.write("}");
+            printWriter.close();
+          }
         }
 
       } catch (IOException e) {

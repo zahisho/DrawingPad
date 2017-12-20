@@ -21,27 +21,40 @@ public abstract class UmlRelationship extends UmlElement implements Observer {
   protected int x2;
   protected int y2;
 
-  protected UmlObject initialAbstraction;
-  protected UmlObject finalAbstraction;
+  protected UmlObject initReference;
+  protected UmlObject endReference;
 
   protected Point initPoint;
   protected Point endPoint;
 
-  public final void setAbstractions(final UmlObject i,
-    final UmlObject e) {
-    initialAbstraction = i;
-    finalAbstraction = e;
+  public final void setAbstractions(UmlObject i, UmlObject e) {
+    System.out.println("asadc");
+    initReference = i;
+    endReference = e;
   }
 
-  private void setEnds(int x1, int y1, int x2, int y2) {
+  public void setInitPoint(Point p) {
+    initPoint = p;
+  }
+
+  public void setEndPoint(Point p) {
+    endPoint = p;
+  }
+
+  public Point getInitPoint() {
+    return initPoint;
+  }
+
+  public Point getEndPoint() {
+    return endPoint;
+  }
+
+  protected void setEnds(int x1, int y1, int x2, int y2) {
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;
     this.y2 = y2;
   }
-
-  public abstract boolean validAbstractions(final UmlObject i,
-    final UmlObject e);
 
   @Override
   public final boolean isSelected(final Point p) {
@@ -71,11 +84,12 @@ public abstract class UmlRelationship extends UmlElement implements Observer {
     overDraw(g);
   }
 
-  private void overDraw(Graphics g) {
+  protected void overDraw(Graphics g) {
     Color curColor = g.getColor();
     g.setXORMode(Color.darkGray);
     g.setColor(Color.lightGray);
     draw(g);
     g.setColor(curColor);
   }
+
 }

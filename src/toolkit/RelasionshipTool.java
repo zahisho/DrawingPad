@@ -1,13 +1,11 @@
 package toolkit;
 
-import java.awt.Point;
 import shape.UmlElement;
 import shape.Shape;
 import shape.ShapeList;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import main.ScribbleCanvas;
-import umlObjects.Subject;
 
 public class RelasionshipTool extends Tool {
 
@@ -19,7 +17,8 @@ public class RelasionshipTool extends Tool {
   private Shape end;
   private Shape shape;
 
-  public RelasionshipTool(ScribbleCanvas canvas, UmlElement figure, String name) {
+  public RelasionshipTool(ScribbleCanvas canvas, UmlElement figure,
+    String name) {
     this.canvas = canvas;
     this.figure = figure;
     this.name = name;

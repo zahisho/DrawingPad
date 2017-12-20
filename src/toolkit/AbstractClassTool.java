@@ -10,7 +10,7 @@ import main.ScribbleCanvas;
  *
  * @author M16U3L
  */
-public class ClassInterfaceTool extends Tool {
+public class AbstractClassTool extends Tool {
 
   private final ScribbleCanvas canvas;
   private final UmlElement figure;
@@ -18,7 +18,7 @@ public class ClassInterfaceTool extends Tool {
 
   private Shape shape;
 
-  public ClassInterfaceTool(ScribbleCanvas canvas, UmlElement figure, String name) {
+  public AbstractClassTool(ScribbleCanvas canvas, UmlElement figure, String name) {
     this.canvas = canvas;
     this.figure = figure;
     this.name = name;
@@ -32,11 +32,12 @@ public class ClassInterfaceTool extends Tool {
   @Override
   public void mouseClicked(MouseEvent e) {
     shape = new Shape(figure.getFigure());
-    String res = JOptionPane.showInputDialog("Enter Name the Class Interface");
+    String res = JOptionPane.showInputDialog("Enter Name the Class Abstract");
     if (res != null) {
       canvas.createShape(shape);
       shape.setNameClass(res);
-      shape.setTypeClass("I");
+      shape.setTypeClass("A");
+      shape.setReference(e.getPoint());
       shape.startFigure(e.getPoint(), canvas.getGraphics());
       canvas.repaint();
     }

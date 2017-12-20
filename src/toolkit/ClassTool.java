@@ -33,11 +33,11 @@ public class ClassTool extends Tool {
   @Override
   public void mouseClicked(MouseEvent e) {
     shape = new Shape(figure.getFigure());
-    shape.setReference(e.getPoint());
     String res = JOptionPane.showInputDialog("Enter Name the Class");
     if (res != null) {
       canvas.createShape(shape);
       shape.setNameClass(res);
+      shape.setTypeClass("N");
       shape.startFigure(e.getPoint(), canvas.getGraphics());
     }
     canvas.repaint();

@@ -1,6 +1,5 @@
 package toolkit;
 
-import java.awt.Point;
 import shape.UmlElement;
 import shape.Shape;
 import java.awt.event.MouseEvent;
@@ -8,8 +7,6 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 import main.ScribbleCanvas;
 import shape.ShapeList;
-import umlObjects.Subject;
-import umlObjects.UmlObject;
 
 public class InheritanceTool extends Tool {
 
@@ -42,7 +39,8 @@ public class InheritanceTool extends Tool {
     Iterator iter = shapes.iterator();
     while (iter.hasNext()) {
       Shape actualShape = (Shape) iter.next();
-      if (actualShape.isSelected(e.getPoint())) {
+      if (actualShape.isSelected(e.getPoint())
+        && !"I".equals(actualShape.getTypeClass())) {
         actualShape.setNameTypeClass("abstract");
         init = actualShape;
         shape = new Shape(figure.getFigure());
@@ -60,17 +58,17 @@ public class InheritanceTool extends Tool {
       while (iter.hasNext()) {
         Shape actualShape = (Shape) iter.next();
         if (actualShape.isSelected(e.getPoint())) {
-          if ("A".equals(actualShape.getTypeClass())) {
+          if (!"I".equals(actualShape.getTypeClass())) {
             end = actualShape;
             shape.updateFigure(e.getPoint(), canvas.getGraphics());
             shape.draw(canvas.getGraphics());
             canvas.createShape(shape);
-            init.setNameClass2(end.getNameClass());
+            init.setNameExtend(end.getNameClass());
             canvas.repaint();
             break;
           } else {
             JOptionPane.showMessageDialog(canvas,
-              "La clase no puede tener ese tipo de relacion");
+              "Wrong relationship");
             canvas.repaint();
           }
         } else {

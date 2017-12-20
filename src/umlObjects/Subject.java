@@ -1,5 +1,6 @@
 package umlObjects;
 
+import java.awt.Graphics;
 import java.awt.Point;
 
 /**
@@ -8,7 +9,7 @@ import java.awt.Point;
  */
 public interface Subject {
 
-  public void notifyUpdate();
+  public void notifyUpdate(Graphics g);
 
   public Point getReference();
 }

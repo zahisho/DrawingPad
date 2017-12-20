@@ -76,8 +76,6 @@ public class Shape implements Serializable {
     String x = null;
     if (umlElement instanceof UmlObject) {
       x = ((UmlObject) umlElement).getNameClass();
-      return x;
-
     }
     return x;
   }
@@ -149,9 +147,9 @@ public class Shape implements Serializable {
     }
   }
 
-  public void setNameClass2(String nameClass) {
+  public void setNameExtend(String nameClass) {
     if (umlElement instanceof UmlObject) {
-      ((UmlObject) umlElement).setNameClass2(nameClass);
+      ((UmlObject) umlElement).setNameExtend(nameClass);
     }
   }
 
@@ -187,4 +185,14 @@ public class Shape implements Serializable {
   public void setReference(Point point) {
     ((UmlObject) umlElement).setReference(point);
   }
+
+  public void addObserver(Shape shape, Point point) {
+    ((UmlObject) umlElement).addObserver(shape.getFigure(), point);
+  }
+
+  public void addReferences(Shape init, Shape end) {
+    ((UmlRelationship) umlElement).setAbstractions((UmlObject) init.getFigure(),
+      (UmlObject) end.getFigure());
+  }
+
 }

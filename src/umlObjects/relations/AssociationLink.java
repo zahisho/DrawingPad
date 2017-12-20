@@ -5,7 +5,7 @@ import shape.UmlElement;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import umlObjects.UmlObject;
+import java.awt.Point;
 
 public class AssociationLink extends UmlRelationship {
 
@@ -30,11 +30,6 @@ public class AssociationLink extends UmlRelationship {
   }
 
   @Override
-  public boolean validAbstractions(UmlObject i, UmlObject e) {
-    return false;
-  }
-
-  @Override
-  public void update() {
+  public void updateLink(Point p, Graphics g) {
   }
 }

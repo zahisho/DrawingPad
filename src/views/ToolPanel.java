@@ -20,9 +20,9 @@ import umlObjects.relations.AssociationLink;
 import umlObjects.relations.DirectAssociationLink;
 import umlObjects.relations.CompositionLink;
 import umlObjects.relations.InheritanceLink;
-import umlObjects.relations.ImplementsLink;
-import toolkit.ClassAbstractTool;
-import toolkit.ClassInterfaceTool;
+import umlObjects.relations.ImplementationLink;
+import toolkit.AbstractClassTool;
+import toolkit.InterfaceTool;
 import toolkit.ClassTool;
 import toolkit.RelasionshipTool;
 import toolkit.InheritanceTool;
@@ -62,13 +62,13 @@ public class ToolPanel extends JPanel {
     toolkit.addTool(new SelectorTool(canvas));
     toolkit.addTool(new ClassTool(canvas, new UmlClass(),
       "Class"));
-    toolkit.addTool(new ClassAbstractTool(canvas, new UmlAbstractClass(),
+    toolkit.addTool(new AbstractClassTool(canvas, new UmlAbstractClass(),
       "Abstract Class"));
-    toolkit.addTool(new ClassInterfaceTool(canvas, new Interface(),
+    toolkit.addTool(new InterfaceTool(canvas, new Interface(),
       "Interface"));
     toolkit.addTool(new InheritanceTool(canvas, new InheritanceLink(),
       "Inheritance"));
-    toolkit.addTool(new ImplementsTool(canvas, new ImplementsLink(),
+    toolkit.addTool(new ImplementsTool(canvas, new ImplementationLink(),
       "Implements"));
     toolkit.addTool(new RelasionshipTool(canvas, new DirectAssociationLink(),
       "Assosiation Direct"));

@@ -3,12 +3,9 @@ package umlObjects.relations;
 import java.awt.BasicStroke;
 import umlObjects.UmlRelationship;
 import shape.UmlElement;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Path2D;
-import umlObjects.UmlObject;
 
 public class InheritanceLink extends UmlRelationship {
 
@@ -26,6 +23,9 @@ public class InheritanceLink extends UmlRelationship {
     int ya2 = (int) (y2 - TAMROW * Math.sin(alfa - 1));
     g.drawLine(xa2, ya2, x2, y2);
     g.drawLine(xa1, ya1, xa2, ya2);
+    Point ini = new Point();
+    Point end = new Point();
+
   }
 
   @Override
@@ -34,11 +34,6 @@ public class InheritanceLink extends UmlRelationship {
   }
 
   @Override
-  public boolean validAbstractions(UmlObject i, UmlObject e) {
-    return false;
-  }
-
-  @Override
-  public void update() {
+  public void updateLink(Point p, Graphics g) {
   }
 }

@@ -80,10 +80,12 @@ public class ImplementsTool extends Tool {
 
   @Override
   public final void mouseEntered(MouseEvent e) {
+
   }
 
   @Override
   public final void mouseExited(MouseEvent e) {
+
   }
 
   @Override

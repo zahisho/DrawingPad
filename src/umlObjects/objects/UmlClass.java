@@ -27,10 +27,10 @@ public class UmlClass extends UmlObject {
     y = Math.min(y1, y2);
     wh = TAMCLAS;
     h = TAMCLAS / 2;
-    
+
     g.drawRect(x, y, wh, h);
-    g.drawRect(x, y, wh, 15);
-    g2g.drawString(nameClass, x + 2, y + 12);
+    g.drawRect(x, y, wh, QUINCE);
+    g2g.drawString(nameClass, x + 2, y + DOCE);
   }
 
   @Override
@@ -50,8 +50,9 @@ public class UmlClass extends UmlObject {
         bufferedWriter = new BufferedWriter(fileWriter);
         printWriter = new PrintWriter(bufferedWriter);
 
-        if (clas.getTypeClass() == null) {
-          if (!clas.getNameClasss().isEmpty() && clas.getNameTypeClass() == null) {
+        if (!clas.getTypeClass().equals("A")
+          && !clas.getTypeClass().equals("I")) {
+          if (!clas.getNameClasss().isEmpty()) {
             String res = " ";
             for (int j = 0; j < clas.getNameClasss().size(); j++) {
               res = res + clas.getNameClasss().get(j) + ",";
@@ -64,7 +65,8 @@ public class UmlClass extends UmlObject {
             printWriter.write("}");
             printWriter.close();
           }
-          if (!clas.getNameClasss().isEmpty() && clas.getNameTypeClass() != null) {
+          if (!clas.getNameClasss().isEmpty()
+            && clas.getNameTypeClass() != null) {
             String res = " ";
             for (int j = 0; j < clas.getNameClasss().size(); j++) {
               res = res + clas.getNameClasss().get(j) + ",";
@@ -104,13 +106,14 @@ public class UmlClass extends UmlObject {
           } else {
             printWriter.println(" ");
             printWriter.println(" ");
-            printWriter.println("public class " + clas.getNameClass() + " " + "{");
+            printWriter.println("public class "
+              + clas.getNameClass() + " " + "{");
             printWriter.write("}");
             printWriter.close();
           }
         }
       } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Ha sucedido un error" + e);
+        JOptionPane.showMessageDialog(null, "Error " + e);
       }
     }
   }

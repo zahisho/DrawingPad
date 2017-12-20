@@ -3,12 +3,9 @@ package umlObjects.relations;
 import umlObjects.UmlRelationship;
 import shape.UmlElement;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Path2D;
-import umlObjects.UmlObject;
 
 public class AgregationLink extends UmlRelationship {
 
@@ -37,11 +34,6 @@ public class AgregationLink extends UmlRelationship {
   }
 
   @Override
-  public boolean validAbstractions(UmlObject i, UmlObject e) {
-    return false;
-  }
-
-  @Override
-  public void update() {
+  public void updateLink(Point p, Graphics g) {
   }
 }

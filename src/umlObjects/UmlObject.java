@@ -17,10 +17,11 @@ public abstract class UmlObject extends UmlElement implements Movable, Subject {
   protected FileWriter fileWriter;
   protected BufferedWriter bufferedWriter;
   protected PrintWriter printWriter;
+
   protected String nameClass;
   protected String typeClass;
   protected String nameTypeClass;
-  protected String nameClass2;
+  protected String nameExtend;
 
   protected final double EPS = 5;
   protected final int VEINTE = 20;
@@ -47,15 +48,18 @@ public abstract class UmlObject extends UmlElement implements Movable, Subject {
 
   public UmlObject() {
     nameClasss = new ArrayList<>();
-    observers = new ArrayList<>();
-    reference = null;
   }
 
   @Override
-  public void notifyUpdate() {
+  public void notifyUpdate(Graphics g) {
     for (Observer o : observers) {
-      o.update();
+      o.updateLink(reference, g);
     }
+  }
+
+  public void addObserver(UmlElement figure, Point point) {
+    reference = point;
+    observers.add((Observer) figure);
   }
 
   @Override
@@ -148,12 +152,12 @@ public abstract class UmlObject extends UmlElement implements Movable, Subject {
     this.nameClasss = nameClasss;
   }
 
-  public void setNameClass2(String nameClass) {
-    this.nameClass2 = nameClass;
+  public void setNameExtend(String nameClass) {
+    this.nameExtend = nameClass;
   }
 
   public String getNameClass2() {
-    return nameClass2;
+    return nameExtend;
   }
 
   @Override
@@ -165,4 +169,5 @@ public abstract class UmlObject extends UmlElement implements Movable, Subject {
   }
 
   public abstract void generarCodigo(String path, ArrayList<File> path2, UmlObject aThis);
+
 }

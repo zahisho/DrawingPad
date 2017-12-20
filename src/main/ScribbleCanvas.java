@@ -168,50 +168,6 @@ public class ScribbleCanvas extends JPanel {
     }
   }
 
-  /*
-  public final void groupSelectedShapes() {
-    if (!selectedShapes.isEmpty()) {
-      GroupShape group = new GroupShape(selectedShapes);
-      addShape(group);
-      Iterator iter = selectedShapes.iterator();
-      while (iter.hasNext()) {
-        Shape shape = (Shape) iter.next();
-        shapes.remove(shape);
-      }
-      selectedShapes = new ShapeList();
-      selectedShapes.add(group);
-      repaint();
-    }
-  }
-   *//*
-  public final void ungroupSelectedShapes() {
-    if (!selectedShapes.isEmpty()) {
-      ShapeList ungrouped = new ShapeList();
-      Iterator iter = selectedShapes.iterator();
-      while (iter.hasNext()) {
-        Shape shape = (Shape) iter.next();
-        if (shape != null && shape instanceof GroupShape) {
-          Iterator iterator = ((GroupShape) shape).getShapes().iterator();
-          while (iterator.hasNext()) {
-            Shape shapeCast = (Shape) iterator.next();
-            if (shapeCast != null) {
-              ungrouped.add(shapeCast);
-            }
-          }
-          shapes.remove(shape);
-        }
-      }
-      Iterator it = ungrouped.iterator();
-      while (it.hasNext()) {
-        Shape shape = (Shape) it.next();
-        if (shape != null) {
-          shapes.add(shape);
-        }
-      }
-      repaint();
-    }
-  }*/
-
   public void generateCode(String filename) {
     ArrayList<File> files = new ArrayList<>();
     try {
