@@ -11,6 +11,8 @@ import shape.UmlElement;
  */
 public abstract class UmlRelationship extends UmlElement implements Observer {
 
+  private static final double ROT_ANGLE = Math.PI / 6;
+  private static final double DIAM = 20;
   protected final double EPS = 0.01;
   protected final int TAMROW = 15;
 
@@ -18,8 +20,12 @@ public abstract class UmlRelationship extends UmlElement implements Observer {
   protected int y1;
   protected int x2;
   protected int y2;
+
   protected UmlObject initialAbstraction;
   protected UmlObject finalAbstraction;
+
+  protected Point initPoint;
+  protected Point endPoint;
 
   public final void setAbstractions(final UmlObject i,
     final UmlObject e) {
@@ -39,9 +45,6 @@ public abstract class UmlRelationship extends UmlElement implements Observer {
 
   @Override
   public final boolean isSelected(final Point p) {
-    /*
-    RelationshipDrawingService.setEnds(initialAbstraction,
-    finalAbstraction, ini, end);*/
     int xv1 = p.x - x1;
     int yv1 = p.y - y1;
     int xv2 = x2 - x1;

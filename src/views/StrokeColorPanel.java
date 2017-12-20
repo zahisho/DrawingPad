@@ -54,7 +54,7 @@ public class StrokeColorPanel extends JPanel implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     Object source = e.getSource();
     if (source == okButton) {
-      panelCanvas.setCurColor(colorPanel.getColor());
+      //panelCanvas.setCurColor(colorPanel.getColor());
       result = colorPanel.getColor();
       panelCanvas.changeBorderlineSelectedShapes();
     } else if (source == moreColorButton) {

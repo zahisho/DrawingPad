@@ -5,6 +5,7 @@ import shape.Shape;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import main.ScribbleCanvas;
+import umlObjects.UmlObject;
 
 /**
  *
@@ -15,7 +16,7 @@ public class ClassTool extends Tool {
   private final ScribbleCanvas canvas;
   private final UmlElement figure;
   private final String name;
-
+  private UmlObject object;
   private Shape shape;
 
   public ClassTool(ScribbleCanvas canvas, UmlElement figure, String name) {
@@ -31,23 +32,24 @@ public class ClassTool extends Tool {
 
   @Override
   public void mouseClicked(MouseEvent e) {
-
-  }
-
-  @Override
-  public void mousePressed(MouseEvent e) {
     shape = new Shape(figure.getFigure());
+    shape.setReference(e.getPoint());
     String res = JOptionPane.showInputDialog("Enter Name the Class");
     if (res != null) {
       canvas.createShape(shape);
       shape.setNameClass(res);
       shape.startFigure(e.getPoint(), canvas.getGraphics());
     }
+    canvas.repaint();
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e) {
+
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    canvas.repaint();
   }
 
   @Override

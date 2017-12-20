@@ -19,16 +19,16 @@ import umlObjects.relations.AgregationLink;
 import umlObjects.relations.AssociationLink;
 import umlObjects.relations.DirectAssociationLink;
 import umlObjects.relations.CompositionLink;
-import umlObjects.relations.ExtendsLink;
+import umlObjects.relations.InheritanceLink;
 import umlObjects.relations.ImplementsLink;
 import toolkit.ClassAbstractTool;
 import toolkit.ClassInterfaceTool;
 import toolkit.ClassTool;
-import toolkit.ElementsTool;
-import toolkit.ExtendsTool;
+import toolkit.RelasionshipTool;
+import toolkit.InheritanceTool;
 import toolkit.ImplementsTool;
 import toolkit.Tool;
-import toolkit.SelectTool;
+import toolkit.SelectorTool;
 
 /**
  *
@@ -59,25 +59,25 @@ public class ToolPanel extends JPanel {
   }
 
   private void initTools() {
-    toolkit.addTool(new SelectTool(canvas));
+    toolkit.addTool(new SelectorTool(canvas));
     toolkit.addTool(new ClassTool(canvas, new UmlClass(),
       "Class"));
     toolkit.addTool(new ClassAbstractTool(canvas, new UmlAbstractClass(),
       "Abstract Class"));
     toolkit.addTool(new ClassInterfaceTool(canvas, new Interface(),
       "Interface"));
+    toolkit.addTool(new InheritanceTool(canvas, new InheritanceLink(),
+      "Inheritance"));
     toolkit.addTool(new ImplementsTool(canvas, new ImplementsLink(),
       "Implements"));
-    toolkit.addTool(new ExtendsTool(canvas, new ExtendsLink(),
-      "Inheritance"));
-    toolkit.addTool(new ElementsTool(canvas, new AgregationLink(),
-      "Agregation"));
-    toolkit.addTool(new ElementsTool(canvas, new CompositionLink(),
-      "Composition"));
-    toolkit.addTool(new ElementsTool(canvas, new AssociationLink(),
+    toolkit.addTool(new RelasionshipTool(canvas, new DirectAssociationLink(),
       "Assosiation Direct"));
-    toolkit.addTool(new ElementsTool(canvas, new DirectAssociationLink(),
+    toolkit.addTool(new RelasionshipTool(canvas, new AssociationLink(),
       "Assosiation"));
+    toolkit.addTool(new RelasionshipTool(canvas, new AgregationLink(),
+      "Agregation"));
+    toolkit.addTool(new RelasionshipTool(canvas, new CompositionLink(),
+      "Composition"));
     toolkit.addTool(new TextTool(canvas, new Text(), "Text"));
     canvas.setTool(toolkit.getTool(1));
     canvas.requestFocusInWindow();

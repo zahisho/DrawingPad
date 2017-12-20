@@ -22,32 +22,15 @@ public class UmlClass extends UmlObject {
   public final void draw(Graphics g) {
     int t = nameClass.length();
 
-    if (typeClass != null) {
-      g.drawString(("<" + " " + typeClass + " " + ">"), (x + wh) - POSTYPECLAS, y);
-    }
     Graphics2D g2g = (Graphics2D) g;
     x = Math.min(x1, x2);
     y = Math.min(y1, y2);
     wh = TAMCLAS;
-    h = TAMCLAS;
-
-    if (t <= TAMRANGLPE) {
-      g.drawLine(x, y + wh / CUADSUP, x + TAMCLAS, y + wh / CUADSUP);
-      g.drawString(nameClass, x + wh / POSEIGTH, y + h / POSWITH);
-      g.drawRect(x, y, wh, h);
-    }
-    if (t > TAMRANGLPE && t <= TAMRANGLME) {
-      wh = wh + t * CUADSUP;
-      g.drawLine(x, y + wh / CUADSUP, x + wh, y + wh / CUADSUP);
-      g.drawString(nameClass, x + wh / POSEIGTH, y + h / POSWITH);
-      g.drawRect(x, y, wh, h);
-    }
-    if (t > TAMRANGLME && t < TAMRANGLGR) {
-      wh = wh + t * POSWITH;
-      g.drawLine(x, y + wh / CUADSUP, x + wh, y + wh / CUADSUP);
-      g.drawString(nameClass, x + wh / POSEIGTH, y + h / POSWITH);
-      g.drawRect(x, y, wh, h);
-    }
+    h = TAMCLAS / 2;
+    
+    g.drawRect(x, y, wh, h);
+    g.drawRect(x, y, wh, 15);
+    g2g.drawString(nameClass, x + 2, y + 12);
   }
 
   @Override

@@ -23,12 +23,12 @@ public abstract class UmlObject extends UmlElement implements Movable, Subject {
   protected String nameClass2;
 
   protected final double EPS = 5;
-  protected final int POSTYPECLAS = 20;
-  protected final int TAMCLAS = 100;
-  protected final int TAMRANGLPE = 10;
-  protected final int TAMRANGLME = 18;
-  protected final int TAMRANGLGR = 30;
-  protected final int CUADSUP = 3;
+  protected final int VEINTE = 20;
+  protected final int TAMCLAS = 150;
+  protected final int QUINCE = 15;
+  protected final int CIENVEINTE = 120;
+  protected final int DOCE = 12;
+  protected final int CIENVENTICINCO = 128;
   protected final int POSWITH = 5;
   protected final int POSEIGTH = 6;
 
@@ -41,14 +41,14 @@ public abstract class UmlObject extends UmlElement implements Movable, Subject {
   protected int wh;
   protected int h;
 
-  //protected ArrayList<String> nameClasss = new ArrayList<>();
-  //public ArrayList<Observer> observers;
   public ArrayList<String> nameClasss;
   public ArrayList<Observer> observers;
+  protected Point reference;
 
   public UmlObject() {
     nameClasss = new ArrayList<>();
     observers = new ArrayList<>();
+    reference = null;
   }
 
   @Override
@@ -56,6 +56,15 @@ public abstract class UmlObject extends UmlElement implements Movable, Subject {
     for (Observer o : observers) {
       o.update();
     }
+  }
+
+  @Override
+  public Point getReference() {
+    return reference;
+  }
+
+  public void setReference(Point p) {
+    reference = p;
   }
 
   public void joinObject(Observer o) {

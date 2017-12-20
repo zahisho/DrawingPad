@@ -3,10 +3,8 @@ package umlObjects.relations;
 import umlObjects.UmlRelationship;
 import shape.UmlElement;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import umlObjects.UmlObject;
 
 public class AssociationLink extends UmlRelationship {
@@ -24,7 +22,6 @@ public class AssociationLink extends UmlRelationship {
     xa = (int) (x2 - TAMROW * Math.cos(alfa - 1));
     ya = (int) (y2 - TAMROW * Math.sin(alfa - 1));
     g.drawLine(xa, ya, x2, y2);
-
   }
 
   @Override

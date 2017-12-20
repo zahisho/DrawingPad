@@ -7,25 +7,24 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import main.ScribbleCanvas;
 
-public class SelectTool extends Tool {
+public class SelectorTool extends Tool {
 
   private final ScribbleCanvas panelCanvas;
   private Point startPoint;
   private Point curPoint;
   private boolean canDrag;
 
-  public SelectTool(ScribbleCanvas canvas) {
+  public SelectorTool(ScribbleCanvas canvas) {
     this.panelCanvas = canvas;
   }
 
   @Override
   public final String getName() {
-    return "Select";
+    return "Selector";
   }
 
   @Override
   public final void mouseClicked(MouseEvent e) {
-    ShapeList selectedShapes = panelCanvas.getSelectedShapes();
     ShapeList shapes = panelCanvas.getShapes();
     if (!shapes.isEmpty()) {
       Iterator iter = shapes.iterator();

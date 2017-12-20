@@ -49,10 +49,6 @@ public class ScribbleCanvas extends JPanel {
     requestFocusInWindow();
   }
 
-  public final void setCurColor(final Color curColor) {
-    this.curColor = curColor;
-  }
-
   public final Color getCurColor() {
     return curColor;
   }

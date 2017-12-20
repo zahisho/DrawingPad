@@ -23,31 +23,18 @@ public class Interface extends UmlObject {
     int t = nameClass.length();
 
     if (typeClass != null) {
-      g.drawString(("<" + " " + typeClass + " " + ">"), (x + wh) - POSTYPECLAS, y);
+      g.drawString((typeClass), x + CIENVENTICINCO, y - 2);
+      g.drawRect(x + CIENVEINTE, y - QUINCE, VEINTE, QUINCE);
     }
     Graphics2D g2g = (Graphics2D) g;
     x = Math.min(x1, x2);
     y = Math.min(y1, y2);
     wh = TAMCLAS;
-    h = TAMCLAS;
+    h = TAMCLAS / 2;
 
-    if (t <= TAMRANGLPE) {
-      g.drawLine(x, y + wh / CUADSUP, x + TAMCLAS, y + wh / CUADSUP);
-      g.drawString(nameClass, x + wh / POSEIGTH, y + h / POSWITH);
-      g.drawRect(x, y, wh, h);
-    }
-    if (t > TAMRANGLPE && t <= TAMRANGLME) {
-      wh = wh + t * CUADSUP;
-      g.drawLine(x, y + wh / CUADSUP, x + wh, y + wh / CUADSUP);
-      g.drawString(nameClass, x + wh / POSEIGTH, y + h / POSWITH);
-      g.drawRect(x, y, wh, h);
-    }
-    if (t > TAMRANGLME && t < TAMRANGLGR) {
-      wh = wh + t * POSWITH;
-      g.drawLine(x, y + wh / CUADSUP, x + wh, y + wh / CUADSUP);
-      g.drawString(nameClass, x + wh / POSEIGTH, y + h / POSWITH);
-      g.drawRect(x, y, wh, h);
-    }
+    g.drawRect(x, y, wh, h);
+    g.drawRect(x, y, wh, QUINCE);
+    g2g.drawString(nameClass, x + 2, y + DOCE);
   }
 
   @Override
@@ -74,7 +61,7 @@ public class Interface extends UmlObject {
           printWriter.write("}");
           printWriter.close();
         } else {
-          String res = " ";
+          String res = "";
           for (int j = 0; j < clas.getNameClasss().size(); j++) {
             res = res + clas.getNameClasss().get(j) + ",";
           }

@@ -11,7 +11,6 @@ public class ImplementsLink extends UmlRelationship {
 
   @Override
   public final void draw(Graphics g) {
-
     Graphics2D graph = (Graphics2D) g;
     basicStroke(graph);
 
@@ -26,7 +25,6 @@ public class ImplementsLink extends UmlRelationship {
     int ya2 = (int) (y2 - TAMROW * Math.sin(alfa - 1));
     g.drawLine(xa2, ya2, x2, y2);
     g.drawLine(xa1, ya1, xa2, ya2);
-
   }
 
   @Override

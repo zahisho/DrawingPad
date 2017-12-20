@@ -31,11 +31,6 @@ public class ClassAbstractTool extends Tool {
 
   @Override
   public void mouseClicked(MouseEvent e) {
-
-  }
-
-  @Override
-  public void mousePressed(MouseEvent e) {
     shape = new Shape(figure.getFigure());
     String res = JOptionPane.showInputDialog("Enter Name the Class Abstract");
     if (res != null) {
@@ -45,6 +40,11 @@ public class ClassAbstractTool extends Tool {
       shape.startFigure(e.getPoint(), canvas.getGraphics());
       canvas.repaint();
     }
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e) {
+
   }
 
   @Override
